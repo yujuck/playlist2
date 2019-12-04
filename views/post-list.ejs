@@ -4,7 +4,7 @@
 <head>
 
     <!-- Page title -->
-    <title>SmartEXT. - Responsive HTML Site Template</title>
+    <title>Playlist</title>
 
     <!-- Meta -->
     <meta charset="utf-8">
@@ -181,7 +181,7 @@
     <!-- /Page Header -->
 
     <!-- Main -->
-    <main class="main-container">
+    <main class="main-container" id="app">
 
         <div class="container">
             <div class="row">
@@ -194,12 +194,8 @@
 
                         <div class="title">Categories</div>
                         <ul class="sidebar-menu">
-                            <li><a href="#">외국어</a></li>
-                            <li><a href="#">게임</a></li>
-                            <li><a href="#">요리</a></li>
-                            <li><a href="#">음악</a></li>
-                            <li><a href="#">youtube</a></li>
-                            <li><a href="#">IT</a></li>
+                            <li v-for="c in category"><a href="#">{{c.categoryname}}</a></li>
+                            
                         </ul>
 
                     </div>
@@ -213,7 +209,7 @@
                 <!-- /Blog Sidebar -->
 
                 <!-- Blog Content -->
-                <div class="col-md-9" id="app">
+                <div class="col-md-9">
 
 
                     <div class="projects-list">
@@ -700,9 +696,18 @@
         var app = new Vue({
             el: '#app',
             data: {
-                posts: []
+                posts: [],
+                category: []
             },
             created: function () {
+                axios.get('/category')
+                    .then(function (res) {
+                        this.category = res.data;
+                    }.bind(this))
+                    .catch(function (err) {
+                        console.log(err);
+                    });
+
                 axios.get('/meetpost/list')
                     .then(function (res) {
                         this.posts = res.data;
