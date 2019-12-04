@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>회원가입</title>
+</head>
+
+<body>
+    <div id="app">
+        
+
+            <h1>회원가입</h1>
+
+            <h5>이메일</h5>
+            <input v-model="user.useremail" ref="useremail" type="text">
+            <button v-on:click="double_check">중복확인</button>
+
+            <h5>비밀번호</h5>
+            <input v-model="user.userpw" ref="userpw" type="password">
+
+            <h5>비밀번호 확인</h5>
+            <input v-model="user.userpwre" ref="userpwre" type="password">
+
+            <h5>이름</h5>
+            <input v-model="user.username" ref="username" type="text">
+
+            <h5>생년월일</h5>
+            <input v-model="user.birth" ref="birth" type="text" placeholder="961230">
+
+            <h5>성별</h5>
+            <!-- <input v-model="user.gender" ref="gender" type="text"> -->
+
+            <input v-model="user.gender" ref="gender" type="radio" value="M">남
+            <input v-model="user.gender" ref="gender" type="radio" value="W">여
+
+            <h5>전화번호</h5>
+            <input v-model="user.phone" ref="phone" type="text" placeholder="01012345678">
+
+            <h5>소개글(선택)</h5>
+            <textarea v-model="user.info" ref="info" cols="40" rows="10"></textarea>
+
+            <h5>사진(선택)</h5>
+            <input v-model="user.photofullroute" ref="photofullroute" type="text">
+
+            <h5>사용자 관심 카테고리</h5>
+            <input v-model="user.usercategory" type="checkbox" value="music" checked>음악
+            <input v-model="user.usercategory" type="checkbox" value="language">언어
+            <input v-model="user.usercategory" type="checkbox" value="cook">요리
+            <input v-model="user.usercategory" type="checkbox" value="youtube">유튜브
+            <input v-model="user.usercategory" type="checkbox" value="IT">IT
+            <input v-model="user.usercategory" type="checkbox" value="exercise">운동
+            
+            <span>체크한 카테고리: {{user.usercategory}}</span> <br><br>
+            
+            <button v-on:click="join">회원가입</button>
+
+       
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <script>
+
+        var app = new Vue({
+            el: '#app',
+            data: {
+                user: {
+                    useremail: '',
+                    userpw: '',
+                    userpwre: '',
+                    username: '',
+                    birth: '',
+                    gender: '',
+                    phone: '',
+                    info: '',
+                    photofullroute: '',
+                    usercategory: [],
+                }
+            },
+            methods: {
+                double_check: function() {
+
+                    axios.post('/join/double_check', this.user)
+                         .then((res) => {
+                            if (res.data.success == true) {
+                                alert(res.data.message);
+                            }
+                            if (res.data.success == false) {
+                                alert(res.data.message);
+                            }
+                        })
+                        .catch(err => {
+                            alert(err);
+                        })
+                    
+                },
+                join: function () {
+
+                    axios.post('/join', this.user)
+                         .then((res) => {
+                            if (res.data.success == true) {
+                                alert(res.data.message);
+                                location.href="/";
+                            }
+                            if (res.data.success == false) {
+                                alert(res.data.message);
+                            }
+                        })
+                        .catch(err => {
+                            alert(err);
+                        })
+                }
+            },
+        });
+
+
+    </script>
+
+</body>
+
+</html>

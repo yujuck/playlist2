@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>모임 글 상세페이지</title>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    
+
+</head>
+
+<body>
+    <div id="app">
+        <h1>모임 글 상세페이지</h1>
+
+        <h5>카테고리</h5><br>
+        {{posts.category.categoryname}}
+
+        <h5>제목</h5><br>
+        {{posts.title}}
+
+        <h5>작성자</h5><br>
+        {{posts.user.username}}
+
+        <h5>인원</h5><br>
+        {{posts.headcount}}
+
+        <h5>나이</h5><br>
+        {{posts.age}}
+
+        <h5>이력</h5><br>
+        {{posts.record}}
+
+        <h5>내용</h5><br>
+        {{posts.content}}
+
+        <button v-on:click="moveList">목록</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <script>
+        $.urlParam = function (name) {
+            var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+            if (results == null) {
+                return null;
+            }
+            else {
+                return results[1] || 0;
+            }
+        }
+        var id = $.urlParam('id');
+    
+        var app = new Vue({
+            el: '#app',
+            data: {
+                posts: []
+            },
+            created: function () {
+                axios.get('/meetpost/detail/' + id)
+                    .then(function (res) {
+                        this.posts = res.data;
+                        console.log(this.posts);
+                    }.bind(this))
+                    .catch(function (err) {
+                        console.log(err);
+                    });    
+            },
+            methods: {
+                moveList: function () {
+                    location.href = "/meetpost";
+                },
+            }
+        });
+    </script>
+</body>
+
+</html>

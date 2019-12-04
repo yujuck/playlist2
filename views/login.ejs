@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>로그인</title>
+</head>
+
+<body>
+    <div id="app">
+        
+        <h1>로그인</h1>
+
+        <h5>이메일</h5>
+        <input v-model="user.useremail" ref="useremail" type="text">
+
+        <h5>비밀번호</h5>
+        <input v-model="user.userpw" ref="userpw" type="password">
+
+        <button v-on:click="login">로그인</button>
+
+         <!-- 페이스북 로그인 구현 -->
+        <button type="button" onclick="checkLoginState();" class="btn btn-info block full-width m-b">Facebook Login</button>
+        <br><br>
+        
+        <button v-on:click="cancel">취소</button>
+        <button v-on:click="emailsearch">이메일 찾기</button>
+   
+    </div>
+
+
+    <!--추가 스크립트-->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <script>
+
+        var app = new Vue({
+            el: '#app',
+            data: {
+                user: {
+                    useremail: '',
+                    userpw: '',
+                }
+            },
+            methods: {
+                login: function () {
+                    axios.post('/login', this.user)
+                         .then((res) => {
+                            if (res.data.success == true) {
+                                alert(res.data.message);
+                                location.href="/";
+                            }
+                            if (res.data.success == false) {
+                                alert(res.data.message);
+                            }
+                        })
+                        .catch(function (error) {
+                            alert('error')
+                        })
+                },
+                cancel: function () {     
+
+                    location.href="/";
+                },
+                emailsearch: function () {     
+
+                    location.href="/emailsearch";
+                }
+            }
+
+
+        });
+
+        //페이스북 인증 초기설정
+
+        //ID를 사용하여 특정 페이지와 연결
+        window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '458408511527814',
+          xfbml      : true,
+          version    : 'v5.0'
+        });
+        FB.AppEvents.logPageView();
+      };
+      
+      //페이스북 버튼 누르기 전에 연결되어 있는 상태
+      (function(d, s, id){
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement(s); js.id = id;
+         js.src = "https://connect.facebook.net/en_US/sdk.js";
+         fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));
+    
+    
+    
+            //페북 로그인상태 처리
+            function checkLoginState() {
+    
+                FB.getLoginStatus(function (response) {
+    
+                    //TTD가입자로 페북에 로그인 된 상태인경우
+                    if (response.status == 'connected') {
+                        
+                        //alert("connected");
+    
+                        var token = response.authResponse.accessToken;
+                        var fbUserID = response.authResponse.userID;
+                        console.log("Token:" + token);
+                        console.log("UserID:" + fbUserID);
+    
+                        //페이스북 로그인 사용자 정보 조회
+                        var meURL = '/me?fields=id,name,email,picture';
+    
+                        FB.api(meURL, function (response) {
+                            // $("#hidLoginType").val("F");
+                            // $("#hidSNSEmail").val(response.email);
+                            // $("#hidSNSName").val(response.name);
+                            // $("#hidSNSImgURL").val(response.picture.data.url);
+    
+                            console.log(response);
+                            console.log('id:' + response.id);
+                            console.log('name:' + response.name);
+                            console.log('email:' + response.email);
+                            console.log('picture:' + response.picture.data.url);
+                            
+                            location.href="/";
+                    
+                            if (response.email == null) {
+                                alert("이메일 주소 정보가 전달되지 않아 로그인이 불가합니다.");
+                                //location.href = "/member/login";
+                            } 
+                            else 
+                            {
+                                
+                                //사용자 시스템 회원가입 및 로그인 처리
+                                //$("#snsLoginForm").submit();
+                            }
+                        }, { scope: 'email', return_scopes: true });
+    
+                    } 
+                    else 
+                    {
+    
+                        //alert("not yet connected");
+    
+                        //페북 비로그인상태이거나 TTD 미가입자인경우 로그인유도 후 데이터처리
+                        FB.login(function (response) {
+    
+                            if (response.authResponse) {
+                                var meURL = '/me?fields=id,name,email,picture';
+    
+                                FB.api(meURL, function (response) {
+                                    $("#hidLoginType").val("F");
+                                    $("#hidSNSEmail").val(response.email);
+                                    $("#hidSNSName").val(response.name);
+                                    $("#hidSNSImgURL").val(response.picture.data.url);
+    
+                                    if (response.email == null) {
+                                        alert("이메일 주소 정보가 전달되지 않아 회원가입이 불가합니다.");
+                                        location.href = "/member/login";
+                                    } else {
+                                        //사용자 시스템 회원가입 및 로그인 처리
+                                        //$("#snsLoginForm").submit();
+                                    }
+    
+                                });
+    
+                            } 
+                            else 
+                            {
+                                console.log('User cancelled login or did not fully authorize.');
+                                //location.href = "/home/main";
+                            }
+                        }, { scope: 'email', return_scopes: true });
+                    }
+                
+                });
+    
+            }
+
+    </script>
+</body>
+
+</html>
