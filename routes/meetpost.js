@@ -73,12 +73,22 @@ router.get('/detail/:id', function (req, res, next) {
  });
 });
 
-// router.get('/:id', function(req, res, next) {
-//   res.render('post-modify'); 
-// });
+// 수정하기 위해 데이터 가져가기
+router.get('/:id/modify', function(req, res, next) {
+  MeetPost.findOne({
+    include: [{ model: Category, }, { model: User}],
+    where: { id: req.params.id } 
+  })
+  .then((posts) => {
+    res.json(posts);
+  }).catch((err) => {
+    console.error(err);
+    next(err);
+  });
+});
 
 // 글 수정
-router.patch('/modify/:id', function(req, res, next) {
+router.patch('/:id/modify', function(req, res, next) {
   MeetPost.update(
     { 
       

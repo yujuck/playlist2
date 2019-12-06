@@ -10,7 +10,7 @@
 
 <body>
     <div id="app">
-            <h1>글 작성</h1>
+            <h1>글 수정</h1>
 
             <h5>카테고리</h5>
             <select v-model="post.categoryId" ref="categoryid">
@@ -70,7 +70,7 @@
                     {id:4, age:'40대'},
                     {id:5, age:'50대'}
                 ],
-                post: { }
+                post: []
 
             },
             created: function () {               
@@ -81,9 +81,9 @@
                     }.bind(this))
                     .catch(function (err) {
                         console.log(err);
-                    })
+                    });
                 
-                    axios.get('/meetpost/modify/' + id)
+                    axios.get('/meetpost/' + id + '/modify')
                     .then(function (res) {
                         this.posts = res.data;
                         console.log(this.posts);
@@ -95,47 +95,10 @@
             methods: {
                 savePost: function() {
 
-                    // if (this.post.categoryId == '') {
-                    //     alert("카테고리를 선택해주세요");
-                    //     this.$refs.categoryid.focus();
-                    //     return false;
-                    // }
-
-                    // if (this.post.title == '') {
-                    //     alert("제목을 입력해주세요");
-                    //     this.$refs.title.focus();
-                    //     return false;
-                    // }
-
-                    // if (this.post.headcount == '') {
-                    //     alert("인원수를 입력해주세요");
-                    //     this.$refs.headcount.focus();
-                    //     return false;
-                    // }
-
-                    // if (this.post.age == '') {
-                    //     alert("나이대를 선택해주세요");
-                    //     this.$refs.age.focus();
-                    //     return false;
-                    // }
-
-                    // if (this.post.record == '') {
-                    //     alert("이력을 입력해주세요");
-                    //     this.$refs.record.focus();
-                    //     return false;
-                    // }
-
-                    // if (this.post.content == '') {
-                    //     alert("내용을 입력해주세요");
-                    //     this.$refs.content.focus();
-                    //     return false;
-                    // }
-
                     axios.post('/meetpost/write', this.post) //post 방식으로 넘김
                     .then(function (res) {
                       
                         console.log(res);
-                        //alert("!!!!");
                         location.href="/meetpost/listpage";
                         
                     }.bind(this))

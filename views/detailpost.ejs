@@ -34,7 +34,9 @@
         <h5>내용</h5><br>
         {{posts.content}}
 
-        <button v-on:click="moveList">목록</button>
+        <button onclick="location.href='/meetpost' ">목록</button>
+        <!-- <button v-bind:value="posts.id" onclick="location.href='' ">수정</button> -->
+        <button v-on:click="removePost($event)" v-bind:value="posts.id">삭제</button>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
@@ -68,9 +70,12 @@
                     });    
             },
             methods: {
-                moveList: function () {
-                    location.href = "/meetpost";
-                },
+                removePost: function (e) {
+                    const buttonValue = e.target.value;
+                    console.log(buttonValue);
+                    axios.delete('/meetpost/delete/'+buttonValue);
+                    location.href="/meetpost";
+                }
             }
         });
     </script>
