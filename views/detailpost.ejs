@@ -252,6 +252,9 @@
 
                             </ul>
 
+                            <button class="btn btn-theme" v-on:click="removePost($event)" v-bind:value="posts.id">삭제</button>
+                            <a v-bind:href="'/meetpost/modify?postid='+posts.id"><button class="btn btn-theme">수정</button></a>
+
                             <div class="send-comment mt">
 
                                 <h3><i class="icon fa fa-fw fa-comment-o"></i> Send Your Comment</h3>
@@ -372,7 +375,6 @@
                 axios.get('/meetpost/detail/' + id)
                     .then(function (res) {
                         this.posts = res.data;
-                        console.log(this.posts);
                     }.bind(this))
                     .catch(function (err) {
                         console.log(err);
@@ -381,7 +383,7 @@
             methods: {
                 removePost: function (e) {
                     const buttonValue = e.target.value;
-                    console.log(buttonValue);
+                    alert(buttonValue);
                     axios.delete('/meetpost/delete/' + buttonValue);
                     location.href = "/meetpost";
                 }

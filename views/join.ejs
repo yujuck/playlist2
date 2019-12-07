@@ -40,7 +40,15 @@
             <textarea v-model="user.info" ref="info" cols="40" rows="10"></textarea>
 
             <h5>사진(선택)</h5>
-            <input v-model="user.photofullroute" ref="photofullroute" type="text">
+            
+                  <div class="large-12 medium-12 small-12 cell">
+                    <label>File
+                      <input type="photofullroute" id="photofullroute" ref="photofullroute" v-on:change="handleFileUpload()"/>
+                    </label>
+                      <button v-on:click="submitFile()">Submit</button>
+                  </div>
+               
+         
 
             <h5>사용자 관심 카테고리</h5>
             <input v-model="user.usercategory" type="checkbox" value="music" checked>음악
@@ -112,7 +120,36 @@
                         })
                 }
             },
-        });
+            submitFile(){
+               
+                    let formData = new FormData();
+                    formData.append('photofullroute', this.file);
+
+             
+                    axios.post( '/single-file',
+                        formData,
+                        {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    }
+                    ).then(function(){
+                console.log('SUCCESS!!');
+                })
+                .catch(function(){
+                console.log('FAILURE!!');
+                });
+            },
+
+          
+            handleFileUpload(){
+                this.photofullroute = this.$refs.photofullroute.files[0];
+            }
+        
+         
+        
+      
+ });
 
 
     </script>

@@ -46,16 +46,16 @@
 
     <script>
 
-        $.urlParam = function (name) {
-            var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
-            if (results == null) {
-                return null;
-            }
-            else {
-                return results[1] || 0;
-            }
-        }
-        var id = $.urlParam('id');
+        // $.urlParam = function (name) {
+        //     var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+        //     if (results == null) {
+        //         return null;
+        //     }
+        //     else {
+        //         return results[1] || 0;
+        //     }
+        // }
+        // var id = $.urlParam('id');
     
         
         var app = new Vue({
@@ -70,11 +70,10 @@
                     {id:4, age:'40대'},
                     {id:5, age:'50대'}
                 ],
-                post: []
+                post: [],
 
             },
             created: function () {               
-
                 axios.get('/category')
                     .then(function (res) {
                         this.category = res.data;
