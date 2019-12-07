@@ -10,20 +10,26 @@
         
         <h1>로그인</h1>
 
-        <h5>이메일</h5>
-        <input v-model="user.useremail" ref="useremail" type="text">
+        <form role="form" v-on:submit.prevent="login">
 
-        <h5>비밀번호</h5>
-        <input v-model="user.userpw" ref="userpw" type="password">
+            <h5>이메일</h5>
+            <input v-model="user.useremail" ref="useremail" type="text">
 
-        <button v-on:click="login">로그인</button>
+            <h5>비밀번호</h5>
+            <input v-model="user.userpw" ref="userpw" type="password">
 
-         <!-- 페이스북 로그인 구현 -->
-        <button type="button" onclick="checkLoginState();" class="btn btn-info block full-width m-b">Facebook Login</button>
-        <br><br>
-        
-        <button v-on:click="cancel">취소</button>
-        <button v-on:click="emailsearch">이메일 찾기</button>
+            <button type="submit">로그인</button>
+            <!-- <button v-on:click="login">로그인</button> -->
+            <button type="button" v-on:click="authTest">개인정보조회</button>
+
+            <!-- 페이스북 로그인 구현 -->
+            <button type="button" onclick="checkLoginState();" class="btn btn-info block full-width m-b">Facebook Login</button>
+            <br><br>
+
+            <button v-on:click="cancel">취소</button>
+            <button v-on:click="emailsearch">이메일 찾기</button>
+
+        </form>
    
     </div>
 
@@ -43,21 +49,75 @@
                 }
             },
             methods: {
+
                 login: function () {
-                    axios.post('/login', this.user)
-                         .then((res) => {
-                            if (res.data.success == true) {
-                                alert(res.data.message);
-                                location.href="/";
-                            }
-                            if (res.data.success == false) {
-                                alert(res.data.message);
-                            }
-                        })
-                        .catch(function (error) {
-                            alert('error')
-                        })
+
+                    if(this.$refs.useremail.value == ""){
+                        alert("이메일을 입력해주세요.");
+                        this.$refs.useremail.focus();
+                        return false;
+                    }
+
+                    if(this.$refs.userpw.value == ""){
+                        alert("비밀번호를 입력해주세요.");
+                        this.$refs.userpw.focus();
+                        return false;
+                    }
+
+                    // axios.post('/user/tlogin', this.user)
+                    //      .then((res) => {
+
+                    //         if (res.data.sucess == true) {
+                    //             alert(res.data.message);
+
+                    //             localStorage.setItem('token',res.data.result);
+                    //             location.href="/";
+                    //         }
+                    //         if (res.data.success == false) {
+                    //             alert(res.data.message);
+                    //         }
+                    //     })
+                    //     .catch(function (error) {
+                    //         alert('error')
+                    //     })
+
+                    axios.post('/user/login', this.user)
+                    .then((response) => {
+                        
+                        //토큰값 확인
+                        console.log(response.data);
+
+                        //토큰값 로컬스토리지 저장
+                        if(response.data.code == "200"){
+                            localStorage.setItem('token',response.data.result);
+                            
+                            console.log("로컬스토리지 토큰값:",localStorage.getItem('token'));
+                            //location.href = "/";
+                        }
+                        if(response.data.code == "500") {
+                            alert(response.data.message);
+                        }
+                   
+                    })
+                    .catch(function(err){
+                        console.log(err);
+                    })                   
                 },
+
+                authTest:function(){
+
+                    var token = localStorage.getItem('token');
+
+                    axios.get('/user/profile',{ headers:{ authorization:token }}).then(function(response){
+                        console.log(response.data);
+                        //alert(response.data); //aler 창으로 띄우고 싶은데 잘 안됨 ㅠㅠ
+                        this.articles = response.data;
+                    }.bind(this))
+                    .catch(function(err){
+                        console.log(err);
+                    });
+                },
+                
                 cancel: function () {     
 
                     location.href="/";

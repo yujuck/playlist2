@@ -12,24 +12,22 @@
             <h1>회원가입</h1>
 
             <h5>이메일</h5>
-            <input v-model="user.useremail" ref="useremail" type="text">
+            <input v-model="user.useremail" ref="useremail" type="text" placeholder="Email">
             <button v-on:click="double_check">중복확인</button>
 
             <h5>비밀번호</h5>
-            <input v-model="user.userpw" ref="userpw" type="password">
+            <input v-model="user.userpw" ref="userpw" type="password" placeholder="Password">
 
             <h5>비밀번호 확인</h5>
-            <input v-model="user.userpwre" ref="userpwre" type="password">
+            <input v-model="user.userpwre" ref="userpwre" type="password" placeholder="Password Check">
 
             <h5>이름</h5>
-            <input v-model="user.username" ref="username" type="text">
+            <input v-model="user.username" ref="username" type="text" placeholder="Name">
 
             <h5>생년월일</h5>
-            <input v-model="user.birth" ref="birth" type="text" placeholder="961230">
+            <input v-model="user.birth" ref="birth" type="text" placeholder="961230" placeholder="Birth">
 
             <h5>성별</h5>
-            <!-- <input v-model="user.gender" ref="gender" type="text"> -->
-
             <input v-model="user.gender" ref="gender" type="radio" value="M">남
             <input v-model="user.gender" ref="gender" type="radio" value="W">여
 
@@ -81,7 +79,7 @@
             methods: {
                 double_check: function() {
 
-                    axios.post('/join/double_check', this.user)
+                    axios.post('/user/double_check', this.user)
                          .then((res) => {
                             if (res.data.success == true) {
                                 alert(res.data.message);
@@ -97,11 +95,67 @@
                 },
                 join: function () {
 
-                    axios.post('/join', this.user)
+                    if(this.$refs.useremail.value == ""){
+                        alert("이메일을 입력해주세요.");
+                        this.$refs.useremail.focus();
+                        return false;
+                    }
+
+                    if(this.$refs.userpw.value == ""){
+                        alert("비밀번호를 입력해주세요.");
+                        this.$refs.userpw.focus();
+                        return false;
+                    }
+
+                    if(this.$refs.userpw.value.length < 7){
+                        alert("비밀번호는 7글자 이상입니다.");
+                        this.$refs.userpw.focus();
+                        return false;
+                    }
+
+                    if(this.$refs.userpw.value != this.$refs.userpwre.value){
+                        alert("비밀번호가 일치하지 않습니다.");
+                        this.$refs.userpwre.focus();
+                        return false;
+                    }
+
+                    if(this.$refs.username.value == ""){
+                        alert("이름을 입력해주세요.");
+                        this.$refs.username.focus();
+                        return false;
+                    }
+
+                    if(this.$refs.birth.value == ""){
+                        alert("생년월일을 입력해주세요.");
+                        this.$refs.birth.focus();
+                        return false;
+                    }
+
+                    if(this.$refs.birth.value.length != 6){
+                        alert("생년월일을 올바르게 입력해주세요.");
+                        this.$refs.birth.focus();
+                        return false;
+                    }
+
+                    if(this.$refs.phone.value == ""){
+                        alert("전화번호를 입력해주세요.");
+                        this.$refs.phone.focus();
+                        return false;
+                    }
+
+                    if(this.$refs.phone.value.length != 11){
+                        alert("전화번호를 올바르게 입력해주세요.");
+                        this.$refs.phone.focus();
+                        return false;
+                    }
+
+
+
+                    axios.post('/user/join', this.user)
                          .then((res) => {
                             if (res.data.success == true) {
                                 alert(res.data.message);
-                                location.href="/";
+                                location.href="/user/login";
                             }
                             if (res.data.success == false) {
                                 alert(res.data.message);
