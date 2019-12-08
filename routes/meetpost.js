@@ -54,6 +54,22 @@ router.get('/list', function (req, res, next) {
     });
 });
 
+// 카테고리별 글 리스트 
+router.get('/search', function(req,res,next) {
+  MeetPost.findAll({
+    include: [{ model: Category, }, { model: User}],
+    where: {categoryId:req.query.categoryid},
+    order:[['id','DESC']] 
+  })
+  .then((posts) => {
+    res.json(posts);
+  })
+  .catch((err) => {
+    console.log(err);
+    next(err);
+  })
+});
+
 // 상세글 페이지 렌더링
 router.get('/:id', function(req, res, next) {
   res.render('detailpost'); 
@@ -61,49 +77,22 @@ router.get('/:id', function(req, res, next) {
 
 // 상세글 가져오는 라우터
 router.get('/detail/:id', function (req, res, next) {
+  console.log(req.params, req.query);
  MeetPost.findOne({
    include: [{ model: Category, }, { model: User}],
    where: { id: req.params.id } 
  })
  .then((posts) => {
-   res.json(posts);
+   res.json(posts); 
  }).catch((err) => {
    console.error(err);
    next(err);
  });
 });
 
-// 수정하기 위해 데이터 가져가기
-router.get('/:id/modify', function(req, res, next) {
-  MeetPost.findOne({
-    include: [{ model: Category, }, { model: User}],
-    where: { id: req.params.id } 
-  })
-  .then((posts) => {
-    res.json(posts);
-  }).catch((err) => {
-    console.error(err);
-    next(err);
-  });
-});
-
 // 글 수정
-router.patch('/:id/modify', function(req, res, next) {
-  MeetPost.update(
-    { 
-      
-    }, 
-    { 
-      where: { id: req.params.id } 
-    })
-    .then((result) => {
-      res.json(result);
-    })
-    .catch((err) => {
-      console.error(err);
-      next(err);
-    });
-});
+
+
 
 // 글 삭제
 router.delete('/delete/:id', function(req, res, next) {

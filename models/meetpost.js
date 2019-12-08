@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
         },
         headcount: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING(20),
             allowNull: false
         },
         age: {

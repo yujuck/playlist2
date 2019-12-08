@@ -62,8 +62,8 @@
                     <div class="widget">
 
                         <div class="title">Categories</div>
-                        <ul class="sidebar-menu">
-                            <li v-for="c in category"><a href="#">{{c.categoryname}}</a></li>
+                        <ul class="sidebar-menu"> <!--id="categorylist"-->
+                            <li v-for="c in category" v-bind:value="c.id" v-on:click="search(c.id)"><a>{{c.categoryname}}</a></li>
                         </ul>
 
                     </div>
@@ -92,21 +92,23 @@
 
                                 </a>
                                 <div class="information">
-                                    <div class="h3 title">{{ p.title }}</div>
+                                    <div class="h3 title"><a v-bind:href="'/meetpost/modify?id='+p.id">{{ p.title }}</a>
+                                    </div>
                                     <div class="description">
                                         by {{p.user.username}}
                                     </div>
                                     <div class="read-more">
-                                        <a v-bind:href="'/meetpost/detailpost?id='+p.id">Read more <i
-                                                class="fa fa-fw fa-arrow-right"></i> </a>
+                                        <a v-bind:href="'/meetpost/detailpost?id='+p.id">Read more <i class="fa fa-fw fa-arrow-right"></i> </a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
+
                     <!-- Pagination -->
                     <div class="col-md-12 text-right">
+                        <button v-on:click="moveWrite" class="btn btn-theme">글작성</button>
                         <ul class="pagination">
                             <li><span>Page 1 of 5</span></li>
                             <li><a href="#">&laquo;</a></li>
@@ -130,6 +132,7 @@
     </main>
     <!-- /Main -->
 
+
     <!-- Footer -->
     <% include ./common/footer %>
     <!-- /Footer -->
@@ -141,212 +144,17 @@
     <!-- /Scroll To Top -->
 
     <!-- Modal: Sign In -->
-    <div class="modal fade" id="sign-in" role="dialog">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                        <i class="fa fa-times"></i>
-                    </button>
-                    <h5 class="modal-title"><i class="fa fa-fw fa-sign-in"></i> Sign in Form</h5>
-                </div>
-
-                <div class="modal-body">
-                    <div class="row">
-
-                        <!-- Contact Form -->
-                        <div class="col-md-12">
-                            <form class="form-ajax" method="post">
-
-                                <input type="hidden" name="form" value="Sign In">
-
-                                <div class="row form-row">
-                                    <div class="col-xs-12">
-                                        <div class="input-group">
-                                            <span class="input-group-addon" id="sign-in-user"><i
-                                                    class="fa fa-user"></i></span>
-                                            <input type="text" class="form-control" placeholder="Username"
-                                                aria-describedby="sign-in-user">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row form-row">
-                                    <div class="col-xs-12">
-                                        <div class="input-group">
-                                            <span class="input-group-addon" id="sign-in-password"><i
-                                                    class="fa fa-lock"></i></span>
-                                            <input type="password" class="form-control" placeholder="Password"
-                                                aria-describedby="sign-in-password">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row form-row text-center">
-                                    <div class="col-xs-12">
-                                        <button class="btn btn-theme">Sign in</button>
-                                    </div>
-                                </div>
-
-                                <div class="row form-row text-center">
-                                    <div class="col-xs-6">
-                                        <div class="checkbox-custom checkbox-theme">
-                                            <input type="checkbox" id="sign-in-remember">
-                                            <label for="sign-in-remember">Remember me</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-6">
-                                        <a href="#">Forgot password?</a>
-                                    </div>
-                                </div>
-
-                            </form>
-                        </div>
-                        <!-- /Contact Form -->
-
-
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
+    <% include ./common/sign_in %>
     <!-- Modal: /Sign In -->
 
     <!-- Modal: Sign Up -->
-    <div class="modal fade" id="sign-up" role="dialog">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                        <i class="fa fa-times"></i>
-                    </button>
-                    <h5 class="modal-title"><i class="fa fa-fw fa-sign-in"></i> Sign up Form</h5>
-                </div>
-
-                <div class="modal-body">
-                    <div class="row">
-
-                        <!-- Contact Form -->
-                        <div class="col-md-12">
-                            <form class="form-ajax" method="post">
-
-                                <input type="hidden" name="form" value="Sign In">
-
-                                <div class="row">
-                                    <div class="col-xs-12">
-                                        <div class="form-group">
-                                            <input type="text" class="form-control" placeholder="Username"
-                                                aria-describedby="sign-up-user">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-xs-12">
-                                        <div class="form-group">
-                                            <input type="password" class="form-control" placeholder="Password"
-                                                aria-describedby="sign-up-password">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-xs-12">
-                                        <div class="form-group">
-                                            <input type="password" class="form-control" placeholder="Password confirm"
-                                                aria-describedby="sign-up-password-confirm">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-xs-12">
-                                        <div class="form-group">
-                                            <input type="text" class="form-control" placeholder="Your Name"
-                                                aria-describedby="sign-up-name">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-xs-12">
-                                        <div class="form-group">
-                                            <input type="text" class="form-control" placeholder="Your Lastname"
-                                                aria-describedby="sign-up-last-name">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row text-left">
-                                    <div class="col-xs-12">
-                                        <div class="form-group">
-
-                                            <div class="checkbox-slide checkbox-theme">
-                                                <input type="checkbox" id="sign-up-remember">
-                                                <label for="sign-up-remember">I agree license agreement</label>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row text-right">
-                                    <div class="col-xs-12">
-                                        <div class="form-group">
-                                            <button class="btn btn-theme">Sign up</button>
-                                            <button data-dismiss="modal" aria-hidden="true"
-                                                class="btn btn-light">Cancel</button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </form>
-                        </div>
-                        <!-- /Contact Form -->
-
-
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
+    <% include ./common/sign_up %>
     <!-- Modal: /Sign Up -->
 
     <!-- Modal: Result Message -->
-    <div class="modal fade" id="result" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                        <i class="fa fa-times"></i>
-                    </button>
-                    <h4 class="modal-title">Sending message</h4>
-                </div>
-
-                <div class="modal-body">
-
-                    <div class="result-icon">
-                        <div class="icon-border">
-                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 16 16"
-                                preserveaspectratio="none">
-                                <circle cx="8" cy="8" r="6.215" transform="rotate(90 8 8)"></circle>
-                            </svg>
-                            <i class="icon fa fa-check"></i>
-                        </div>
-                    </div>
-
-                    <p class="modal-result h4 text-center"></p>
-                </div>
-
-            </div>
-        </div>
-    </div>
+    <% include ./common/result_message %>
     <!-- /Modal: Result Message -->
+
 
     <!-- SCRIPTS -->
     <script src="js/jquery-2.2.0.min.js"></script>
@@ -383,7 +191,6 @@
                 axios.get('/meetpost/list')
                     .then(function (res) {
                         this.posts = res.data;
-                        console.log(this.posts);
                     }.bind(this))
                     .catch(function (err) {
                         console.log(err);
@@ -393,15 +200,22 @@
                 moveWrite: function () {
                     location.href = "meetpost/writepage"
                 },
-                // 글 삭제
-                removePost: function (e) {
-                    const buttonValue = e.target.value;
-                    console.log(buttonValue);
-                    axios.delete('/meetpost/delete/' + buttonValue);
-                    location.href = "meetpost";
+                search: function(value) {
+                    axios.get('/meetpost/search?categoryid='+value)
+                    .then(function(res) {
+                        this.posts = res.data;
+                    }.bind(this))
+                    .catch(function(err) {
+                        console.log(err);
+                    });
                 }
             }
         });
+
+
+        // $('#categorylist > li').on("click", function() {
+        //     alert(this.id);
+        // });
     </script>
 </body>
 
