@@ -62,7 +62,7 @@
                     <div class="widget">
 
                         <div class="title">Categories</div>
-                        <ul class="sidebar-menu"> <!--id="categorylist"-->
+                        <ul class="sidebar-menu">
                             <li v-for="c in category" v-bind:value="c.id" v-on:click="search(c.id)"><a>{{c.categoryname}}</a></li>
                         </ul>
 
@@ -92,7 +92,7 @@
 
                                 </a>
                                 <div class="information">
-                                    <div class="h3 title"><a v-bind:href="'/meetpost/modify?id='+p.id">{{ p.title }}</a>
+                                    <div class="h3 title"><a v-bind:href="'/meetpost/modify?postid='+p.id">{{ p.title }}</a>
                                     </div>
                                     <div class="description">
                                         by {{p.user.username}}

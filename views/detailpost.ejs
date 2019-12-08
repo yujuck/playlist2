@@ -383,7 +383,7 @@
             methods: {
                 removePost: function (e) {
                     const buttonValue = e.target.value;
-                    alert(buttonValue);
+                    alert("삭제하시겠습니까?");
                     axios.delete('/meetpost/delete/' + buttonValue);
                     location.href = "/meetpost";
                 }

@@ -71,13 +71,12 @@ router.get('/search', function(req,res,next) {
 });
 
 // 상세글 페이지 렌더링
-router.get('/:id', function(req, res, next) {
+router.get('/detailpost', function(req, res, next) {
   res.render('detailpost'); 
 });
 
 // 상세글 가져오는 라우터
 router.get('/detail/:id', function (req, res, next) {
-  console.log(req.params, req.query);
  MeetPost.findOne({
    include: [{ model: Category, }, { model: User}],
    where: { id: req.params.id } 
@@ -91,7 +90,48 @@ router.get('/detail/:id', function (req, res, next) {
 });
 
 // 글 수정
+router.get('/modify', function(req,res,next) {
+  res.render('post-modify');
+});
 
+// 해당 글 정보 불러오기
+router.get('/modify/:id', function(req, res, next) {
+  MeetPost.findOne({
+    include: [{ model: Category, }, { model: User}],
+    where: { id: req.params.id } 
+  })
+  .then((posts) => {
+    res.json(posts); 
+  }).catch((err) => {
+    console.error(err);
+    next(err);
+  });
+});
+
+router.patch('/modify/:id', function(req, res, next) {
+  MeetPost.update(
+    { 
+      categoryId: req.body.categoryId,
+      title: req.body.title,
+      headcount: req.body.headcount,
+      // participants: 0,
+      age: req.body.age,
+      record: req.body.record,
+      content: req.body.content,
+      // meetphoto: req.body.meetphoto,
+      userId: 1,
+    }, 
+    { 
+      where: { id: req.params.id } 
+    })
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((err) => {
+      console.error(err);
+      next(err);
+    });
+});
 
 
 // 글 삭제

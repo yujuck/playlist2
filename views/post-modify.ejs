@@ -22,7 +22,7 @@
             <input v-model="post.title" ref="title" type="text">
 
             <h5>인원 제한</h5>
-            <input v-model="post.headcount" ref="headcount" type="number">
+            <input v-model="post.headcount" ref="headcount" type="text">
 
             <h5>나이대</h5>
             <select v-model="post.age">
@@ -35,7 +35,7 @@
             <h5>내용</h5>
             <input v-model="post.content" ref="content" type="text">
 
-            <button v-on:click="savePost">등록</button>
+            <button v-on:click="patchPost">수정</button>
 
     </div>
 
@@ -46,16 +46,16 @@
 
     <script>
 
-        // $.urlParam = function (name) {
-        //     var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
-        //     if (results == null) {
-        //         return null;
-        //     }
-        //     else {
-        //         return results[1] || 0;
-        //     }
-        // }
-        // var id = $.urlParam('id');
+        $.urlParam = function (name) {
+            var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+            if (results == null) {
+                return null;
+            }
+            else {
+                return results[1] || 0;
+            }
+        }
+        var id = $.urlParam('postid');
     
         
         var app = new Vue({
@@ -82,33 +82,26 @@
                         console.log(err);
                     });
                 
-                    axios.get('/meetpost/' + id + '/modify')
+                    axios.get('/meetpost/modify/'+id)
                     .then(function (res) {
-                        this.posts = res.data;
-                        console.log(this.posts);
+                        this.post = res.data;
                     }.bind(this))
                     .catch(function (err) {
                         console.log(err);
                     });
             },
             methods: {
-                savePost: function() {
+                patchPost: function() {
 
-                    axios.post('/meetpost/write', this.post) //post 방식으로 넘김
+                    axios.patch('/meetpost/modify/'+id, this.post)
                     .then(function (res) {
-                      
-                        console.log(res);
-                        location.href="/meetpost/listpage";
-                        
+                        location.href="/meetpost";
                     }.bind(this))
                     .catch(function(err){
-
                         console.log(err)
                     });
-      
                 }
             }
-            
         });
 
 
