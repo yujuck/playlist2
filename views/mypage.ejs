@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <!-- Page title -->
+    <title>My Page</title>
+
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="img/favicon.png">
+
+    <!-- Style -->
+    <link rel="stylesheet" href="css/theme-mariner.css">
+    <link rel="alternate stylesheet" href="css/theme-mariner.css" title="theme-mariner">
+
+
+</head>
+
+<body>
+
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loader"></div>
+    </div>
+    <!-- /Preloader -->
+
+    <!-- Header -->
+    <% include ./common/header %>
+    <!-- /Header -->
+
+    <!-- Page Header -->
+    <div class="inner-page-header">
+        <div class="container">
+            <div class="row">
+
+                <!-- Page Title -->
+                <div class="col-md-8">
+                    <h1 class="title">My page</h1>
+                    <div class="subtitle">사용자 정보</div>
+                </div>
+                <!-- /Page Title -->
+
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <!-- Main -->
+    <main class="main-container" id="app">
+
+        <div class="container">
+            <div class="row">
+
+                <!-- Blog Sidebar -->
+                <div class="col-md-3">
+                    <!-- Widget: Categories -->
+                    <div class="widget">
+                        <div class="title">My Page</div>
+                        <ul class="sidebar-menu">
+                            <li><a href="#">사용자 정보</a></li>
+                            <li><a href="#">좋아요 목록</a></li>
+                            <li><a href="#">즐겨찾기 목록</a></li>
+                            <li><a href="#">참여 목록</a></li>
+                        </ul>
+                    </div>
+                    <!-- /Widget: Categories -->
+                </div>
+                <!-- /Blog Sidebar -->
+
+                <!-- Section Content -->
+                <div class="row">
+
+                    <!-- Contact Information -->
+                    <div class="col-sm-5">
+
+                        <h3>Information</h3>
+                        <p>
+                            There are many variations of passages of Lorem Ipsum available, but the majority have
+                            suffered
+                            alteration in some form.
+                        </p>
+
+                        <ul class="list-lined">
+                            <li>
+                                <i class="icon fa fa-fw fa-globe"></i><span>Address</span> 988782, Our Street, L.A.
+                                <small style="float: right">
+                                    <a href="https://maps.google.com/maps?q=221B+Baker+Street,+London,+United+Kingdom&hl=en&t=v&hnear=221B+Baker+St,+London+NW1+6XE,+United+Kingdom"
+                                        class="iframe-popup">(See on Map)</a>
+                                </small>
+                            </li>
+                            <li><i class="icon fa fa-fw fa-envelope"></i><span>E-mail</span> clients@example.com</li>
+                            <li><i class="icon fa fa-fw fa-phone"></i><span>Phone</span> +1 (201) 987-1185</li>
+                        </ul>
+
+                        <h3>Work Time</h3>
+
+                        <ul class="list-lined">
+                            <li><i class="icon fa fa-clock-o"></i> <span>Mon - Sat</span> 9:00 - 19:00</li>
+                            <li><i class="icon fa fa-clock-o"></i> <span>Sunday</span> Closed</li>
+                        </ul>
+
+                    </div>
+                    <!-- /Contact Information -->
+
+
+                </div>
+            </div>
+        </div>
+
+    </main>
+    <!-- /Main -->
+
+    <!-- Footer -->
+    <% include ./common/footer %>
+    <!-- /Footer -->
+
+    <!-- Scroll To Top -->
+    <div id="scroll-to-top" class="scroll-to-top">
+        <i class="icon fa fa-angle-up"></i>
+    </div>
+    <!-- /Scroll To Top -->
+
+    <!-- Modal: Sign In -->
+    <% include ./common/sign_in %>
+    <!-- Modal: /Sign In -->
+
+    <!-- Modal: Sign Up -->
+    <% include ./common/sign_up %>
+    <!-- Modal: /Sign Up -->
+
+    <!-- Modal: Result Message -->
+    <% include ./common/result_message %>
+    <!-- /Modal: Result Message -->
+
+    <!-- SCRIPTS -->
+    <script src="js/jquery-2.2.0.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/jquery.magnific-popup.min.js"></script>
+    <script src="js/jquery.validate.min.js"></script>
+    <script src="js/jquery.stellar.min.js"></script>
+    <script src="js/wow.min.js"></script>
+    <script src="js/jquery.animateNumber.min.js"></script>
+    <script src="js/jquery.appear.js"></script>
+    <script src="js/general.js"></script>
+    <!-- /SCRIPTS -->
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- 
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+
+            },
+            created: function () {
+
+            },
+            methods: {
+            }
+        });
+    </script> -->
+</body>
+
+</html>

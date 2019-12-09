@@ -12,11 +12,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="img/favicon.png">
+    <link rel="shortcut icon" href="/img/favicon.png">
 
     <!-- Style -->
-    <link rel="stylesheet" href="css/theme-mariner.css">
-    <link rel="alternate stylesheet" href="css/theme-mariner.css" title="theme-mariner">
+    <link rel="stylesheet" href="/css/theme-mariner.css">
+    <link rel="alternate stylesheet" href="/css/theme-mariner.css" title="theme-mariner">
 
 </head>
 
@@ -63,58 +63,46 @@
 
                         <div class="title"><a href="/meetpost">Categories</a></div>
                         <ul class="sidebar-menu">
-                            <li v-for="c in category"><a
-                                    v-bind:href="'/category/categorylist?id='+c.id">{{c.categoryname}}</a></li>
+                            <li v-for="c in category"><a v-bind:href="'/category/categorylist?id='+c.id">{{c.categoryname}}</a></li>
                         </ul>
 
                     </div>
                     <!-- /Widget: Categories -->
-
-                    <!-- Widget: Search -->
-
-                    <!-- /Widget: Categories -->
-
                 </div>
                 <!-- /Blog Sidebar -->
 
                 <!-- Blog Content -->
                 <div class="col-md-9">
 
-
                     <div class="projects-list">
 
                         <div class="col-sm-4 col-xs-12" v-for="p in posts">
                             <div class="project-item">
-                                <a href="images/project-01.jpg" class="image-popup">
+                                <a href="/images/project-01.jpg" class="image-popup">
                                     <div class="gallery-image">
 
-                                        <img src="images/project-01.jpg">
+                                        <img src="/images/project-01.jpg">
                                     </div>
 
                                 </a>
                                 <div class="information">
-                                    <div class="h3 title">{{ p.title }}
+                                    <div class="h3 title"><a v-bind:href="'/meetpost/modify?postid='+p.id">{{ p.title }}</a>
                                     </div>
                                     <div class="description">
                                         by {{p.user.username}}
                                     </div>
                                     <div class="read-more">
-                                        <a v-bind:href="'/meetpost/detailpost?id='+p.id">Read more <i
-                                                class="fa fa-fw fa-arrow-right"></i> </a>
+                                        <a v-bind:href="'/meetpost/detailpost?id='+p.id">Read more <i class="fa fa-fw fa-arrow-right"></i> </a>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-12 text-right">
-                        <button v-on:click="moveWrite" class="btn btn-theme">글작성</button>
                     </div>
                 </div>
                 <!-- /Blog Content -->
 
             </div>
         </div>
-
     </main>
     <!-- /Main -->
 
@@ -143,29 +131,40 @@
 
 
     <!-- SCRIPTS -->
-    <script src="js/jquery-2.2.0.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="js/jquery.magnific-popup.min.js"></script>
-    <script src="js/jquery.validate.min.js"></script>
-    <script src="js/jquery.stellar.min.js"></script>
-    <script src="js/wow.min.js"></script>
-    <script src="js/jquery.animateNumber.min.js"></script>
-    <script src="js/jquery.appear.js"></script>
-    <script src="js/general.js"></script>
+    <script src="/js/jquery-2.2.0.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/owl.carousel.min.js"></script>
+    <script src="/js/jquery.magnific-popup.min.js"></script>
+    <script src="/js/jquery.validate.min.js"></script>
+    <script src="/js/jquery.stellar.min.js"></script>
+    <script src="/js/wow.min.js"></script>
+    <script src="/js/jquery.animateNumber.min.js"></script>
+    <script src="/js/jquery.appear.js"></script>
+    <script src="/js/general.js"></script>
     <!-- /SCRIPTS -->
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
     <script>
+        $.urlParam = function (name) {
+            var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+            if (results == null) {
+                return null;
+            }
+            else {
+                return results[1] || 0;
+            }
+        }
+        var id = $.urlParam('id');
+
         var app = new Vue({
             el: '#app',
             data: {
                 posts: [],
                 category: []
             },
-            created: function () {
+            created: function () { 
                 axios.get('/category')
                     .then(function (res) {
                         this.category = res.data;
@@ -174,7 +173,7 @@
                         console.log(err);
                     });
 
-                axios.get('/meetpost/list')
+                axios.get('/category/categorylist/'+id)
                     .then(function (res) {
                         this.posts = res.data;
                     }.bind(this))
@@ -186,15 +185,7 @@
                 moveWrite: function () {
                     location.href = "meetpost/writepage"
                 },
-                search: function (value) {
-                    axios.get('/meetpost/search?categoryid=' + value)
-                        .then(function (res) {
-                            this.posts = res.data;
-                        }.bind(this))
-                        .catch(function (err) {
-                            console.log(err);
-                        });
-                }
+                
             }
         });
     </script>
