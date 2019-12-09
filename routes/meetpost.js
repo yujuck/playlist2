@@ -108,6 +108,7 @@ router.get('/modify/:id', function(req, res, next) {
   });
 });
 
+// 글 수정 라우터
 router.patch('/modify/:id', function(req, res, next) {
   MeetPost.update(
     { 
