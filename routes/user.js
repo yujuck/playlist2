@@ -54,6 +54,7 @@ router.post('/join', async (req, res, next) => {
           phone: phone,
           info: info,
           photofullroute: photofullroute,
+          createdAt: new Date
         })
         .then((result) => {
           res.json({

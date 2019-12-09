@@ -1,93 +1,240 @@
-<div class="modal fade" id="sign-up" role="dialog">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
+<div id="joinapp">
+    <div class="modal fade" id="sign-up" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
 
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                    <i class="fa fa-times"></i>
-                </button>
-                <h5 class="modal-title"><i class="fa fa-fw fa-sign-in"></i> Sign up Form</h5>
-            </div>
-
-            <div class="modal-body">
-                <div class="row">
-
-                    <!-- Contact Form -->
-                    <div class="col-md-12">
-                        <form class="form-ajax" method="post">
-
-                            <input type="hidden" name="form" value="Sign In">
-
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="Username" aria-describedby="sign-up-user">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <div class="form-group">
-                                        <input type="password" class="form-control" placeholder="Password" aria-describedby="sign-up-password">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <div class="form-group">
-                                        <input type="password" class="form-control" placeholder="Password confirm" aria-describedby="sign-up-password-confirm">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="Your Name" aria-describedby="sign-up-name">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="Your Lastname" aria-describedby="sign-up-last-name">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row text-left">
-                                <div class="col-xs-12">
-                                    <div class="form-group">
-
-                                        <div class="checkbox-slide checkbox-theme">
-                                            <input type="checkbox" id="sign-up-remember">
-                                            <label for="sign-up-remember">I agree license agreement</label>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row text-right">
-                                <div class="col-xs-12">
-                                    <div class="form-group">
-                                        <button class="btn btn-theme">Sign up</button>
-                                        <button data-dismiss="modal" aria-hidden="true" class="btn btn-light">Cancel</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </form>
-                    </div>
-                    <!-- /Contact Form -->
-
-
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <i class="fa fa-times"></i>
+                    </button>
+                    <h5 class="modal-title"><i class="fa fa-fw fa-sign-in"></i> Sign up Form</h5>
                 </div>
-            </div>
 
+                <div class="modal-body">
+                    <div class="row">
+
+                        <!-- Contact Form -->
+                        <div class="col-md-12">
+                            <form class="form-ajax">
+
+                                <input type="hidden" name="form" value="Sign In">
+
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="form-group">
+                                            <input v-model="user.useremail" ref="useremail" type="text"
+                                                placeholder="Email" class="form-control" aria-describedby="sign-up-user">
+                                            <button v-on:click="double_check" class="btn btn-theme">중복확인</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="form-group">
+                                            <input v-model="user.userpw" ref="userpw" type="password" placeholder="Password" class="form-control"
+                                                aria-describedby="sign-up-password">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="form-group">
+                                            <input v-model="user.userpwre" ref="userpwre" type="password"  class="form-control" placeholder="Password confirm"
+                                                aria-describedby="sign-up-password-confirm">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="form-group">
+                                            <input v-model="user.username" ref="username" type="text" class="form-control" placeholder="Your Name"
+                                                aria-describedby="sign-up-name">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="form-group">
+                                            <input v-model="user.birth" ref="birth" type="text" class="form-control" placeholder="Your Birth"
+                                                aria-describedby="sign-up-last-name">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="form-group">
+                                            <label><input v-model="user.gender" ref="gender" type="radio" value="M">남</label>
+                                            <label><input v-model="user.gender" ref="gender" type="radio" value="W">여</label>
+                                            <!-- <input type="text" class="form-control" placeholder="gender"
+                                                aria-describedby="sign-up-last-name"> -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="form-group">
+                                            <input v-model="user.phone" ref="phone" type="text" class="form-control" placeholder="phone"
+                                                aria-describedby="sign-up-last-name">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row text-left">
+                                    <div class="col-xs-12">
+                                        <div class="form-group">
+
+                                            <div class="checkbox-slide checkbox-theme">
+                                                <input type="checkbox" id="sign-up-remember">
+                                                <label for="sign-up-remember">I agree license agreement</label>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row text-right">
+                                    <div class="col-xs-12">
+                                        <div class="form-group">
+                                            <button class="btn btn-theme" v-on:click="join">Sign up</button>
+                                            <button data-dismiss="modal" aria-hidden="true"
+                                                class="btn btn-light">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                        <!-- /Contact Form -->
+
+
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script>
+    var app = new Vue({
+        el: '#joinapp',
+        data: {
+            user: {
+                useremail: '',
+                userpw: '',
+                userpwre: '',
+                username: '',
+                birth: '',
+                gender: '',
+                phone: '',
+                info: '',
+                photofullroute: '',
+                usercategory: [],
+            }
+        },
+        methods: {
+            double_check: function (event) {
+                event.preventDefault();
+                axios.post('/user/double_check', this.user)
+                    .then((res) => {
+                        if (res.data.success == true) {
+                            alert(res.data.message);
+                            return false;
+                        }
+                        if (res.data.success == false) {
+                            alert(res.data.message);
+                            return false;
+                        }
+                    })
+                    .catch(err => {
+                        alert(err);
+                    })
+
+            },
+            join: function () {
+                event.preventDefault();
+                if (this.$refs.useremail.value == "") {
+                    alert("이메일을 입력해주세요.");
+                    this.$refs.useremail.focus();
+                    return false;
+                }
+
+                if (this.$refs.userpw.value == "") {
+                    alert("비밀번호를 입력해주세요.");
+                    this.$refs.userpw.focus();
+                    return false;
+                }
+
+                if (this.$refs.userpw.value.length < 7) {
+                    alert("비밀번호는 7글자 이상입니다.");
+                    this.$refs.userpw.focus();
+                    return false;
+                }
+
+                if (this.$refs.userpw.value != this.$refs.userpwre.value) {
+                    alert("비밀번호가 일치하지 않습니다.");
+                    this.$refs.userpwre.focus();
+                    return false;
+                }
+
+                if (this.$refs.username.value == "") {
+                    alert("이름을 입력해주세요.");
+                    this.$refs.username.focus();
+                    return false;
+                }
+
+                if (this.$refs.birth.value == "") {
+                    alert("생년월일을 입력해주세요.");
+                    this.$refs.birth.focus();
+                    return false;
+                }
+
+                if (this.$refs.birth.value.length != 6) {
+                    alert("생년월일을 올바르게 입력해주세요.");
+                    this.$refs.birth.focus();
+                    return false;
+                }
+
+                if (this.$refs.phone.value == "") {
+                    alert("전화번호를 입력해주세요.");
+                    this.$refs.phone.focus();
+                    return false;
+                }
+
+                if (this.$refs.phone.value.length != 11) {
+                    alert("전화번호를 올바르게 입력해주세요.");
+                    this.$refs.phone.focus();
+                    return false;
+                }
+
+
+
+                axios.post('/user/join', this.user)
+                    .then((res) => {
+                        if (res.data.success == true) {
+                            alert(res.data.message);
+                            location.href = "/";
+                        }
+                        if (res.data.success == false) {
+
+                            alert(res.data.message);
+                            return false;
+                        }
+                    })
+                    .catch(err => {
+                        alert(err);
+                    })
+            }
+        },
+    });
+
+
+</script>
