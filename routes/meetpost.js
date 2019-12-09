@@ -27,7 +27,6 @@ router.post('/write', function (req, res, next) {
       createdAt:new Date
     })
       .then((result) => {
-        console.log("데이터 처리 완료");
         res.status(201).json(result);
       })
       .catch((err) => {
@@ -67,7 +66,6 @@ router.get('/detail/:id', function (req, res, next) {
    where: { id: req.params.id } 
  })
  .then((posts) => {
-   console.log("서버 단일모임글 정보 조회",posts)
    res.json(posts); 
  }).catch((err) => {
    console.error(err);
@@ -121,6 +119,20 @@ router.patch('/modify/:id', function(req, res, next) {
     });
 });
 
+// 댓글 가져오기
+router.get('/comments/:id', function(req, res, next) {
+  Comment.findAll({
+    include: [{ model: MeetPost }],
+    where: { meetpostId: req.params.id } 
+  })
+  .then((posts) => {
+    res.json(posts); 
+  }).catch((err) => {
+    console.error(err);
+    next(err);
+  });
+});
+
 //댓글 등록
 router.post('/comment/:meetpostId', function(req, res, next) {
 
@@ -129,6 +141,7 @@ router.post('/comment/:meetpostId', function(req, res, next) {
   Comment.create({
     meetpostId: meetpostId,
     comment: req.body.comment,
+    createdAt: new Date,
     where: { id: req.params.id }
   })
     .then((result) => {
@@ -138,8 +151,6 @@ router.post('/comment/:meetpostId', function(req, res, next) {
       console.error(err);
       next(err);
     });
-
-
 });
 
 

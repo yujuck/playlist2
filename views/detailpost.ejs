@@ -172,8 +172,8 @@
                         <div class="widget">
 
                             <h4 class="title">Recent Comments</h4>
-                            <ul class="comments">
 
+                            <ul class="comments" v-for="comment in comments">
                                 <li>
                                     <div class="media">
                                         <div class="media-left">
@@ -182,17 +182,11 @@
                                             </div>
                                         </div>
 
-                                        <!-- 데이터 받아서 화면에 띄우는거 못하겠음 -->
-                                        <div class="media-body" v-for="r in reply">
+                                        <div class="media-body">
                                             <h4 class="author">John Doe</h4>
                                             <span class="date">28 March 2016</span>
                                             <p class="text">
-                                                It is a long established fact that a reader will be distracted by the
-                                                readable
-                                                content of a page when looking at its layout. The point of using Lorem
-                                                Ipsum is
-                                                that it has a more-or-less normal distribution of letters.
-                                                {{ r.comment }}
+                                                {{comment.comment}}
                                             </p>
                                             <div class="comments-bottom text-right">
                                                 <a href="#" class="strong"><i class="icon fa fa-fw fa-search"></i>
@@ -295,9 +289,9 @@
             data: {
                 posts: {},
                 category: [],
-                reply: {
-                    comment: ''
-                }
+                reply: {comment:''},
+                comments:[]
+ 
             },
             created: function () {
                 axios.get('/category')
@@ -310,8 +304,17 @@
 
                 axios.get('/meetpost/detail/' + id)
                     .then(function (res) {
-                        console.log(res.data);
+
                         this.posts = res.data;
+                    }.bind(this))
+                    .catch(function (err) {
+                        console.log(err);
+                    });
+                
+                axios.get('/meetpost/comments/'+id)
+                    .then(function (res) {
+                        console.log(res.data);
+                        this.comments = res.data;
                     }.bind(this))
                     .catch(function (err) {
                         console.log(err);
