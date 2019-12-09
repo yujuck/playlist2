@@ -51,7 +51,7 @@
     <main class="main-container">
         <div class="container">
             <div class="row">
-                <div class="col-sm-8">
+                <div class="col-sm-10">
                     <div class="contact-form" id="app">
                         <h3>POST WRITE</h3>
                         <form class="form-ajax">
@@ -99,6 +99,7 @@
                             <div class="row">
                                 <div class="form-group col-md-12 text-center">
                                     <button v-on:click="savePost" class="btn btn-theme">등록</button>
+                                    <button v-on:click="listPage" class="btn btn-theme">취소</button>
                                 </div>
                             </div>
                         </form>
@@ -235,6 +236,9 @@
                         .catch(function (err) {
                             console.log(err)
                         });
+                },
+                listPage: function() {
+                    location.href = "/meetpost";
                 }
             }
 
