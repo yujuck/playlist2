@@ -127,14 +127,14 @@ router.post('/login', async (req, res, next) => {
       {
         //토큰 생성
         const token = jwt.sign({
-          id: exemail.id,
-          useremail: exemail.useremail,
-          username:exemail.username,
+          id: exemail.id,  // user의 고유 아이디만 토큰에 저장
+          // useremail: exemail.useremail,
+          // username:exemail.username,
         }, process.env.JWT_SECRET, {
-          expiresIn: '120m', // 1분
+          expiresIn: '120m', // 120분
           issuer: 'webzine',
         });
-    
+
         //토큰 발급처리
         return res.json({
             code:200,
@@ -147,7 +147,6 @@ router.post('/login', async (req, res, next) => {
             message:'암호정보가 일치하지 않습니다.' 
           });
       }
-   
     }
     else
     {  
@@ -155,7 +154,6 @@ router.post('/login', async (req, res, next) => {
         code:500,
         message:'사용자 정보가 존재하지 않습니다.' 
       });
-
     }
   } catch(err){
       console.error(err);
@@ -163,19 +161,18 @@ router.post('/login', async (req, res, next) => {
   }
 });
 
-
 //내개인정보조회
-router.get('/profile',verifyToken,async (req, res) => {
+router.get('/profile',verifyToken, async (req, res) => {
+  console.log("아이디: ",req.decoded.id);
   try
   {
-
     const user = await User.findOne({
       attributes:['useremail','username','birth','phone'],
       where:{
-        useremail:req.decoded.useremail,
-      }
+        id:req.decoded.id,
+      }     
     });
-
+    console.log(user);
     if(user){
       return res.json({
         code:200,
@@ -194,5 +191,30 @@ router.get('/profile',verifyToken,async (req, res) => {
   }
 
 });
-  
+ 
+// 토큰 유효성 검사
+router.get('/checktoken', async (req, res) => {
+  try {
+
+    req.decoded = jwt.verify(req.headers.authorization, process.env.JWT_SECRET);
+    return res.json({
+      tokenvalue: req.decoded.id,
+    });
+
+  } catch (error) {
+
+    if (error.name === 'TokenExpiredError') { // 유효기간 초과
+      return res.status(419).json({
+        code: 419,
+        message: '토큰이 만료되었습니다',
+      });
+    }
+
+    return res.status(401).json({
+      code: 401,
+      message: '유효하지 않은 토큰입니다',
+    });
+  }
+})
+
  module.exports = router;

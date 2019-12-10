@@ -4,6 +4,7 @@ var MeetPost = require('../models/index.js').MeetPost;
 var Category = require('../models/index.js').Category;
 var User = require('../models/index.js').User;
 var Comment = require('../models/index.js').Comment;
+const { verifyToken } = require('./middlewares');
 
 // 글 작성 페이지 렌더링
 router.get('/writepage', function (req, res, next) {
@@ -11,7 +12,8 @@ router.get('/writepage', function (req, res, next) {
 });
 
 // 작성한 글 데이터를 DB에 저장
-router.post('/write', function (req, res, next) {
+router.post('/write', verifyToken, function (req, res, next) {
+  console.log("사용자아이디",req.decoded.id);
     MeetPost.create({
       categoryId: req.body.categoryId,
       title: req.body.title,
@@ -23,7 +25,7 @@ router.post('/write', function (req, res, next) {
       good: 0,
       count: 0,
       meetphoto: 'ddd',
-      userId: 1,
+      userId: req.decoded.id,
       createdAt:new Date
     })
       .then((result) => {
@@ -94,7 +96,7 @@ router.get('/modify/:id', function(req, res, next) {
 });
 
 // 글 수정 라우터
-router.patch('/modify/:id', function(req, res, next) {
+router.patch('/modify/:id', verifyToken, function(req, res, next) {
   MeetPost.update(
     { 
       categoryId: req.body.categoryId,
@@ -105,7 +107,7 @@ router.patch('/modify/:id', function(req, res, next) {
       record: req.body.record,
       content: req.body.content,
       // meetphoto: req.body.meetphoto,
-      userId: 1,
+      userId: req.decoded.id,
     }, 
     { 
       where: { id: req.params.id } 

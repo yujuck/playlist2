@@ -99,6 +99,7 @@
 
             login: function () {
                 event.preventDefault();
+
                 if (this.$refs.useremail.value == "") {
                     alert("이메일을 입력해주세요.");
                     this.$refs.useremail.focus();
@@ -113,7 +114,7 @@
 
                 axios.post('/user/login', this.user)
                     .then((response) => {
-
+                        
                         //토큰값 확인
                         console.log(response.data);
 
@@ -133,25 +134,21 @@
                     })
                     .catch(function (err) {
                         console.log(err);
-                    })
+                    });
             },
 
             authTest: function () {
-
                 var token = localStorage.getItem('token');
-
+                
                 axios.get('/user/profile', { headers: { authorization: token } }).then(function (response) {
                     console.log(response.data);
-                    //alert(response.data); //aler 창으로 띄우고 싶은데 잘 안됨 ㅠㅠ
-                    this.articles = response.data;
+                    // alert(response.data);
                 }.bind(this))
                     .catch(function (err) {
                         console.log(err);
                     });
             }
         }
-
-
     });
 
     //페이스북 인증 초기설정

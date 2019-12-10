@@ -39,7 +39,6 @@
                 <!-- Page Title -->
                 <div class="col-md-8">
                     <h1 class="title">Blog - Posts Write</h1>
-                    <!-- <div class="subtitle">There are many variations of passages </div> -->
                 </div>
                 <!-- /Page Title -->
             </div>
@@ -60,18 +59,20 @@
                                 <div class="form-group col-md-4">
                                     <select class="form-control" v-model="post.categoryId" ref="categoryid">
                                         <option value="0" selected>카테고리 선택</option>
-                                        <option v-for="c in category" v-bind:value="c.id">{{c.categoryname}}</option>  
+                                        <option v-for="c in category" v-bind:value="c.id">{{c.categoryname}}</option>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-12">
-                                    <input type="text" class="form-control" v-model="post.title" ref="title" placeholder="제목을 입력해주세요.">
+                                    <input type="text" class="form-control" v-model="post.title" ref="title"
+                                        placeholder="제목을 입력해주세요.">
                                 </div>
                                 <!-- <div class="form-group col-md-12">
                                     <input  class="form-control"
                                         placeholder="사진 or 동영상 중 1개 이상은 필수로 넣어주세요." >
                                 </div> -->
                                 <div class="form-group col-md-6">
-                                    <input type="text" class="form-control" v-model="post.headcount" ref="headcount" placeholder="인원 수를 입력해주세요.">
+                                    <input type="text" class="form-control" v-model="post.headcount" ref="headcount"
+                                        placeholder="인원 수를 입력해주세요.">
                                 </div>
                             </div>
                             <div class="row">
@@ -87,12 +88,14 @@
 
                             <div class="row">
                                 <div class="form-group col-md-12">
-                                    <textarea class="form-control" v-model="post.record" ref="record" placeholder="이력(필수)"></textarea>
+                                    <textarea class="form-control" v-model="post.record" ref="record"
+                                        placeholder="이력(필수)"></textarea>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="form-group col-md-12">
-                                    <textarea class="form-control" v-model="post.content" ref="content" placeholder="내용(필수)"></textarea>
+                                    <textarea class="form-control" v-model="post.content" ref="content"
+                                        placeholder="내용(필수)"></textarea>
                                 </div>
                             </div>
 
@@ -187,6 +190,14 @@
                     .catch(function (err) {
                         console.log(err);
                     });
+
+                axios.get('/user/checktoken', { headers: { authorization: localStorage.getItem('token') } })
+                    .then(function (res) {
+                        console.log(res.data.tokenvalue);
+                    }.bind(this))
+                    .catch(function(err) {
+                        console.log(err);
+                    });
             },
             methods: {
                 savePost: function () {
@@ -227,9 +238,8 @@
                         return false;
                     }
 
-                    
-
-                    axios.post('/meetpost/write', this.post)
+                    var token = localStorage.getItem('token');
+                    axios.post('/meetpost/write', this.post, { headers: { authorization: token } })
                         .then(function (res) {
                             location.href = "/meetpost";
                         }.bind(this))
@@ -237,7 +247,7 @@
                             console.log(err)
                         });
                 },
-                listPage: function() {
+                listPage: function () {
                     location.href = "/meetpost";
                 }
             }
