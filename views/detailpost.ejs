@@ -119,6 +119,7 @@
 
                                     <p>
                                         {{posts.content}}
+                                        <!-- <img src="posts.user.photofullroute" alt=""> -->
                                     </p>
                                 </div>
                                 <!-- /Post Content -->
@@ -204,6 +205,7 @@
                         <!-- /Comments -->
                         <div class="col-md-12 text-right">
                             <ul class="list-inline social-inline">
+                                <button class="btn btn-theme" v-on:click="gotolist">목록</button>
                                 <button class="btn btn-theme" v-on:click="removePost($event)"
                                     v-bind:value="posts.id" v-if="userid == posts.user.id">삭제</button>
                                 <a v-bind:href="'/meetpost/modify?postid='+posts.id"><button
@@ -336,6 +338,9 @@
                         .catch(function (err) {
                             console.log(err)
                         });
+                },
+                gotolist: function() {
+                    location.href = "/meetpost";
                 }
             }
         });

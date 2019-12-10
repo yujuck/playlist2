@@ -131,7 +131,7 @@ router.post('/login', async (req, res, next) => {
           // useremail: exemail.useremail,
           // username:exemail.username,
         }, process.env.JWT_SECRET, {
-          expiresIn: '120m', // 120분
+          expiresIn: '10m',  // 유효시간
           issuer: 'webzine',
         });
 
@@ -172,7 +172,6 @@ router.get('/profile',verifyToken, async (req, res) => {
         id:req.decoded.id,
       }     
     });
-    console.log(user);
     if(user){
       return res.json({
         code:200,
