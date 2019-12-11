@@ -13,11 +13,14 @@
                 <div class="modal-body">
                     <div class="row">
 
-                        <!-- Contact Form -->
+                    <!-- Contact Form -->
                         <div class="col-md-12">
-                            <form class="form-ajax">
 
-                                <input type="hidden" name="form" value="Sign In">
+
+                            <form id="fileForm">
+                            <!-- <form id="fileForm" enctype="multipart/form-data"> -->
+
+                                <input type="hidden" name="form1" value="Sign In">
 
                                 <div class="row">
                                     <div class="col-xs-12">
@@ -32,8 +35,7 @@
                                 <div class="row">
                                     <div class="col-xs-12">
                                         <div class="form-group">
-                                            <input v-model="user.userpw" ref="userpw" type="password" placeholder="Password" class="form-control"
-                                                aria-describedby="sign-up-password">
+                                            <input v-model="user.userpw"  ref="userpw" type="password" placeholder="Password" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -68,18 +70,29 @@
                                 <div class="row">
                                     <div class="col-xs-12">
                                         <div class="form-group">
-                                            <label><input v-model="user.gender" ref="gender" type="radio" value="M">남</label>
+                                           <label><input v-model="user.gender" ref="gender" type="radio" value="M">남</label>
                                             <label><input v-model="user.gender" ref="gender" type="radio" value="W">여</label>
                                             <!-- <input type="text" class="form-control" placeholder="gender"
                                                 aria-describedby="sign-up-last-name"> -->
                                         </div>
                                     </div>
                                 </div>
+
+
                                 <div class="row">
                                     <div class="col-xs-12">
                                         <div class="form-group">
                                             <input v-model="user.phone" ref="phone" type="text" class="form-control" placeholder="phone"
                                                 aria-describedby="sign-up-last-name">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="form-group">
+                                            <input type="file" id="fileInput" name="fileInput" v-on:change="fileupload">
+                                            <input v-model="user.photofullroute" type="text" id="filePath">
                                         </div>
                                     </div>
                                 </div>
@@ -100,28 +113,30 @@
                                 <div class="row text-right">
                                     <div class="col-xs-12">
                                         <div class="form-group">
-                                            <button class="btn btn-theme" v-on:click="join">Sign up</button>
-                                            <button data-dismiss="modal" aria-hidden="true"
+                                            <button type="button" class="btn btn-theme" v-on:click="join">Sign up</button>
+                                            <button type="button" data-dismiss="modal" aria-hidden="true"
                                                 class="btn btn-light">Cancel</button>
                                         </div>
                                     </div>
                                 </div>
 
                             </form>
+
                         </div>
-                        <!-- /Contact Form -->
-
-
                     </div>
+                    <!-- /Contact Form -->
                 </div>
-
             </div>
+
         </div>
     </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
 
 <script>
     var app = new Vue({
@@ -160,7 +175,10 @@
 
             },
             join: function () {
-                event.preventDefault();
+                //event.preventDefault();
+
+                alert(this.user.photofullroute);
+
                 if (this.$refs.useremail.value == "") {
                     alert("이메일을 입력해주세요.");
                     this.$refs.useremail.focus();
@@ -215,7 +233,7 @@
                     return false;
                 }
 
-
+   
 
                 axios.post('/user/join', this.user)
                     .then((res) => {
@@ -232,7 +250,28 @@
                     .catch(err => {
                         alert(err);
                     })
-            }
+            },
+            fileupload: function() {
+                    event.preventDefault();
+                    var form = $('#fileForm')[0];
+                    var formData = new FormData(form);
+
+                    axios.post('/file/upload',formData).then(function(response){
+                        console.log(response.data.message);
+                        if(response.data.code == "200") {
+                            this.user.photofullroute=response.data.message;
+                            return false;
+                        } else{
+                            alert(response.data.message);
+                            return false;
+                        }
+                    }.bind(this))
+                    .catch(function(err){
+                        console.log(err);
+                    });
+                
+                    return false;
+                }
         },
     });
 

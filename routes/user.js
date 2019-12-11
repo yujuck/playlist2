@@ -20,7 +20,7 @@ router.get('/join', function(req, res, next) {
 //회원가입(데이터)
 //localhost:3000/user/join
 router.post('/join', async (req, res, next) => {
-
+   
     try {
 
       const useremail = req.body.useremail;
@@ -31,6 +31,7 @@ router.post('/join', async (req, res, next) => {
       const phone = req.body.phone;
       const info = req.body.info;
       const photofullroute = req.body.photofullroute;
+
 
 
       const exemail = await User.findOne({where: {useremail}});
@@ -170,7 +171,7 @@ router.get('/profile',verifyToken,async (req, res) => {
   {
 
     const user = await User.findOne({
-      attributes:['useremail','username','birth','phone'],
+      attributes:['useremail','username','birth','phone','photofullroute'],
       where:{
         useremail:req.decoded.useremail,
       }

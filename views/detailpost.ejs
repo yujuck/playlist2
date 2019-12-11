@@ -69,10 +69,6 @@
                     </div>
                     <!-- /Widget: Categories -->
 
-                    <!-- Widget: Search -->
-
-                    <!-- /Widget: Categories -->
-
                 </div>
                 <!-- /Blog Sidebar -->
 
@@ -105,9 +101,6 @@
                                 <ul class="list-inline meta">
                                     <li><i class="icon fa fa-calendar"></i> {{posts.createdAt}}</li>
                                     <li><i class="icon fa fa-user"></i> by <a href="#">{{posts.user.username}}</a></li>
-                                    <!-- <li><i class="icon fa fa-tags"></i> <a href="#">Photography</a>, <a
-                                                href="#">Illustration</a></li>   태그-->
-                                    <!-- <li><i class="icon fa fa-comments"></i> <a href="#">12 Comments</a></li>   댓글수-->
                                 </ul>
                                 <!-- /Post Metadata -->
 
@@ -122,6 +115,7 @@
                                     <blockquote>
                                         <b>이력</b><br>
                                         {{posts.record}}
+                                        {{posts.user.photofullroute}}
                                     </blockquote>
 
                                     <p>
@@ -135,15 +129,6 @@
 
                             <!-- Additional -->
                             <div class="row information">
-
-                                <!-- 태그 -->
-                                <!-- <div class="col-sm-6">
-                                        <div class="tags">
-                                            <a class="tag" href="#">web</a>
-                                            <a class="tag" href="#">clean</a>
-                                            <a class="tag" href="#">gallery</a>
-                                        </div>
-                                    </div> -->
 
                                 <div class="form-group col-md-12">
                                     <ul class="list-inline social-inline">
@@ -220,17 +205,16 @@
                         <!-- /Comments -->
                         <div class="col-md-12 text-right">
                             <ul class="list-inline social-inline">
+                                <button class="btn btn-theme" v-on:click="gotolist">목록</button>
                                 <button class="btn btn-theme" v-on:click="removePost($event)"
-                                    v-bind:value="posts.id">삭제</button>
+                                    v-bind:value="posts.id" v-if="userid == posts.user.id">삭제</button>
                                 <a v-bind:href="'/meetpost/modify?postid='+posts.id"><button
-                                        class="btn btn-theme">수정</button></a>
+                                        class="btn btn-theme" v-if="userid == posts.user.id">수정</button></a>
                             </ul>
                         </div>
 
-
                     </div>
                     <!-- /Posts List -->
-
 
                 </div>
                 <!-- /Blog Content -->
@@ -296,7 +280,8 @@
                 posts: {},
                 category: [],
                 reply: { comment: '' },
-                comments: []
+                comments: [],
+                userid:''
 
             },
             created: function () {
@@ -325,6 +310,14 @@
                     .catch(function (err) {
                         console.log(err);
                     });
+
+                axios.get('/user/checktoken', { headers: { authorization: localStorage.getItem('token') } })
+                    .then(function (res) {
+                        this.userid = res.data.tokenvalue;
+                    }.bind(this))
+                    .catch(function (err) {
+                        console.log(err);
+                    });
             },
             methods: {
                 removePost: function (e) {
@@ -345,6 +338,9 @@
                         .catch(function (err) {
                             console.log(err)
                         });
+                },
+                gotolist: function() {
+                    location.href = "/meetpost";
                 }
             }
         });

@@ -52,10 +52,11 @@
 
     <!-- Main -->
     <main class="main-container" id="app">
-
+        
         <div class="container">
             <div class="row">
-
+            
+                
                 <!-- Blog Sidebar -->
                 <div class="col-md-3">
                     <!-- Widget: Categories -->
@@ -74,17 +75,17 @@
 
                 <!-- Section Content -->
                 <div class="row">
-
+                    
                     <!-- Contact Information -->
                     <div class="col-sm-8">
-
+                            
                         <h3><b>Information</b></h3>
                         <p>
                             There are many variations of passages of Lorem Ipsum available, but the majority have
                             suffered
                             alteration in some form.
                         </p>
-
+                        <img v-bind:src='user.photofullroute' >
                         <ul class="list-lined">
                             <li>
                                 <i class="icon fa fa-fw fa-globe"></i><span>Address</span> 988782, Our Street, L.A.
@@ -93,8 +94,9 @@
                                         class="iframe-popup">(See on Map)</a>
                                 </small>
                             </li>
-                            <li><i class="icon fa fa-fw fa-envelope"></i><span>E-mail</span> clients@example.com</li>
-                            <li><i class="icon fa fa-fw fa-phone"></i><span>Phone</span> +1 (201) 987-1185</li>
+                            <li><i class="icon fa fa-fw fa-envelope"></i><span>E-mail</span> {{user.useremail}}</li>
+                            <li><i class="icon fa fa-fw fa-phone"></i><span>Phone</span> {{user.phone}}</li>
+                            
                         </ul>
 
                         <h3>Work Time</h3>
@@ -152,20 +154,35 @@
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <!-- 
+
     <script>
         var app = new Vue({
             el: '#app',
             data: {
-
+                userid: '',
+                user:{}
             },
             created: function () {
+                axios.get('/user/checktoken', { headers: { authorization: localStorage.getItem('token') } })
+                    .then(function (res) {
+                        this.userid = res.data.tokenvalue;
+                    }.bind(this))
+                    .catch(function (err) {
+                        console.log(err);
+                    });
 
+                axios.get('/user/profile', { headers: { authorization: localStorage.getItem('token') } }).then(function (res) {
+                    console.log("111 ", res.data);
+                    this.user = res.data.result;                    
+                }.bind(this))
+                    .catch(function (err) {
+                        console.log(err);
+                    });
             },
             methods: {
             }
         });
-    </script> -->
+    </script>
 </body>
 
 </html>
