@@ -216,8 +216,8 @@ router.get('/checktoken', async (req, res) => {
   }
 });
 
-router.get("/img", (req, res) => {
-  res.sendFile(path.join(__dirname, "/img"));
-});
+// router.get("/img", (req, res) => {
+//   res.sendFile(path.join(__dirname, "./img"));
+// });
 
  module.exports = router;
