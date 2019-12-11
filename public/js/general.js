@@ -317,50 +317,50 @@ $(function($) {
     // Ajax forms
     //------------------------------------------------------------------------------------------------------------------
 
-    $('.form-ajax').each(function(){
+    // $('.form-ajax').each(function(){
 
-        $(this).validate({
-            submitHandler: function(form) {
+    //     $(this).validate({
+    //         submitHandler: function(form) {
 
-                var $submit_button = $(form).find('[type=submit]'),
-                    submit_button_text = $submit_button.html();
+    //             var $submit_button = $(form).find('[type=submit]'),
+    //                 submit_button_text = $submit_button.html();
 
-                $submit_button.attr('disabled', true);
-                $submit_button.html('<i class="fa fa-fw fa-spinner fa-spin"></i>');
+    //             $submit_button.attr('disabled', true);
+    //             $submit_button.html('<i class="fa fa-fw fa-spinner fa-spin"></i>');
 
-                $.ajax({
+    //             $.ajax({
 
-                    type   : 'post',
-                    url    : 'sendmail.php',
-                    data   : $(form).serialize(),
+    //                 type   : 'post',
+    //                 url    : 'sendmail.php',
+    //                 data   : $(form).serialize(),
 
-                    success: function() {
+    //                 success: function() {
 
-                        $('.result-icon .icon').removeClass('fa-times').addClass('fa-check');
-                        $('.modal-result').html('Message sent successfully :)');
+    //                     $('.result-icon .icon').removeClass('fa-times').addClass('fa-check');
+    //                     $('.modal-result').html('Message sent successfully :)');
 
-                        $('.modal.in').modal('hide');
-                        $('#result').modal('show');
+    //                     $('.modal.in').modal('hide');
+    //                     $('#result').modal('show');
 
-                        $submit_button.attr('disabled', false);
-                        $submit_button.html(submit_button_text);
-                    },
+    //                     $submit_button.attr('disabled', false);
+    //                     $submit_button.html(submit_button_text);
+    //                 },
 
-                    error: function(){
+    //                 error: function(){
 
-                        $('.result-icon .icon').removeClass('fa-check').addClass('fa-times');
-                        $('.modal-result').html('Error sending message :(');
+    //                     $('.result-icon .icon').removeClass('fa-check').addClass('fa-times');
+    //                     $('.modal-result').html('Error sending message :(');
 
-                        $('.modal.in').modal('hide');
-                        $('#result').modal('show');
+    //                     $('.modal.in').modal('hide');
+    //                     $('#result').modal('show');
 
-                        $submit_button.attr('disabled', false);
-                        $submit_button.html(submit_button_text);
-                    }
-                });
-            }
-        });
-    });
+    //                     $submit_button.attr('disabled', false);
+    //                     $submit_button.html(submit_button_text);
+    //                 }
+    //             });
+    //         }
+    //     });
+    // });
 
     // Left Body Padding Fix
     $('.modal').on('hide.bs.modal', function () {

@@ -52,10 +52,11 @@
 
     <!-- Main -->
     <main class="main-container" id="app">
-
+        
         <div class="container">
             <div class="row">
-
+            
+                
                 <!-- Blog Sidebar -->
                 <div class="col-md-3">
                     <!-- Widget: Categories -->
@@ -74,17 +75,21 @@
 
                 <!-- Section Content -->
                 <div class="row">
-
+                    
                     <!-- Contact Information -->
                     <div class="col-sm-8">
-
+                            
                         <h3><b>Information</b></h3>
                         <p>
                             There are many variations of passages of Lorem Ipsum available, but the majority have
                             suffered
                             alteration in some form.
                         </p>
+<<<<<<< HEAD
                         <!-- <img src="/img" /> -->
+=======
+                        <img v-bind:src='user.photofullroute' >
+>>>>>>> playlist2
                         <ul class="list-lined">
                             <li>
                                 <i class="icon fa fa-fw fa-globe"></i><span>Address</span> 988782, Our Street, L.A.
@@ -95,6 +100,10 @@
                             </li>
                             <li><i class="icon fa fa-fw fa-envelope"></i><span>E-mail</span> {{user.useremail}}</li>
                             <li><i class="icon fa fa-fw fa-phone"></i><span>Phone</span> {{user.phone}}</li>
+<<<<<<< HEAD
+=======
+                            
+>>>>>>> playlist2
                         </ul>
 
                         <h3>Work Time</h3>
@@ -158,8 +167,7 @@
             el: '#app',
             data: {
                 userid: '',
-                user:{},
-                img:''
+                user:{}
             },
             created: function () {
                 axios.get('/user/checktoken', { headers: { authorization: localStorage.getItem('token') } })
