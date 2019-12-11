@@ -167,7 +167,7 @@ router.get('/profile',verifyToken, async (req, res) => {
   try
   {
     const user = await User.findOne({
-      attributes:['useremail','username','birth','phone'],
+      attributes:['useremail','username','birth','phone','photofullroute'],
       where:{
         id:req.decoded.id,
       }     
@@ -214,6 +214,10 @@ router.get('/checktoken', async (req, res) => {
       message: '유효하지 않은 토큰입니다',
     });
   }
-})
+});
+
+router.get("/img", (req, res) => {
+  res.sendFile(path.join(__dirname, "/img"));
+});
 
  module.exports = router;

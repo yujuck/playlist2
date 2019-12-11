@@ -14,9 +14,6 @@ fs.readdir('uploads', (error) => {
     }
 });
 
-
-
-
 router.post('/upload', function (req, res) {
     var form = new multiparty.Form({
         autoFiles: false, // 요청이 들어오면 파일을 자동으로 저장할 것인가

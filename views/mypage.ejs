@@ -84,7 +84,7 @@
                             suffered
                             alteration in some form.
                         </p>
-
+                        <!-- <img src="/img" /> -->
                         <ul class="list-lined">
                             <li>
                                 <i class="icon fa fa-fw fa-globe"></i><span>Address</span> 988782, Our Street, L.A.
@@ -158,7 +158,8 @@
             el: '#app',
             data: {
                 userid: '',
-                user:{}
+                user:{},
+                img:''
             },
             created: function () {
                 axios.get('/user/checktoken', { headers: { authorization: localStorage.getItem('token') } })
@@ -170,7 +171,8 @@
                     });
 
                 axios.get('/user/profile', { headers: { authorization: localStorage.getItem('token') } }).then(function (res) {
-                    console.log(res.data);
+                    this.img = res.data.result.photofullroute;
+                    console.log(res.data.result.photofullroute)
                     this.user = res.data.result;                    
                 }.bind(this))
                     .catch(function (err) {
