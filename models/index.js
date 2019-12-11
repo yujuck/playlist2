@@ -14,7 +14,6 @@ db.Sequelize = Sequelize;
 db.User = require('./user')(sequelize, Sequelize);
 db.Category = require('./category')(sequelize, Sequelize);
 db.MeetPost = require('./meetpost')(sequelize, Sequelize);
-db.UserCategory = require('./usercategory')(sequelize, Sequelize);
 db.Participants = require('./participants')(sequelize, Sequelize);
 db.MeetGood = require('./meetgood')(sequelize, Sequelize);
 db.Favorite = require('./favorite')(sequelize, Sequelize);
@@ -24,11 +23,6 @@ db.Comment = require('./comment')(sequelize, Sequelize);
 // MeetPost 테이블에 userid 컬럼 생성됨
 db.User.hasMany(db.MeetPost);
 db.MeetPost.belongsTo(db.User);
-
-// User:UserCategory = 1:N
-// UserCatgory 테이블에 userid 컬럼 생성됨
-db.User.hasMany(db.UserCategory);
-db.UserCategory.belongsTo(db.User);
 
 // User:Participants = 1:N
 // Participants 테이블에 userid 컬럼 생성됨
@@ -49,11 +43,6 @@ db.Favorite.belongsTo(db.User);
 // MeetPost 테이블에 categoryid 컬럼 생성됨
 db.Category.hasMany(db.MeetPost);
 db.MeetPost.belongsTo(db.Category);
-
-// Category:UserCategory = 1:N
-// UserCategory 테이블에 categoryid 컬럼 생성됨
-db.Category.hasMany(db.UserCategory);
-db.UserCategory.belongsTo(db.Category);
 
 // MeetPost:Participants = 1:N
 // Participants 테이블에 MeetPostid 컬럼 생성됨

@@ -6,16 +6,11 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 //모든 라우팅 모듈에서 토큰 기반 인증처리를  공통처리 해주는 부분
 const { verifyToken } = require('./middlewares');
+const { isLoggedIn } = require('./middlewares');
 
 var User = require('../models/index.js').User;
-var Usercateogory = require('../models/usercategory').Usercateogory;
 
 var router = express.Router();
-
-//회원가입(화면)
-router.get('/join', function(req, res, next) {
-    res.render('join');
-});
 
 //회원가입(데이터)
 //localhost:3000/user/join
@@ -95,12 +90,6 @@ router.post('/double_check', async (req, res, next) => {
     
 });
 
-//로그인(화면)
-router.get('/login', function(req, res, next) {
-    res.render('login');
-});
-
-
 //로그인(데이터) - 토큰 기반
 //localhost:3000/user/login
 router.post('/login', async (req, res, next) => {
@@ -115,8 +104,6 @@ router.post('/login', async (req, res, next) => {
       });
 
     if (exemail) {
-      console.log("로그인 사용자정보", exemail);
-
       //DB 암호와 사용자 암호 비교
       const result = await bcrypt.compare(req.body.userpw, exemail.userpw);
       console.log("결과", result);
@@ -216,8 +203,9 @@ router.get('/checktoken', async (req, res) => {
   }
 });
 
-// router.get("/img", (req, res) => {
-//   res.sendFile(path.join(__dirname, "./img"));
-// });
+// 로그인 여부 체크
+router.get('/islogin', (req, res, next) => {
+  
+});
 
  module.exports = router;
