@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <!-- Page title -->
+    <title>Playlist</title>
+
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="img/favicon.png">
+
+    <!-- Style -->
+    <link rel="stylesheet" href="css/theme-mariner.css">
+    <link rel="alternate stylesheet" href="css/theme-mariner.css" title="theme-mariner">
+
+</head>
+
+<body>
+
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loader"></div>
+    </div>
+    <!-- /Preloader -->
+
+    <!-- Header -->
+    <% include ./common/header %>
+    <!-- /Header -->
+
+    <!-- Page Header -->
+    <div class="inner-page-header">
+        <div class="container">
+            <div class="row">
+
+                <!-- Page Title -->
+                <div class="col-md-8">
+                    <h1 class="title">Blog - Reviews List</h1>
+                    <div class="subtitle">There are many variations of passages </div>
+                </div>
+                <!-- /Page Title -->
+
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <!-- Main -->
+    <main class="main-container" id="app">
+
+        <div class="container">
+            <div class="row">
+
+                <!-- Blog Sidebar -->
+                <div class="col-md-3">
+
+                    <!-- Widget: Categories -->
+                    <div class="widget">
+
+                        <div class="title"><a href="/review">Categories</a></div>
+                        <ul class="sidebar-menu">
+                            <li v-for="c in category"><a
+                                    v-bind:href="'/category/recategorylist?id='+c.id">{{c.categoryname}}</a></li>
+                        </ul>
+                        
+                    </div>
+                    <!-- /Widget: Categories -->
+
+                </div>
+                <!-- /Blog Sidebar -->
+
+                <!-- Blog Content -->
+                <div class="col-md-9">
+
+
+                    <div class="row section-content animated wow fadeIn" data-wow-duration="1.3s">
+
+
+                        <!-- Project -->
+                        <div class="col-xs-12 col-sm-6 col-md-4" v-for="r in reviews">
+                            <div class="project">
+                                <a href="images/project-01.jpg" class="project-item image-popup">
+                                    <div class="gallery-image">
+                                        <img src="images/project-01.jpg" alt="">
+                                    </div>
+                                    <div class="overlay">
+                                        <p class="description">
+                                            {{r.content}}
+                                        </p>
+                                        <div class="information">
+                                            <h3 class="title">{{r.title}}</h3>
+                                            <span class="title">　by {{r.user.username}}</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <!-- /Project -->
+            
+                    </div>
+
+
+                    <div class="col-md-12 text-right">
+                        <button v-on:click="removeWrite" class="btn btn-theme">글작성</button>
+                    </div>
+                </div>
+                <!-- /Blog Content -->
+
+            </div>
+        </div>
+
+    </main>
+    <!-- /Main -->
+
+
+    <!-- Footer -->
+    <% include ./common/footer %>
+    <!-- /Footer -->
+
+    <!-- Scroll To Top -->
+    <div id="scroll-to-top" class="scroll-to-top">
+        <i class="icon fa fa-angle-up"></i>
+    </div>
+    <!-- /Scroll To Top -->
+
+    <!-- Modal: Sign In -->
+    <% include ./common/sign_in %>
+    <!-- Modal: /Sign In -->
+
+    <!-- Modal: Sign Up -->
+    <% include ./common/sign_up %>
+    <!-- Modal: /Sign Up -->
+
+    <!-- Modal: Result Message -->
+    <% include ./common/result_message %>
+    <!-- /Modal: Result Message -->
+
+
+    <!-- SCRIPTS -->
+    <script src="js/jquery-2.2.0.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/jquery.magnific-popup.min.js"></script>
+    <script src="js/jquery.validate.min.js"></script>
+    <script src="js/jquery.stellar.min.js"></script>
+    <script src="js/wow.min.js"></script>
+    <script src="js/jquery.animateNumber.min.js"></script>
+    <script src="js/jquery.appear.js"></script>
+    <script src="js/general.js"></script>
+    <!-- /SCRIPTS -->
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                reviews: [],
+                category: []
+            },
+            created: function () {
+                axios.get('/category')
+                    .then(function (res) {
+                        this.category = res.data;
+                    }.bind(this))
+                    .catch(function (err) {
+                        console.log(err);
+                    });
+
+                axios.get('/review/review-list')
+                    .then(function (res) {
+                        this.reviews = res.data;
+                    }.bind(this))
+                    .catch(function (err) {
+                        console.log(err);
+                    })
+            },
+            methods: {
+                removeWrite: function () {
+                    
+                    location.href = "review/review-writepage"
+                },
+            }
+        });
+    </script>
+</body>
+
+</html>

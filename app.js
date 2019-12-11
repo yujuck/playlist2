@@ -14,6 +14,7 @@ var meetpostRouter = require('./routes/meetpost');
 var categoryRouter = require('./routes/category');
 var mypageRouter = require('./routes/mypage');
 var fileRouter = require('./routes/file');
+var reviewRouter = require('./routes/review');
 
 var sequelize = require('./models').sequelize;
 
@@ -38,6 +39,7 @@ app.use('/category', categoryRouter);
 app.use('/emailsearch', emailsearchRouter);
 app.use('/mypage', mypageRouter);
 app.use('/file', fileRouter);
+app.use('/review', reviewRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

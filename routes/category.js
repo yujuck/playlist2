@@ -20,6 +20,10 @@ router.get('/categorylist', function(req,res,next) {
     res.render('categorypage');
 });
 
+router.get('/recategorylist', function(req,res,next) {
+  res.render('recategorypage');
+});
+
 // 리스트 데이터 가져오기
 router.get('/categorylist/:id', function(req,res,next) {
     MeetPost.findAll({
@@ -35,5 +39,20 @@ router.get('/categorylist/:id', function(req,res,next) {
       next(err);
     });
   });
+
+// 리스트 데이터 가져오기(review)
+router.get('/recategorylist/:id', function(req,res,next) {
+  Intropost.findAll({
+    include: [{ model: Category, }, { model: User}],
+    where: {categoryId:req.params.id},
+  })
+  .then((reviews) => {
+    res.json(reviews);
+  })
+  .catch((err) => {
+    console.log(err);
+    next(err);
+  });
+});
   
 module.exports = router;

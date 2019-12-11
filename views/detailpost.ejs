@@ -131,20 +131,12 @@
                             <div class="row information">
 
                                 <div class="form-group col-md-12">
-                                    <ul class="list-inline social-inline">
-                                        <!-- <li><a href="#" class="fa fa-fw fa-facebook"></a></li>
-                                                    <li><a href="#" class="fa fa-fw fa-twitter"></a></li> -->
-                                        <!-- <div class="col-xs-12 col-md-6 col-lg-3 mb">
-                                                        <a href="#" class="btn btn-block btn-red btn-rounded btn-o-light-bg">좋아요</a>
-                                                    </div>
-                                                    <div class="col-xs-12 col-md-6 col-lg-3 mb">
-                                                        <a href="#" class="btn btn-block btn-red btn-rounded btn-o-light-bg">즐겨찾기</a>
-                                                    </div> -->
-                                        <button class="btn btn-theme">참여하기</button>
-                                    </ul>
+                                        <ul class="list-inline social-inline">
+                                            <button class="btn btn-red" v-on:click="favorite($event)" v-bind:value="posts.id">즐겨찾기</button>
+                                            <button class="btn btn-orange" v-on:click="participate($event)" v-bind:value="posts.id">참여하기</button>
+                                        </ul>
                                 </div>
-
-                            </div>
+                        </div>
                             <!-- /Additional -->
 
                         </article>
@@ -340,6 +332,23 @@
                 },
                 gotolist: function() {
                     location.href = "/meetpost";
+                },
+                favorite: function (e) {
+                    const fbuttonValue = e.target.value;
+                    var fav = confirm('즐겨찾기 추가하시겠습니까?')
+                    if(fav)  {
+                        axios.post('/meetpost/favorite/' + fbuttonValue)
+                        location.href = "/meetpost/detailpost?id=" + fbuttonValue;
+                    }
+                },
+
+                participate: function (e) {
+                    const pbuttonValue = e.target.value;
+                    var fav = confirm('참여하시겠습니까?')
+                    if(fav)  {
+                        axios.post('/meetpost/participate/' + pbuttonValue)
+                        location.href = "/meetpost/detailpost?id=" + pbuttonValue;
+                    }
                 }
             }
         });

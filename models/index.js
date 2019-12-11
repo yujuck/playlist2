@@ -25,6 +25,11 @@ db.IntroPost = require('./intropost')(sequelize, Sequelize);
 db.User.hasMany(db.MeetPost);
 db.MeetPost.belongsTo(db.User);
 
+// User:Intropost = 1:N
+// Intropost 테이블에 userid 컬럼 생성됨
+db.User.hasMany(db.Intropost);
+db.Intropost.belongsTo(db.User);
+
 // User:Participants = 1:N
 // Participants 테이블에 userid 컬럼 생성됨
 db.User.hasMany(db.Participants);
@@ -44,6 +49,12 @@ db.Favorite.belongsTo(db.User);
 // MeetPost 테이블에 categoryid 컬럼 생성됨
 db.Category.hasMany(db.MeetPost);
 db.MeetPost.belongsTo(db.Category);
+
+// Category:Intropost = 1:N
+// Intropost 테이블에 categoryid 컬럼 생성됨
+db.Category.hasMany(db.Intropost);
+db.Intropost.belongsTo(db.Category);
+
 
 // MeetPost:Participants = 1:N
 // Participants 테이블에 MeetPostid 컬럼 생성됨
