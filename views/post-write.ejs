@@ -53,7 +53,7 @@
                 <div class="col-sm-10">
                     <div class="contact-form" id="app">
                         <h3>POST WRITE</h3>
-                        <form class="form-ajax">
+                        <form class="form-ajax" id="fileForm">
                             <input type="hidden" name="form" value="Contact Page">
                             <div class="row">
                                 <div class="form-group col-md-4">
@@ -66,10 +66,11 @@
                                     <input type="text" class="form-control" v-model="post.title" ref="title"
                                         placeholder="제목을 입력해주세요.">
                                 </div>
-                                <!-- <div class="form-group col-md-12">
-                                    <input  class="form-control"
-                                        placeholder="사진 or 동영상 중 1개 이상은 필수로 넣어주세요." >
-                                </div> -->
+
+                                <div class="form-group col-md-12">
+                                    <input type="file" id="fileInput" name="fileInput" v-on:change="fileupload">
+                                </div>                                
+                                
                                 <div class="form-group col-md-6">
                                     <input type="text" class="form-control" v-model="post.headcount" ref="headcount"
                                         placeholder="인원 수를 입력해주세요.">
@@ -238,10 +239,10 @@
                         return false;
                     }
 
-                    var token = localStorage.getItem('token');
-                    axios.post('/meetpost/write', this.post, { headers: { authorization: token } })
+                    // var token = localStorage.getItem('token');
+                    axios.post('/meetpost/write', this.post, { headers: { authorization: localStorage.getItem('token') } })
                         .then(function (res) {
-                            alert("등록되었습니다!!!");
+                            alert("등록되었습니다");
                             location.href = "/meetpost";
                         }.bind(this))
                         .catch(function (err) {
@@ -249,8 +250,29 @@
                         });
                 },
                 listPage: function () {
+                    alert("작성이 취소되었습니다");
                     location.href = "/meetpost";
-                }
+                },
+                fileupload: function() {
+                        event.preventDefault();
+                        var form = $('#fileForm')[0];
+                        var formData = new FormData(form);
+    
+                        axios.post('/file/upload',formData).then(function(response){
+                            if(response.data.code == "200") {
+                                this.post.photo=response.data.message;
+                                return false;
+                            } else{
+                                alert(response.data.message);
+                                return false;
+                            }
+                        }.bind(this))
+                        .catch(function(err){
+                            console.log(err);
+                        });
+                    
+                        return false;
+                    }
             }
 
         });

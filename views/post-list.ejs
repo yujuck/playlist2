@@ -180,23 +180,24 @@
             },
             methods: {
                 moveWrite: function () {
-                    axios.get('/user/checktoken', { headers: { authorization: localStorage.getItem('token') } })
-                    .then(function(res) {
+                    location.href = "meetpost/writepage" ;
+                    // axios.get('/user/checktoken', { headers: { authorization: localStorage.getItem('token') } })
+                    // .then(function(res) {
                         
-                    })
+                    // })
 
-                    axios.get('/user/islogin', { headers: { authorization: localStorage.getItem('token') } })
-                    .then(function(res) {
-                        if(res.data.islogin) {
-                           location.href = "meetpost/writepage" ;
-                        } else {
-                            alert(res.data.message);
-                            location.href = "/";
-                        }
-                    }.bind(this))
-                    .catch(function(err) {
-                        console.log(err);
-                    })
+                    // axios.get('/user/islogin', { headers: { authorization: localStorage.getItem('token') } })
+                    // .then(function(res) {
+                    //     if(res.data.islogin) {
+                    //        location.href = "meetpost/writepage" ;
+                    //     } else {
+                    //         alert(res.data.message);
+                    //         location.href = "/";
+                    //     }
+                    // }.bind(this))
+                    // .catch(function(err) {
+                    //     console.log(err);
+                    // })
                     
                 },
                 search: function (value) {

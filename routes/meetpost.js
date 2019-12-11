@@ -26,7 +26,7 @@ router.post('/write', verifyToken, function (req, res, next) {
       content: req.body.content,
       good: 0,
       count: 0,
-      meetphoto: 'ddd',
+      meetphoto: req.body.photo,
       userId: req.decoded.id,
       createdAt:new Date
     })
@@ -108,7 +108,7 @@ router.patch('/modify/:id', verifyToken, function(req, res, next) {
       age: req.body.age,
       record: req.body.record,
       content: req.body.content,
-      // meetphoto: req.body.meetphoto,
+      meetphoto: req.body.photo,
       userId: req.decoded.id,
     }, 
     { 

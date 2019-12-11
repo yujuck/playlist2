@@ -87,7 +87,7 @@
                         </p>
                         <div class="row">
                             <div class="col-sm-5">
-                                <img v-bind:src='user.photofullroute' width="300px" height="300px">
+                                <img v-bind:src="user.photofullroute" width="300px" height="300px">
                             </div>
                             <div class="col-sm-7">
                                 <ul class="list-lined">
@@ -169,8 +169,6 @@
                     });
 
                 axios.get('/user/profile', { headers: { authorization: localStorage.getItem('token') } }).then(function (res) {
-                    this.img = res.data.result.photofullroute;
-                    console.log(res.data.result.photofullroute)
                     this.user = res.data.result;
                 }.bind(this))
                     .catch(function (err) {

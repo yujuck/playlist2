@@ -18,7 +18,7 @@ db.Participants = require('./participants')(sequelize, Sequelize);
 db.MeetGood = require('./meetgood')(sequelize, Sequelize);
 db.Favorite = require('./favorite')(sequelize, Sequelize);
 db.Comment = require('./comment')(sequelize, Sequelize);
-db.IntroPost = require('./intropost')(sequelize, Sequelize);
+db.Intropost = require('./intropost')(sequelize, Sequelize);
 
 // User:MeetPost = 1:N
 // MeetPost 테이블에 userid 컬럼 생성됨

@@ -18,7 +18,6 @@
     
     
                                 <form id="fileForm">
-                                <!-- <form id="fileForm" enctype="multipart/form-data"> -->
     
                                     <input type="hidden" name="form1" value="Sign In">
     
@@ -72,8 +71,6 @@
                                             <div class="form-group">
                                                <label><input v-model="user.gender" ref="gender" type="radio" value="M">남</label>
                                                 <label><input v-model="user.gender" ref="gender" type="radio" value="W">여</label>
-                                                <!-- <input type="text" class="form-control" placeholder="gender"
-                                                    aria-describedby="sign-up-last-name"> -->
                                             </div>
                                         </div>
                                     </div>
@@ -92,11 +89,19 @@
                                         <div class="col-xs-12">
                                             <div class="form-group">
                                                 <input type="file" id="fileInput" name="fileInput" v-on:change="fileupload">
-                                                <input v-model="user.photofullroute" type="text" id="filePath">
                                             </div>
                                         </div>
                                     </div>
-    
+
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="form-group">
+                                                <textarea v-model="user.info" cols="5" rows="3" placeholder="introduce yourself" class="form-control"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+<!--     
                                     <div class="row text-left">
                                         <div class="col-xs-12">
                                             <div class="form-group">
@@ -109,7 +114,7 @@
                                             </div>
                                         </div>
                                     </div>
-    
+     -->
                                     <div class="row text-right">
                                         <div class="col-xs-12">
                                             <div class="form-group">
@@ -154,7 +159,6 @@
                     phone: '',
                     info: '',
                     photofullroute: '',
-                    usercategory: [],
                 }
             },
             methods: {
@@ -177,10 +181,7 @@
     
                 },
                 join: function () {
-                    //event.preventDefault();
-    
-                    alert(this.user.photofullroute);
-    
+
                     if (this.$refs.useremail.value == "") {
                         alert("이메일을 입력해주세요.");
                         this.$refs.useremail.focus();
@@ -259,7 +260,6 @@
                         var formData = new FormData(form);
     
                         axios.post('/file/upload',formData).then(function(response){
-                            console.log(response.data.message);
                             if(response.data.code == "200") {
                                 this.user.photofullroute=response.data.message;
                                 return false;

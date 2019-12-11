@@ -85,12 +85,10 @@
                             <!-- /Post Title -->
 
                             <!-- Post Image -->
-                            <div class="image">
-                                <a href="/images/project-01.jpg" class="image-popup">
-                                    <div class="gallery-image">
-                                        <img src="/images/project-01.jpg" alt="">
-                                    </div>
-                                </a>
+                            <div>  <!--class="image"-->
+                                <div ><!--class="gallery-image"-->
+                                    <img v-bind:src="'/' + posts.meetphoto" width="300px" height="300px">
+                                </div>                                
                             </div>
                             <!-- /Post Image -->
 

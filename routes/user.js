@@ -13,7 +13,6 @@ var User = require('../models/index.js').User;
 var router = express.Router();
 
 //회원가입(데이터)
-//localhost:3000/user/join
 router.post('/join', async (req, res, next) => {
 
     try {
@@ -58,6 +57,7 @@ router.post('/join', async (req, res, next) => {
           })
         })
         .catch((err) => {
+          console.log("여기서 에러?", err);
             next(err);
         });
       }
