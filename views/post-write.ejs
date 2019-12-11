@@ -241,6 +241,7 @@
                     var token = localStorage.getItem('token');
                     axios.post('/meetpost/write', this.post, { headers: { authorization: token } })
                         .then(function (res) {
+                            alert("등록되었습니다!!!");
                             location.href = "/meetpost";
                         }.bind(this))
                         .catch(function (err) {

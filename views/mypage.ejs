@@ -52,11 +52,11 @@
 
     <!-- Main -->
     <main class="main-container" id="app">
-        
+
         <div class="container">
             <div class="row">
-            
-                
+
+
                 <!-- Blog Sidebar -->
                 <div class="col-md-3">
                     <!-- Widget: Categories -->
@@ -75,36 +75,33 @@
 
                 <!-- Section Content -->
                 <div class="row">
-                    
+
                     <!-- Contact Information -->
                     <div class="col-sm-8">
-                            
+
                         <h3><b>Information</b></h3>
                         <p>
                             There are many variations of passages of Lorem Ipsum available, but the majority have
                             suffered
                             alteration in some form.
                         </p>
-                        <img v-bind:src='user.photofullroute' >
-                        <ul class="list-lined">
-                            <li>
-                                <i class="icon fa fa-fw fa-globe"></i><span>Address</span> 988782, Our Street, L.A.
-                                <small style="float: right">
-                                    <a href="https://maps.google.com/maps?q=221B+Baker+Street,+London,+United+Kingdom&hl=en&t=v&hnear=221B+Baker+St,+London+NW1+6XE,+United+Kingdom"
-                                        class="iframe-popup">(See on Map)</a>
-                                </small>
-                            </li>
-                            <li><i class="icon fa fa-fw fa-envelope"></i><span>E-mail</span> {{user.useremail}}</li>
-                            <li><i class="icon fa fa-fw fa-phone"></i><span>Phone</span> {{user.phone}}</li>
-                            
-                        </ul>
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <img v-bind:src='user.photofullroute' width="300px" height="300px">
+                            </div>
+                            <div class="col-sm-7">
+                                <ul class="list-lined">
+                                    <li><i class="icon fa fa-fw fa-envelope"></i><span>E-mail</span> {{user.useremail}}</li>
+                                    <li><i class="icon fa fa-fw fa-envelope"></i><span>이름</span> {{user.username}}</li>
+                                    <!-- <li><i class="icon fa fa-fw fa-phone"></i><span>Phone</span> {{user.phone}}</li> -->
+                                    <li><button class="btn btn-green" v-on:click="modifyUser">사용자 정보 수정</button></li>
+                                </ul>
+                            </div>
+                        </div>
 
-                        <h3>Work Time</h3>
 
-                        <ul class="list-lined">
-                            <li><i class="icon fa fa-clock-o"></i> <span>Mon - Sat</span> 9:00 - 19:00</li>
-                            <li><i class="icon fa fa-clock-o"></i> <span>Sunday</span> Closed</li>
-                        </ul>
+
+
 
                     </div>
                     <!-- /Contact Information -->
@@ -160,7 +157,7 @@
             el: '#app',
             data: {
                 userid: '',
-                user:{}
+                user: {}
             },
             created: function () {
                 axios.get('/user/checktoken', { headers: { authorization: localStorage.getItem('token') } })
@@ -174,13 +171,16 @@
                 axios.get('/user/profile', { headers: { authorization: localStorage.getItem('token') } }).then(function (res) {
                     this.img = res.data.result.photofullroute;
                     console.log(res.data.result.photofullroute)
-                    this.user = res.data.result;                    
+                    this.user = res.data.result;
                 }.bind(this))
                     .catch(function (err) {
                         console.log(err);
                     });
             },
             methods: {
+                modifyUser: function() {
+                    
+                }
             }
         });
     </script>

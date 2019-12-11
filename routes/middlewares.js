@@ -2,9 +2,11 @@ const jwt = require('jsonwebtoken');
 
 //로그인 여부 체크 모듈
 exports.isLoggedIn = (req, res, next) => {
-    console.log(req);
-    //이미 인증이 완료된 경우 다음 미들웨어로 이동
+    console.log("로그인 여부 미들웨어");
+    console.log(req.isAuthenticated());
+    // 이미 인증이 완료된 경우 다음 미들웨어로 이동
     if (req.isAuthenticated()) {
+      console.log("인증이 완료된 경우")
       next();
     } else {
       //인증이 안된경우 진행중단 403에러 리턴 및 에러메시지 반환

@@ -247,8 +247,9 @@
                         return false;
                     }
 
-                    axios.patch('/meetpost/modify/'+id, this.post)
+                    axios.patch('/meetpost/modify/'+id, this.post, { headers: { authorization: localStorage.getItem('token') } })
                     .then(function (res) {
+                        alert("수정되었습니다");
                         location.href="/meetpost/detailpost?id="+id;
                     }.bind(this))
                     .catch(function(err){

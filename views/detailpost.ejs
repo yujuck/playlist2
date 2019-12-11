@@ -115,7 +115,6 @@
                                     <blockquote>
                                         <b>이력</b><br>
                                         {{posts.record}}
-                                        {{posts.user.photofullroute}}
                                     </blockquote>
 
                                     <p>
@@ -333,7 +332,6 @@
                     const cbuttonValue = e.target.value;
                     axios.post('/meetpost/comment/' + cbuttonValue, this.reply)
                         .then(function (res) {
-                            console.log(res);
                             location.href = "/meetpost/detailpost?id=" + cbuttonValue;
                         }.bind(this))
                         .catch(function (err) {

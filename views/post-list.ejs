@@ -180,6 +180,11 @@
             },
             methods: {
                 moveWrite: function () {
+                    axios.get('/user/checktoken', { headers: { authorization: localStorage.getItem('token') } })
+                    .then(function(res) {
+                        
+                    })
+
                     axios.get('/user/islogin', { headers: { authorization: localStorage.getItem('token') } })
                     .then(function(res) {
                         if(res.data.islogin) {

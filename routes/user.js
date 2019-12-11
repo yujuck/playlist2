@@ -1,5 +1,5 @@
 var express = require('express');
-
+const passport = require('passport');
 //단방향 암호화(복호화가 안되는) 노드팩키지 참조
 const bcrypt = require('bcrypt');
 //JWT 인증토큰 노드 팩키지 라이브러리 참조
@@ -38,7 +38,7 @@ router.post('/join', async (req, res, next) => {
       } else {
         
         //단방향 암호화를 통해 난독화 및 복호화불가한 문자열로 변환
-        const hash = await bcrypt.hash(req.body.userpw, 12);
+        const hash = await bcrypt.hash(userpw, 12);
         
         await User.create({
           useremail: useremail,
@@ -106,9 +106,7 @@ router.post('/login', async (req, res, next) => {
     if (exemail) {
       //DB 암호와 사용자 암호 비교
       const result = await bcrypt.compare(req.body.userpw, exemail.userpw);
-      console.log("결과", result);
-      console.log("JWT_SECRET", process.env.JWT_SECRET);
-      
+ 
       //로그인 사용자의 아이디/암호가 일치하는 정상사용자 인경우 인증토큰 발급
       if(result)
       {
@@ -118,7 +116,7 @@ router.post('/login', async (req, res, next) => {
           // useremail: exemail.useremail,
           // username:exemail.username,
         }, process.env.JWT_SECRET, {
-          expiresIn: '10m',  // 유효시간
+          expiresIn: '5m',  // 유효시간
           issuer: 'webzine',
         });
 
@@ -203,9 +201,30 @@ router.get('/checktoken', async (req, res) => {
   }
 });
 
-// 로그인 여부 체크
-router.get('/islogin', (req, res, next) => {
-  
+//사용자 로그인 필요여부 체크 기능
+router.get('/checkLogin',verifyToken,async (req, res) => {
+  try
+  {
+    //기존에 발급한 토큰이 유효한 경우 토큰내 사용자정보 조회(사용자고유번호,메일,이름)
+    var loginUser = req.decoded;
+    
+    if(loginUser){
+      return res.json({
+        code:200,
+        result:loginUser 
+      });
+    }else{
+      return res.json({
+        code:500,
+        message:'토큰정보가 유효하지 않습니다.재로그인이 필요합니다.' 
+      });
+
+    }
+  }catch(err){
+    console.log(error);
+    return res.status(500).json({ code:500,message:'서버에러발생'});
+  }
+
 });
 
  module.exports = router;
