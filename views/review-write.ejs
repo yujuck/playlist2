@@ -178,14 +178,19 @@
                     }
 
                     var token = localStorage.getItem('token');
-                    axios.post('/review/review-write', this.review, { headers: { authorization: token } })
+                    var con = confirm("등록하시겠습니까?")
+                            if(con){
+                                axios.post('/review/review-write', this.review, { headers: { authorization: token } })
                         .then(function (res) {
-                            alert('등록하시겠습니까?');
                             location.href = "/review";
                         }.bind(this))
                         .catch(function (err) {
                             console.log(err)
                         });
+                            }else{
+                                location.href="/review";
+                            }
+            
                 },
                 relistPage: function () {
                     location.href = "/review";
