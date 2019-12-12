@@ -159,8 +159,7 @@
             el: '#app',
             data: {
                 posts: [],
-                category: [],
-                userid:''
+                category: []
             },
             created: function () {
                 axios.get('/category')
@@ -203,15 +202,7 @@
                     });
 
                 },
-                search: function (value) {
-                    axios.get('/meetpost/search?categoryid=' + value)
-                        .then(function (res) {
-                            this.posts = res.data;
-                        }.bind(this))
-                        .catch(function (err) {
-                            console.log(err);
-                        });
-                }
+                
             }
         });
     </script>

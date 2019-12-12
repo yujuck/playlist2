@@ -308,7 +308,7 @@
 
                 axios.get('/user/checkLogin', { headers: { authorization: localStorage.getItem('token') } })
                     .then(function (res) {
-                        this.userid = res.data.result;
+                        this.userid = res.data.result.id;
                     }.bind(this))
                     .catch(function (err) {
                         console.log(err);
