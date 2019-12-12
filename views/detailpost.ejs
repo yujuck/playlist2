@@ -154,7 +154,7 @@
                                     <div class="media">
                                         <div class="media-left">
                                             <div class="image">
-                                                <img src="/images/author-image-01.jpg">
+                                                <img v-bind:src="'/' + posts.user.photofullroute">
                                             </div>
                                         </div>
 
@@ -164,9 +164,9 @@
                                             <p class="text">
                                                 {{comment.comment}}
                                             </p>
-                                            <div class = project>
+                                            <div class = "project">
                                                 <div class="comments-bottom text-right">
-                                                    <a href="images/project-02.jpg" class="project-item image-popup"  ><i class="icon fa fa-fw fa-search"></i>
+                                                    <a href="/images/project-02.jpg" class="project-item image-popup"  ><i class="icon fa fa-fw fa-search"></i>
                                                         SHOW AUTHOR INFORMATION</a>
                                                 </div>
                                             </div>
@@ -300,7 +300,6 @@
 
                 axios.get('/meetpost/comments/' + id)
                     .then(function (res) {
-                        console.log(res.data);
                         this.comments = res.data;
                     }.bind(this))
                     .catch(function (err) {

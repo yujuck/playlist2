@@ -83,9 +83,9 @@
                         <!-- Project -->
                         <div class="col-xs-12 col-sm-6 col-md-4" v-for="r in reviews">
                             <div class="project">
-                                <a href="images/project-01.jpg" class="project-item image-popup">
+                                <a v-bind:href="r.introphoto" class="project-item image-popup">
                                     <div class="gallery-image">
-                                        <img src="images/project-01.jpg" alt="">
+                                        <img v-bind:src="r.introphoto">
                                     </div>
                                     <div class="overlay">
                                         <p class="description">

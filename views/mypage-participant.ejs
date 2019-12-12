@@ -4,7 +4,7 @@
 <head>
 
     <!-- Page title -->
-    <title>Playlist</title>
+    <title>My Page</title>
 
     <!-- Meta -->
     <meta charset="utf-8">
@@ -17,6 +17,7 @@
     <!-- Style -->
     <link rel="stylesheet" href="/css/theme-mariner.css">
     <link rel="alternate stylesheet" href="/css/theme-mariner.css" title="theme-mariner">
+
 
 </head>
 
@@ -39,8 +40,8 @@
 
                 <!-- Page Title -->
                 <div class="col-md-8">
-                    <h1 class="title">Blog - Posts List</h1>
-                    <div class="subtitle">There are many variations of passages </div>
+                    <h1 class="title">My page</h1>
+                    <div class="subtitle">좋아요 목록</div>
                 </div>
                 <!-- /Page Title -->
 
@@ -55,56 +56,63 @@
         <div class="container">
             <div class="row">
 
+
                 <!-- Blog Sidebar -->
                 <div class="col-md-3">
-
                     <!-- Widget: Categories -->
                     <div class="widget">
-
-                        <div class="title"><a href="/meetpost">Categories</a></div>
+                        <div class="title">My Page</div>
                         <ul class="sidebar-menu">
-                            <li v-for="c in category"><a v-bind:href="'/category/categorylist?id='+c.id">{{c.categoryname}}</a></li>
+                                <li><a href="/mypage">사용자 정보</a></li>
+                                <li><a href="/mypage/mypage-good">좋아요 목록</a></li>
+                                <li><a href="/mypage/mypage-favorite">즐겨찾기 목록</a></li>
+                                <li><a href="/mypage/mypage-participant">참여 목록</a></li>
                         </ul>
-
                     </div>
                     <!-- /Widget: Categories -->
                 </div>
                 <!-- /Blog Sidebar -->
 
-                <!-- Blog Content -->
-                <div class="col-md-9">
+                <!-- Section Content -->
+                <div class="row">
 
-                    <div class="projects-list">
+                    <!-- Contact Information -->
+                    <div class="col-sm-8">
 
-                        <div class="col-sm-4 col-xs-12" v-for="p in posts">
-                            <div class="project-item">
-                                    <div class="gallery-image">
-                                        <img v-bind:src="'/'+p.meetphoto">
-                                    </div>
-                                <div class="information">
-                                    <div class="h3 title"><a v-bind:href="'/meetpost/modify?postid='+p.id">{{ p.title }}</a>
-                                    </div>
-                                    <div class="description">
-                                        by {{p.user.username}}
-                                    </div>
-                                    <div class="read-more">
-                                        <a v-bind:href="'/meetpost/detailpost?id='+p.id">Read more <i class="fa fa-fw fa-arrow-right"></i> </a>
-                                    </div>
-                                </div>
+                        <h3><b>Your Information</b></h3>
+                        <p>
+                            
+                        </p>
+                        <div class="row" v-if="userid">
+                            <!-- 좋아요 목록 -->
+                            <!-- <div class="col-sm-5">
+                                <img v-bind:src="user.photofullroute" width="300px" height="300px">
+                            </div>
+                            <div class="col-sm-7">
+                                <ul class="list-lined">
+                                    <br><li><i class="icon fa fa-fw fa-envelope"></i><span>E-mail</span> {{user.useremail}}</li><br>
+                                    <li><i class="icon fa fa-fw fa-sign-in"></i><span>이름</span> {{user.username}}</li><br>
+                                    <li><i class="icon fa fa-fw fa-pinterest"></i><span>생년월일</span> {{user.birth}}</li><br>
+                                    <li><i class="icon fa fa-fw fa-phone"></i><span>전화번호</span> {{user.phone}}</li><br><br>
+                                    <li><button class="btn btn-green" v-on:click="modifyUser">사용자 정보 수정</button></li>
+                                </ul>
+                            </div> -->
+                        </div>
+
+                        <div class="row" v-if="!userid">
+                            <div class="col-sm-12">
+                                    <br><i class="icon fa fa-fw fa-sign-in"></i><span>　로그인이 필요한 서비스입니다.</span><br>   
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-12 text-right">
-                        <button v-on:click="moveWrite" class="btn btn-theme">글작성</button>
-                    </div>
-                </div>
-                <!-- /Blog Content -->
 
+                    </div>
+                    <!-- /Contact Information -->
+                </div>
             </div>
         </div>
+        <br>
     </main>
     <!-- /Main -->
-
 
     <!-- Footer -->
     <% include ./common/footer %>
@@ -128,7 +136,6 @@
     <% include ./common/result_message %>
     <!-- /Modal: Result Message -->
 
-
     <!-- SCRIPTS -->
     <script src="/js/jquery-2.2.0.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
@@ -146,44 +153,39 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
     <script>
-        $.urlParam = function (name) {
-            var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
-            if (results == null) {
-                return null;
-            }
-            else {
-                return results[1] || 0;
-            }
-        }
-        var id = $.urlParam('id');
-
         var app = new Vue({
             el: '#app',
             data: {
-                posts: [],
-                category: []
+                userid: '',
+                user: {}
             },
-            created: function () { 
-                axios.get('/category')
+            created: function () {
+                axios.get('/user/checkLogin', { headers: { authorization: localStorage.getItem('token') } })
                     .then(function (res) {
-                        this.category = res.data;
+                        
+                        if (res.data.code == 419) {
+                            console.log(res.data.message);
+                            return false;
+                            }
+                        if (res.data.code == 401) {
+                            console.log(res.data.message);
+                            return false;
+                        }
+                        if (res.data.code == 200) {
+                            this.userid = res.data.result;
+                        }
+                        
                     }.bind(this))
                     .catch(function (err) {
                         console.log(err);
                     });
 
-                axios.get('/category/categorylist/'+id)
-                    .then(function (res) {
-                        this.posts = res.data;
-                    }.bind(this))
+                axios.get('/user/profile', { headers: { authorization: localStorage.getItem('token') } }).then(function (res) {
+                    this.user = res.data.result;
+                }.bind(this))
                     .catch(function (err) {
                         console.log(err);
-                    })
-            },
-            methods: {
-                moveWrite: function () {
-                    location.href = "meetpost/writepage"
-                },   
+                });
             }
         });
     </script>
