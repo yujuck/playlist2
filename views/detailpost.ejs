@@ -40,7 +40,7 @@
 
                 <!-- Page Title -->
                 <div class="col-md-8">
-                    <h1 class="title">Blog - Detail Post</h1>
+                    <h1 class="title">Meet Detail Post</h1>
                     <!-- <div class="subtitle">There are many variations of passages </div> -->
                 </div>
                 <!-- /Page Title -->
@@ -102,7 +102,7 @@
                                 <ul class="list-inline meta">
                                     <li><i class="icon fa fa-calendar"></i> {{posts.createdAt}}</li>
                                     <li><i class="icon fa fa-user"></i> by <a
-                                            v-bind:href="'/yourpage?user='+posts.user.id">{{posts.user.username}}</a>
+                                            v-bind:href="'/yourpage?user='+posts.user.id">{{posts.user.useremail}}</a>
                                     </li>
                                 </ul>
                                 <!-- /Post Metadata -->
@@ -345,12 +345,12 @@
                         .then(function (res) {
                             if (res.data.code == 419) {
                                 alert("로그인이 필요합니다");
-                                location.href = "/";
+                                location.href = "/meetpost/detailpost?id=" + cbuttonValue;
                                 return false;
                             }
                             if (res.data.code == 401) {
                                 alert("로그인이 필요합니다");
-                                location.href = "/";
+                                location.href = "/meetpost/detailpost?id=" + cbuttonValue;
                                 return false;
                             }
                             if (res.data.code == 200) {
@@ -379,12 +379,12 @@
                         .then(function (res) {
                             if (res.data.code == 419) {
                                 alert("로그인이 필요합니다");
-                                location.href = "/";
+                                location.href = "/meetpost/detailpost?id=" + fbuttonValue;
                                 return false;
                             }
                             if (res.data.code == 401) {
                                 alert("로그인이 필요합니다");
-                                location.href = "/";
+                                location.href = "/meetpost/detailpost?id=" + fbuttonValue;
                                 return false;
                             }
                             if (res.data.code == 200) {
@@ -408,12 +408,12 @@
                         .then(function (res) {
                             if (res.data.code == 419) {
                                 alert("로그인이 필요합니다");
-                                location.href = "/";
+                                location.href = "/meetpost/detailpost?id=" + pbuttonValue;
                                 return false;
                             }
                             if (res.data.code == 401) {
                                 alert("로그인이 필요합니다");
-                                location.href = "/";
+                                location.href = "/meetpost/detailpost?id=" + pbuttonValue;
                                 return false;
                             }
                             if (res.data.code == 200) {

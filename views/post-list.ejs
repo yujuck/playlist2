@@ -40,7 +40,7 @@
 
                 <!-- Page Title -->
                 <div class="col-md-8">
-                    <h1 class="title">Blog - Posts List</h1>
+                    <h1 class="title">Meet Posts List</h1>
                     <div class="subtitle">There are many variations of passages </div>
                 </div>
                 <!-- /Page Title -->
@@ -93,7 +93,7 @@
                                     <div class="h3 title">{{ p.title }}
                                     </div>
                                     <div class="description">
-                                        by {{p.user.username}}
+                                        by {{p.user.useremail}}
                                     </div>
                                     <div class="read-more">
                                         <a v-bind:href="'/meetpost/detailpost?id='+p.id">Read more <i
