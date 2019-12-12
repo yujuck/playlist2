@@ -154,19 +154,20 @@
                                     <div class="media">
                                         <div class="media-left">
                                             <div class="image">
-                                                <img v-bind:src="'/' + posts.user.photofullroute">
+                                                <img v-bind:src="'/' + comment.user.photofullroute">
                                             </div>
                                         </div>
 
                                         <div class="media-body">
-                                            <h4 class="author">John Doe</h4>
+                                            <h4 class="author">{{comment.user.username}}</h4>
                                             <span class="date">{{comment.createdAt}}</span>
                                             <p class="text">
                                                 {{comment.comment}}
                                             </p>
-                                            <div class = "project">
+                                            <div class="project">
                                                 <div class="comments-bottom text-right">
-                                                    <a href="/images/project-02.jpg" class="project-item image-popup"  ><i class="icon fa fa-fw fa-search"></i>
+                                                    <a href="/images/project-02.jpg" class="project-item image-popup"><i
+                                                            class="icon fa fa-fw fa-search"></i>
                                                         SHOW AUTHOR INFORMATION</a>
                                                 </div>
                                             </div>
@@ -277,8 +278,6 @@
                 category: [],
                 reply: { comment: '' },
                 comments: [],
-                userid: ''
-
             },
             created: function () {
                 axios.get('/category')
@@ -339,6 +338,8 @@
                                 return false;
                             }
                             if (res.data.code == 200) {
+                                this.reply.userId = res.data.result.id;
+
                                 axios.post('/meetpost/comment/' + cbuttonValue, this.reply)
                                     .then(function (res) {
                                         location.href = "/meetpost/detailpost?id=" + cbuttonValue;
@@ -352,21 +353,38 @@
                         .catch(function (err) {
                             console.log(err);
                         });
-
-
                 },
                 gotolist: function () {
                     location.href = "/meetpost";
                 },
                 favorite: function (e) {
                     const fbuttonValue = e.target.value;
-                    var fav = confirm('즐겨찾기 추가하시겠습니까?')
-                    if (fav) {
-                        axios.post('/meetpost/favorite/' + fbuttonValue)
-                        location.href = "/meetpost/detailpost?id=" + fbuttonValue;
-                    }
-                },
+                    axios.get('/user/checkLogin', { headers: { authorization: localStorage.getItem('token') } })
+                        .then(function (res) {
+                            if (res.data.code == 419) {
+                                alert("로그인이 필요합니다");
+                                location.href = "/";
+                                return false;
+                            }
+                            if (res.data.code == 401) {
+                                alert("로그인이 필요합니다");
+                                location.href = "/";
+                                return false;
+                            }
+                            if (res.data.code == 200) {
+                                var fav = confirm('즐겨찾기 추가하시겠습니까?');
+                                if (fav) {
+                                    axios.post('/meetpost/favorite/' + fbuttonValue, {userId : res.data.result.id})
+                                    location.href = "/meetpost/detailpost?id=" + fbuttonValue;
+                                }
 
+
+                            }
+                        }.bind(this))
+                        .catch(function (err) {
+                            console.log(err);
+                        });
+                },
                 participate: function (e) {
                     const pbuttonValue = e.target.value;
 
@@ -385,7 +403,7 @@
                             if (res.data.code == 200) {
                                 var fav = confirm('참여하시겠습니까?')
                                 if (fav) {
-                                    axios.post('/meetpost/participate/' + pbuttonValue)
+                                    axios.post('/meetpost/participate/' + pbuttonValue, {userId : res.data.result.id})
                                     location.href = "/meetpost/detailpost?id=" + pbuttonValue;
                                 }
                             }

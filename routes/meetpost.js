@@ -125,7 +125,7 @@ router.patch('/modify/:id', verifyToken, function(req, res, next) {
 // 댓글 가져오기
 router.get('/comments/:id', function(req, res, next) {
   Comment.findAll({
-    include: [{ model: MeetPost }],
+    include: [{ model: MeetPost }, {model: User}],
     where: { meetpostId: req.params.id } 
   })
   .then((posts) => {
@@ -143,6 +143,7 @@ router.post('/comment/:meetpostId', function(req, res, next) {
 
   Comment.create({
     meetpostId: meetpostId,
+    userId: req.body.userId,
     comment: req.body.comment,
     createdAt: new Date,
     where: { id: req.params.id }
@@ -176,6 +177,7 @@ router.post('/favorite/:meetpostId', function(req, res, next) {
   
   Favorite.create({
     meetpostId: meetpostId,
+    userId: req.body.userId,
     state: 1,
     where: { id: req.params.id }
   })
@@ -196,6 +198,7 @@ router.post('/participate/:meetpostId', function(req, res, next) {
   
   Participants.create({
     meetpostId: meetpostId,
+    userId: req.body.userId,
     state: 1,
     where: { id: req.params.id }
   })
