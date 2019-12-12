@@ -13,6 +13,7 @@ var emailsearchRouter = require('./routes/emailsearch');
 var meetpostRouter = require('./routes/meetpost');
 var categoryRouter = require('./routes/category');
 var mypageRouter = require('./routes/mypage');
+var yourpageRouter = require('./routes/yourpage');
 var fileRouter = require('./routes/file');
 var reviewRouter = require('./routes/review');
 
@@ -38,6 +39,7 @@ app.use('/meetpost', meetpostRouter);
 app.use('/category', categoryRouter);
 app.use('/emailsearch', emailsearchRouter);
 app.use('/mypage', mypageRouter);
+app.use('/yourpage', yourpageRouter);
 app.use('/file', fileRouter);
 app.use('/review', reviewRouter);
 

@@ -89,10 +89,11 @@
                             </div>
                             <div class="col-sm-7">
                                 <ul class="list-lined">
-                                    <br><li><i class="icon fa fa-fw fa-envelope"></i><span>E-mail</span> {{user.useremail}}</li><br>
-                                    <li><i class="icon fa fa-fw fa-sign-in"></i><span>이름</span> {{user.username}}</li><br>
-                                    <li><i class="icon fa fa-fw fa-pinterest"></i><span>생년월일</span> {{user.birth}}</li><br>
+                                    <br><li><i class="icon fa fa-fw fa-envelope"></i><span>E-mail</span> {{user.useremail}}</li>
+                                    <li><i class="icon fa fa-fw fa-sign-in"></i><span>이름</span> {{user.username}}</li>
+                                    <li><i class="icon fa fa-fw fa-pinterest"></i><span>생년월일</span> {{user.birth}}</li>
                                     <li><i class="icon fa fa-fw fa-phone"></i><span>전화번호</span> {{user.phone}}</li><br><br>
+                                    <li><i class="icon fa fa-fw fa-phone"></i><span>소개글</span> {{user.info}}</li><br><br>
                                     <li><button class="btn btn-green" v-on:click="modifyUser">사용자 정보 수정</button></li>
                                 </ul>
                             </div>

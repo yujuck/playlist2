@@ -4,7 +4,7 @@
 <head>
 
     <!-- Page title -->
-    <title>Playlist</title>
+    <title>Your Page</title>
 
     <!-- Meta -->
     <meta charset="utf-8">
@@ -17,6 +17,7 @@
     <!-- Style -->
     <link rel="stylesheet" href="/css/theme-mariner.css">
     <link rel="alternate stylesheet" href="/css/theme-mariner.css" title="theme-mariner">
+
 
 </head>
 
@@ -39,8 +40,8 @@
 
                 <!-- Page Title -->
                 <div class="col-md-8">
-                    <h1 class="title">Blog - Reviews List</h1>
-                    <div class="subtitle">There are many variations of passages </div>
+                    <h1 class="title">Your page</h1>
+                    <div class="subtitle">타인 정보</div>
                 </div>
                 <!-- /Page Title -->
 
@@ -55,60 +56,48 @@
         <div class="container">
             <div class="row">
 
-                <!-- Blog Sidebar -->
-                <div class="col-md-3">
+                <!-- Section Content -->
+                <div class="row">
 
-                    <!-- Widget: Categories -->
-                    <div class="widget">
+                    <!-- Contact Information -->
+                    <div class="col-sm-11">
 
-                        <div class="title"><a href="/review">Categories</a></div>
-                        <ul class="sidebar-menu">
-                            <li v-for="c in category"><a
-                                    v-bind:href="'/category/recategorylist?id='+c.id">{{c.categoryname}}</a></li>
-                        </ul>
-
-                    </div>
-                    <!-- /Widget: Categories -->
-                </div>
-                <!-- /Blog Sidebar -->
-
-                <!-- Blog Content -->
-                <div class="col-md-9">
-
-                    <div class="projects-list">
-                        <!-- Project -->
-                        <div class="col-xs-12 col-sm-6 col-md-4" v-for="r in reviews">
-                            <div class="project">
-                                <a v-bind:href="r.introphoto" class="project-item image-popup">
-                                    <div class="gallery-image">
-                                        <img v-bind:src="'/'+r.introphoto">
-                                    </div>
-                                    <div class="overlay">
-                                        <p class="description">
-                                            {{r.content}}
-                                        </p>
-                                        <div class="information">
-                                            <h3 class="title">{{r.title}}</h3>
-                                            <!-- <h3 class="title">{{category.categoryname}}</h3> -->
-                                            <span class="title">　by {{r.user.username}}</span>
-                                        </div>
-                                    </div>
-                                </a>
+                        <h3><b>Information</b></h3>
+                        <p>
+                            
+                        </p>
+                        <div class="row">
+                            <!-- 타인 정보 목록 -->
+                            <div class="col-sm-5">
+                                <img v-bind:src="user.photofullroute" width="300px" height="300px">
+                            </div>
+                            <div class="col-sm-7">
+                                <ul class="list-lined">
+                                    <br><li><i class="icon fa fa-fw fa-envelope"></i><span>E-mail</span> {{user.useremail}}</li>
+                                    <li><i class="icon fa fa-fw fa-sign-in"></i><span>이름</span> {{user.username}}</li><br><br>
+                                    
+                                    <li><i class="icon fa fa-fw fa-dribbble"></i><span>소개글</span> {{user.info}}</li><br><br>
+                                </ul>
                             </div>
                         </div>
-                        <!-- /Project -->
-                    </div>
-                    <div class="col-md-12 text-right">
-                        <button v-on:click="removeWrite" class="btn btn-theme">글작성</button>
-                    </div>
-                </div>
-                <!-- /Blog Content -->
 
+
+                        <!-- <div class="row" v-else="!userid">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <br><i class="icon fa fa-fw fa-sign-in"></i><span>　로그인이 필요한 서비스입니다.</span><br>   
+                                </div>
+                            </div>
+                        </div> -->
+
+                    </div>
+                    <!-- /Contact Information -->
+                </div>
             </div>
         </div>
+        <br>
     </main>
     <!-- /Main -->
-
 
     <!-- Footer -->
     <% include ./common/footer %>
@@ -132,7 +121,6 @@
     <% include ./common/result_message %>
     <!-- /Modal: Result Message -->
 
-
     <!-- SCRIPTS -->
     <script src="/js/jquery-2.2.0.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
@@ -150,6 +138,7 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
     <script>
+
         $.urlParam = function (name) {
             var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
             if (results == null) {
@@ -159,35 +148,49 @@
                 return results[1] || 0;
             }
         }
-        var id = $.urlParam('id');
-
+        var id = $.urlParam('user');
         var app = new Vue({
             el: '#app',
             data: {
-                reviews: [],
-                category: []
+                user: {},
+                userid: ''
             },
             created: function () {
-                axios.get('/category')
+                axios.get('/user/checkLogin', { headers: { authorization: localStorage.getItem('token') } })
                     .then(function (res) {
-                        this.category = res.data;
+                        
+                        if (res.data.code == 419) {
+                            console.log(res.data.message);
+                            return false;
+                            }
+                        if (res.data.code == 401) {
+                            console.log(res.data.message);
+                            return false;
+                        }
+                        if (res.data.code == 200) {
+                            this.userid = res.data.result;
+                        }
+                        
                     }.bind(this))
                     .catch(function (err) {
                         console.log(err);
                     });
 
-                axios.get('/category/recategorylist/' + id)
+                axios.get('/user/profile', { headers: { authorization: localStorage.getItem('token') } }).then(function (res) {
+                    this.user = res.data.result;
+                }.bind(this))
+                    .catch(function (err) {
+                        console.log(err);
+                });
+
+                axios.get('/yourpage/' + id)
                     .then(function (res) {
-                        this.reviews = res.data;
+                        console.log(res.data);
+                        this.user = res.data;
                     }.bind(this))
                     .catch(function (err) {
                         console.log(err);
-                    })
-            },
-            methods: {
-                removeWrite: function () {
-                    location.href = "review/review-writepage"
-                },
+                    });
             }
         });
     </script>

@@ -100,7 +100,7 @@
                                 <!-- Post Metadata -->
                                 <ul class="list-inline meta">
                                     <li><i class="icon fa fa-calendar"></i> {{posts.createdAt}}</li>
-                                    <li><i class="icon fa fa-user"></i> by <a href="#">{{posts.user.username}}</a></li>
+                                    <li><i class="icon fa fa-user"></i> by <a v-bind:href="'/yourpage?user='+posts.user.id">{{posts.user.username}}</a></li>
                                 </ul>
                                 <!-- /Post Metadata -->
 
