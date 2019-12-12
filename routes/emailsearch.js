@@ -11,27 +11,30 @@ router.post('/', async (req, res, next) => {
 
   const phone = req.body.phone;
 
-  if(phone.length <= 0) {
-      return res.send('전화번호를 입력하세요.');
-  }
-
   try {
 
-    const exphone = await User.findOne({where: {phone}});
+    const exphone = await User.findOne({where: {phone} });
 
     if(exphone) {
 
         const youremail = await User.findOne({
                             attributes: ['useremail'],
                             where: {
-                                phone: exphone
+                                phone: exphone.phone
                             }
                         });
+        //console.log(youremail.useremail);
 
-        res.send(youremail);
+        res.json({
+          success: true,
+          message: '당신의 이메일은 ' + youremail.useremail +'입니다!'
+        })
 
     } else {
-        res.send('가입되지 않은 회원입니다.');
+        res.json({
+          success: false,
+          message: '사용자정보가 없습니다'
+        })
     }
  
     } catch(error) {
@@ -39,7 +42,7 @@ router.post('/', async (req, res, next) => {
       return next(error);
     }
 
-});        
+});  
   
   
  module.exports = router;

@@ -116,7 +116,7 @@ router.post('/login', async (req, res, next) => {
           // useremail: exemail.useremail,
           // username:exemail.username,
         }, process.env.JWT_SECRET, {
-          expiresIn: '5m',  // 유효시간
+          expiresIn: '1m',  // 유효시간
           issuer: 'webzine',
         });
 
@@ -148,11 +148,11 @@ router.post('/login', async (req, res, next) => {
 
 //내개인정보조회
 router.get('/profile',verifyToken, async (req, res) => {
-  console.log("아이디: ",req.decoded.id);
+  
   try
   {
     const user = await User.findOne({
-      attributes:['useremail','username','birth','phone','photofullroute'],
+      attributes:['useremail','username','birth','phone','photofullroute', 'info'],
       where:{
         id:req.decoded.id,
       }     
@@ -176,31 +176,6 @@ router.get('/profile',verifyToken, async (req, res) => {
 
 });
  
-// 토큰 유효성 검사
-router.get('/checktoken', async (req, res) => {
-  try {
-
-    req.decoded = jwt.verify(req.headers.authorization, process.env.JWT_SECRET);
-    return res.json({
-      tokenvalue: req.decoded.id,
-    });
-
-  } catch (error) {
-
-    if (error.name === 'TokenExpiredError') { // 유효기간 초과
-      return res.status(419).json({
-        code: 419,
-        message: '토큰이 만료되었습니다',
-      });
-    }
-
-    return res.status(401).json({
-      code: 401,
-      message: '유효하지 않은 토큰입니다',
-    });
-  }
-});
-
 //사용자 로그인 필요여부 체크 기능
 router.get('/checkLogin',verifyToken,async (req, res) => {
   try

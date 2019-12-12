@@ -94,7 +94,7 @@
                                         <a href="/">Home</a>
                                     </li>
                                     <li>
-                                        <a href="review">Review</a>
+                                        <a href="/review">Review</a>
                                     </li>
                                     <li>
                                         <a href="/meetpost">Category</a>
@@ -129,9 +129,9 @@
         },
         created: function () {
 
-            axios.get('/user/checktoken', { headers: { authorization: localStorage.getItem('token') } })
+            axios.get('/user/checkLogin', { headers: { authorization: localStorage.getItem('token') } })
                 .then(function (res) {
-                    this.userid = res.data.tokenvalue;
+                    this.userid = res.data.result;
                 }.bind(this))
                 .catch(function (err) {
                     console.log(err);

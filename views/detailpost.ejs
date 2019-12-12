@@ -85,10 +85,12 @@
                             <!-- /Post Title -->
 
                             <!-- Post Image -->
-                            <div>  <!--class="image"-->
-                                <div ><!--class="gallery-image"-->
+                            <div>
+                                <!--class="image"-->
+                                <div>
+                                    <!--class="gallery-image"-->
                                     <img v-bind:src="'/' + posts.meetphoto" width="300px" height="300px">
-                                </div>                                
+                                </div>
                             </div>
                             <!-- /Post Image -->
 
@@ -129,12 +131,14 @@
                             <div class="row information">
 
                                 <div class="form-group col-md-12">
-                                        <ul class="list-inline social-inline">
-                                            <button class="btn btn-red" v-on:click="favorite($event)" v-bind:value="posts.id">즐겨찾기</button>
-                                            <button class="btn btn-orange" v-on:click="participate($event)" v-bind:value="posts.id">참여하기</button>
-                                        </ul>
+                                    <ul class="list-inline social-inline">
+                                        <button class="btn btn-red" v-on:click="favorite($event)"
+                                            v-bind:value="posts.id">즐겨찾기</button>
+                                        <button class="btn btn-orange" v-on:click="participate($event)"
+                                            v-bind:value="posts.id">참여하기</button>
+                                    </ul>
                                 </div>
-                        </div>
+                            </div>
                             <!-- /Additional -->
 
                         </article>
@@ -196,10 +200,10 @@
                         <div class="col-md-12 text-right">
                             <ul class="list-inline social-inline">
                                 <button class="btn btn-theme" v-on:click="gotolist">목록</button>
-                                <button class="btn btn-theme" v-on:click="removePost($event)"
-                                    v-bind:value="posts.id" v-if="userid == posts.user.id">삭제</button>
-                                <a v-bind:href="'/meetpost/modify?postid='+posts.id"><button
-                                        class="btn btn-theme" v-if="userid == posts.user.id">수정</button></a>
+                                <button class="btn btn-theme" v-on:click="removePost($event)" v-bind:value="posts.id"
+                                    v-if="userid == posts.user.id">삭제</button>
+                                <a v-bind:href="'/meetpost/modify?postid='+posts.id"><button class="btn btn-theme"
+                                        v-if="userid == posts.user.id">수정</button></a>
                             </ul>
                         </div>
 
@@ -271,7 +275,7 @@
                 category: [],
                 reply: { comment: '' },
                 comments: [],
-                userid:''
+                userid: ''
 
             },
             created: function () {
@@ -301,9 +305,9 @@
                         console.log(err);
                     });
 
-                axios.get('/user/checktoken', { headers: { authorization: localStorage.getItem('token') } })
+                axios.get('/user/checkLogin', { headers: { authorization: localStorage.getItem('token') } })
                     .then(function (res) {
-                        this.userid = res.data.tokenvalue;
+                        this.userid = res.data.result;
                     }.bind(this))
                     .catch(function (err) {
                         console.log(err);
@@ -320,21 +324,43 @@
                 },
                 saveComment: function (e) {
                     const cbuttonValue = e.target.value;
-                    axios.post('/meetpost/comment/' + cbuttonValue, this.reply)
+
+                    axios.get('/user/checkLogin', { headers: { authorization: localStorage.getItem('token') } })
                         .then(function (res) {
-                            location.href = "/meetpost/detailpost?id=" + cbuttonValue;
+                            if (res.data.code == 419) {
+                                alert("로그인이 필요합니다");
+                                location.href = "/";
+                                return false;
+                            }
+                            if (res.data.code == 401) {
+                                alert("로그인이 필요합니다");
+                                location.href = "/";
+                                return false;
+                            }
+                            if (res.data.code == 200) {
+                                axios.post('/meetpost/comment/' + cbuttonValue, this.reply)
+                                    .then(function (res) {
+                                        location.href = "/meetpost/detailpost?id=" + cbuttonValue;
+                                    }.bind(this))
+                                    .catch(function (err) {
+                                        console.log(err)
+                                    });
+
+                            }
                         }.bind(this))
                         .catch(function (err) {
-                            console.log(err)
+                            console.log(err);
                         });
+
+
                 },
-                gotolist: function() {
+                gotolist: function () {
                     location.href = "/meetpost";
                 },
                 favorite: function (e) {
                     const fbuttonValue = e.target.value;
                     var fav = confirm('즐겨찾기 추가하시겠습니까?')
-                    if(fav)  {
+                    if (fav) {
                         axios.post('/meetpost/favorite/' + fbuttonValue)
                         location.href = "/meetpost/detailpost?id=" + fbuttonValue;
                     }
@@ -342,11 +368,30 @@
 
                 participate: function (e) {
                     const pbuttonValue = e.target.value;
-                    var fav = confirm('참여하시겠습니까?')
-                    if(fav)  {
-                        axios.post('/meetpost/participate/' + pbuttonValue)
-                        location.href = "/meetpost/detailpost?id=" + pbuttonValue;
-                    }
+
+                    axios.get('/user/checkLogin', { headers: { authorization: localStorage.getItem('token') } })
+                        .then(function (res) {
+                            if (res.data.code == 419) {
+                                alert("로그인이 필요합니다");
+                                location.href = "/";
+                                return false;
+                            }
+                            if (res.data.code == 401) {
+                                alert("로그인이 필요합니다");
+                                location.href = "/";
+                                return false;
+                            }
+                            if (res.data.code == 200) {
+                                var fav = confirm('참여하시겠습니까?')
+                                if (fav) {
+                                    axios.post('/meetpost/participate/' + pbuttonValue)
+                                    location.href = "/meetpost/detailpost?id=" + pbuttonValue;
+                                }
+                            }
+                        }.bind(this))
+                        .catch(function (err) {
+                            console.log(err);
+                        });
                 }
             }
         });

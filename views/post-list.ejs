@@ -81,13 +81,13 @@
 
                         <div class="col-sm-4 col-xs-12" v-for="p in posts">
                             <div class="project-item">
-                                <a href="images/project-01.jpg" class="image-popup">
+                                
                                     <div class="gallery-image">
 
-                                        <img src="images/project-01.jpg">
+                                        <img v-bind:src="p.meetphoto">
                                     </div>
 
-                                </a>
+                                
                                 <div class="information">
                                     <div class="h3 title">{{ p.title }}
                                     </div>
@@ -159,7 +159,8 @@
             el: '#app',
             data: {
                 posts: [],
-                category: []
+                category: [],
+                userid:''
             },
             created: function () {
                 axios.get('/category')
@@ -180,25 +181,27 @@
             },
             methods: {
                 moveWrite: function () {
-                    location.href = "meetpost/writepage" ;
-                    // axios.get('/user/checktoken', { headers: { authorization: localStorage.getItem('token') } })
-                    // .then(function(res) {
-                        
-                    // })
+                    axios.get('/user/checkLogin', { headers: { authorization: localStorage.getItem('token') } })
+                    .then(function (res) {
+                        if (res.data.code == 419) {
+                            alert("로그인이 필요합니다");
+                            location.href="/";
+                            return false;
+                            }
+                        if (res.data.code == 401) {
+                            alert("로그인이 필요합니다");
+                            location.href="/";
+                            return false;
+                        }
+                        if (res.data.code == 200) {
+                            location.href="/meetpost/writepage";
+                            
+                        }
+                    }.bind(this))
+                    .catch(function (err) {
+                        console.log(err);
+                    });
 
-                    // axios.get('/user/islogin', { headers: { authorization: localStorage.getItem('token') } })
-                    // .then(function(res) {
-                    //     if(res.data.islogin) {
-                    //        location.href = "meetpost/writepage" ;
-                    //     } else {
-                    //         alert(res.data.message);
-                    //         location.href = "/";
-                    //     }
-                    // }.bind(this))
-                    // .catch(function(err) {
-                    //     console.log(err);
-                    // })
-                    
                 },
                 search: function (value) {
                     axios.get('/meetpost/search?categoryid=' + value)

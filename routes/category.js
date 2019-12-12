@@ -3,6 +3,7 @@ var router = express.Router();
 var Category = require('../models/index.js').Category;
 var MeetPost = require('../models/index.js').MeetPost;
 var User = require('../models/index.js').User;
+var Intropost = require('../models/index.js').Intropost;
 
 router.get('/', (req, res, next) => {
     Category.findAll()

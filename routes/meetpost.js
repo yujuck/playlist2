@@ -15,7 +15,6 @@ router.get('/writepage', function (req, res, next) {
 
 // 작성한 글 데이터를 DB에 저장
 router.post('/write', verifyToken, function (req, res, next) {
-  console.log("사용자아이디",req.decoded.id);
     MeetPost.create({
       categoryId: req.body.categoryId,
       title: req.body.title,

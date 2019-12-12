@@ -67,7 +67,7 @@
                                
                                 　　<i class="icon fa fa-fw fa-phone"></i><span><b>　사용자 전화번호</b></span><br><br>
                                     <div class="col-md-3">
-                                        <input type="text" class="form-control" v-model="yourphone" placeholder="ex.01012345678">
+                                        <input type="text" class="form-control" v-model="yourphone.phone" ref="phone" placeholder="ex.01012345678">
                                     </div>
                                     <button class="btn btn-green" v-on:click="emailsearch">이메일 찾기</button>
                                 
@@ -124,20 +124,33 @@
         var app = new Vue({
             el: '#app',
             data: {
-                yourphone: '',
+                yourphone: {phone: ''}
             },
             methods: {
                 emailsearch: function() {
 
-                    axios.post('/emailsearch').then(function (res) {
+                    if (this.$refs.phone.value == '') {
+                        alert(" 입력해주세요");
+                        this.$refs.phone.focus();
+                        return false;
+                    }
 
-                        //location.href = "/emailsearch-result";
-                    
-                    }.bind(this))
-                    .catch(function (err) {
-                    console.log(err);
-                    });                    
+                    axios.post('/emailsearch', this.yourphone)
+                        .then((res) => {
+
+                            if (res.data.success == true) {
+                                alert(res.data.message);
+                                location.href = "/";
+                            }
+                            if (res.data.success == false) {
+                                alert(res.data.message);
+                            }
+                        })
+                        .catch(err => {
+                            alert(err);
+                        })                                        
                 }
+
             }
         });
     </script>
