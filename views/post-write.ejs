@@ -202,7 +202,7 @@
             },
             methods: {
                 savePost: function () {
-
+                    event.preventDefault();
                     if (this.post.categoryId == '') {
                         alert("카테고리를 선택해주세요");
                         this.$refs.categoryid.focus();

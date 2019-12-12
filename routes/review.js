@@ -19,6 +19,7 @@ router.post('/review-write', verifyToken, function (req, res, next) {
       categoryId: req.body.categoryId,
       userId: req.decoded.id,
       title: req.body.title,
+      introphoto: req.body.introphoto,
       content: req.body.content,
       createdAt:new Date
     })
