@@ -100,7 +100,9 @@
                                 <!-- Post Metadata -->
                                 <ul class="list-inline meta">
                                     <li><i class="icon fa fa-calendar"></i> {{posts.createdAt}}</li>
-                                    <li><i class="icon fa fa-user"></i> by <a v-bind:href="'/yourpage?user='+posts.user.id">{{posts.user.username}}</a></li>
+                                    <li><i class="icon fa fa-user"></i> by <a
+                                            v-bind:href="'/yourpage?user='+posts.user.id">{{posts.user.username}}</a>
+                                    </li>
                                 </ul>
                                 <!-- /Post Metadata -->
 
@@ -132,8 +134,10 @@
 
                                 <div class="form-group col-md-12">
                                     <ul class="list-inline social-inline">
-                                        <button class="btn btn-red" v-on:click="favorite($event)"
-                                            v-bind:value="posts.id">즐겨찾기</button>
+                                        <button v-if="favorite_state == true" class="btn btn-red" v-on:click="favorite($event)"
+                                            v-bind:value="posts.id">즐겨찾기 해제</button>
+                                        <button v-else="favorite_state == false" class="btn btn-red btn-o-light-bg" v-on:click="favorite($event)"
+                                        v-bind:value="posts.id">즐겨찾기 추가</button>
                                         <button class="btn btn-orange" v-on:click="participate($event)"
                                             v-bind:value="posts.id">참여하기</button>
                                     </ul>
@@ -278,6 +282,8 @@
                 category: [],
                 reply: { comment: '' },
                 comments: [],
+                userid: '',
+                favorite_state: ''
             },
             created: function () {
                 axios.get('/category')
@@ -297,7 +303,7 @@
                         console.log(err);
                     });
 
-                axios.get('/meetpost/comments/' + id)
+                axios.get('/comment/' + id)
                     .then(function (res) {
                         this.comments = res.data;
                     }.bind(this))
@@ -307,11 +313,20 @@
 
                 axios.get('/user/checkLogin', { headers: { authorization: localStorage.getItem('token') } })
                     .then(function (res) {
-                        this.userid = res.data.result;
+                        this.userid = res.data.result.id;
                     }.bind(this))
                     .catch(function (err) {
                         console.log(err);
                     });
+
+                axios.get('/favorite/' + id, { headers: { authorization: localStorage.getItem('token') } })
+                    .then(function (res) {
+                        this.favorite_state = res.data.state;
+                    }.bind(this))
+                    .catch(function (err) {
+                        console.log(err);
+                    });
+
             },
             methods: {
                 removePost: function (e) {
@@ -340,7 +355,7 @@
                             if (res.data.code == 200) {
                                 this.reply.userId = res.data.result.id;
 
-                                axios.post('/meetpost/comment/' + cbuttonValue, this.reply)
+                                axios.post('/comment/' + cbuttonValue, this.reply)
                                     .then(function (res) {
                                         location.href = "/meetpost/detailpost?id=" + cbuttonValue;
                                     }.bind(this))
@@ -372,13 +387,13 @@
                                 return false;
                             }
                             if (res.data.code == 200) {
-                                var fav = confirm('즐겨찾기 추가하시겠습니까?');
-                                if (fav) {
-                                    axios.post('/meetpost/favorite/' + fbuttonValue, {userId : res.data.result.id})
+                                if(this.favorite_state) { // favorite_state가 true이면
+                                    axios.post('/favorite/' + fbuttonValue, { userId: res.data.result.id})
+                                    location.href = "/meetpost/detailpost?id=" + fbuttonValue;
+                                } else {  //favorite_state가 false이면
+                                    axios.post('/favorite/' + fbuttonValue, { userId: res.data.result.id, state: true })
                                     location.href = "/meetpost/detailpost?id=" + fbuttonValue;
                                 }
-
-
                             }
                         }.bind(this))
                         .catch(function (err) {
@@ -403,7 +418,7 @@
                             if (res.data.code == 200) {
                                 var fav = confirm('참여하시겠습니까?')
                                 if (fav) {
-                                    axios.post('/meetpost/participate/' + pbuttonValue, {userId : res.data.result.id})
+                                    axios.post('/meetpost/participate/' + pbuttonValue, { userId: res.data.result.id })
                                     location.href = "/meetpost/detailpost?id=" + pbuttonValue;
                                 }
                             }

@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
         state: {
             type: DataTypes.BOOLEAN,
             allowNull: false,
-            defaultValue: 0
+            defaultValue: false
        },
 
     }, {

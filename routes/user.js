@@ -116,7 +116,7 @@ router.post('/login', async (req, res, next) => {
           // useremail: exemail.useremail,
           // username:exemail.username,
         }, process.env.JWT_SECRET, {
-          expiresIn: '3m',  // 유효시간
+          expiresIn: '15m',  // 유효시간
           issuer: 'webzine',
         });
 
