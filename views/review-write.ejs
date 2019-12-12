@@ -66,15 +66,17 @@
                                     <input type="text" class="form-control" v-model="review.title" ref="title"
                                         placeholder="제목을 입력해주세요.">
                                 </div>
-                
-                            <div class="row">
                                 <div class="form-group col-md-12">
-                                    <textarea class="form-control" v-model="review.content" ref="content"
-                                        placeholder="내용(필수)"></textarea>
+                                    <input type="file" id="fileInput" name="fileInput" v-on:change="fileupload">
+                                </div> 
+                              
+                                <div class="form-group col-md-12">
+                                        <textarea class="form-control" v-model="review.content" ref="content"
+                                            placeholder="내용(필수)"></textarea>
                                 </div>
-                            </div>
+                             
 
-                            <div class="row">
+                          
                                 <div class="form-group col-md-12 text-center">
                                     <button v-on:click="resavePost" class="btn btn-theme">등록</button>
                                     <button v-on:click="relistPage" class="btn btn-theme">취소</button>
@@ -137,6 +139,7 @@
                 review: {
                     categoryId: '',
                     title: '',
+                    introphoto: '',
                     content: '',
                 }
 
@@ -161,7 +164,7 @@
             },
             methods: {
                 resavePost: function () {
-
+                    event.preventDefault();
                     if (this.review.title == '') {
                         alert("제목을 입력해주세요");
                         this.$refs.title.focus();
@@ -186,7 +189,27 @@
                 },
                 relistPage: function () {
                     location.href = "/review";
-                }
+                },
+                fileupload: function() {
+                        event.preventDefault();
+                        var form = $('#fileForm')[0];
+                        var formData = new FormData(form);
+    
+                        axios.post('/file/upload',formData).then(function(response){
+                            if(response.data.code == "200") {
+                                this.review.introphoto=response.data.message;
+                                return false;
+                            } else{
+                                alert(response.data.message);
+                                return false;
+                            }
+                        }.bind(this))
+                        .catch(function(err){
+                            console.log(err);
+                        });
+                    
+                        return false;
+                    }
             }
 
         });

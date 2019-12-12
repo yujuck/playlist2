@@ -10,10 +10,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.TEXT,
             allowNull: false
         },
-        // introphoto: {
-        //     type: DataTypes.STRING(100),
-        //     allowNull:false
-        // },
+        introphoto: {
+            type: DataTypes.STRING(100),
+            allowNull:false
+        },
 
         createdAt: {
             type: DataTypes.DATE,
