@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken');
 //모든 라우팅 모듈에서 토큰 기반 인증처리를  공통처리 해주는 부분
 const { verifyToken } = require('./middlewares');
 const { isLoggedIn } = require('./middlewares');
+var nodemailer = require('nodemailer');
 
 var User = require('../models/index.js').User;
 
@@ -60,6 +61,31 @@ router.post('/join', async (req, res, next) => {
           console.log("여기서 에러?", err);
             next(err);
         });
+
+        //회원가입시 메일보내기(보내는 사람만 gmail이면 됨)
+        var transporter = nodemailer.createTransport({
+          service:'gmail',
+          auth: {
+              user : 'miniddo96@gmail.com',
+              pass : 'kds97523!'
+          }
+        });
+      
+        var mailOption = {
+            from : 'miniddo96@gmail.com',
+            to : useremail,
+            subject : '[Playlist] ' + useremail + ' 님 회원가입을 축하합니다!',
+            text : '[Playlist]\n ' + useremail + ' 님 회원가입을 축하합니다!'
+        };
+      
+        transporter.sendMail(mailOption, function(err, info) {
+            if ( err ) {
+                console.error('Send Mail error : ', err);
+            }
+            else {
+                console.log('Message sent : ', info);
+            }
+          });
       }
  
     } catch(error) {
@@ -116,7 +142,7 @@ router.post('/login', async (req, res, next) => {
           // useremail: exemail.useremail,
           // username:exemail.username,
         }, process.env.JWT_SECRET, {
-          expiresIn: '15m',  // 유효시간
+          expiresIn: '2m',  // 유효시간
           issuer: 'webzine',
         });
 
