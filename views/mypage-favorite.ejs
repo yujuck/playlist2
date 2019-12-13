@@ -17,7 +17,6 @@
     <!-- Style -->
     <link rel="stylesheet" href="/css/theme-mariner.css">
     <link rel="alternate stylesheet" href="/css/theme-mariner.css" title="theme-mariner">
-    <link rel="stylesheet" href="/css/web-font.css">
 
 
 </head>
@@ -42,7 +41,7 @@
                 <!-- Page Title -->
                 <div class="col-md-8">
                     <h1 class="title">My page</h1>
-                    <div class="subtitle">즐겨찾기 목록</div>
+                    <div class="subtitle">좋아요 목록</div>
                 </div>
                 <!-- /Page Title -->
 
@@ -86,31 +85,28 @@
                         </p>
                         <div class="row" v-if="userid">
                             <!-- 좋아요 목록 -->
-                            <!-- <div class="projects-list">
+                            <div class="projects-list">
 
                                 <div class="col-sm-4 col-xs-12" v-for="p in posts">
                                     <div class="project-item">
                                         
                                             <div class="gallery-image">
         
-                                                <img v-bind:src="p.meetphoto">
+                                                <img v-bind:src="'/'+p.meetpost.meetphoto">
                                             </div>
         
                                         
                                         <div class="information">
-                                            <div class="h3 title">{{ p.title }}
-                                            </div>
-                                            <div class="description">
-                                                by {{p.user.username}}
+                                            <div class="h3 title">{{ p.meetpost.title }}
                                             </div>
                                             <div class="read-more">
-                                                <a v-bind:href="'/meetpost/detailpost?id='+p.id">Read more <i
+                                                <a v-bind:href="'/meetpost/detailpost?id='+p.meetpost.id">Read more <i
                                                         class="fa fa-fw fa-arrow-right"></i> </a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div> -->
+                            </div>
                             <!-- /좋아요목록 -->
                         </div>
 
@@ -195,9 +191,9 @@
                         console.log(err);
                     });
 
-                axios.get('/favorite/favoritelist', {userId: userid})
+                axios.get('/favorite/favoritelist', { headers: { authorization: localStorage.getItem('token') } })
                 .then(function(res) {
-                    console.log(res);
+                    this.posts = res.data;
                 }.bind(this))
                 .catch(function(err) {
                     console.log(err);

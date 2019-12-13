@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <!-- Page title -->
+    <title>사용자 정보 수정</title>
+
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.png">
+
+    <!-- Style -->
+    <link rel="stylesheet" href="/css/theme-mariner.css">
+    <link rel="alternate stylesheet" href="/css/theme-mariner.css" title="theme-mariner">
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+</head>
+
+<body>
+
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loader"></div>
+    </div>
+    <!-- /Preloader -->
+
+    <!-- Header -->
+    <% include ./common/header %>
+    <!-- /Header -->
+
+    <!-- Page Header -->
+    <div class="inner-page-header">
+        <div class="container">
+            <div class="row">
+                <!-- Page Title -->
+                <div class="col-md-8">
+                    <h1 class="title">Blog - USER MODIFY</h1>
+                    <!-- <div class="subtitle">There are many variations of passages </div> -->
+                </div>
+                <!-- /Page Title -->
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <!-- Main -->
+    <main class="main-container">
+
+        <div class="container">
+            <div class="row">
+
+                <div class="col-sm-8">
+
+                    <div class="contact-form" id="app">
+
+                        <h3>USER MODIFY</h3>
+
+                        <div>
+                            <input type="hidden" name="form" value="Contact Page">
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <input type="password" class="form-control" v-model="user.userpw" ref="userpw"
+                                        placeholder="Password">
+                                </div>
+                            </div>
+                            <!-- <div class="row">  
+                                <div class="form-group col-md-12">
+                                    <input type="password"  class="form-control"  v-model="user.userpwre" ref="userpwre"
+                                    placeholder="Password confirm">
+                                </div>
+                            </div> -->
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <input type="text" class="form-control" v-model="user.username" ref="username"
+                                        placeholder="Your Name">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <input v-model="user.birth" ref="birth" type="text" class="form-control"
+                                        placeholder="Your Birth (ex.960101)">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-6">　Your Gender　
+                                    <label><input v-model="user.gender" ref="gender" type="radio" value="M">남</label>
+                                    <label><input v-model="user.gender" ref="gender" type="radio" value="W">여</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <input v-model="user.phone" ref="phone" type="text" class="form-control"
+                                        placeholder="Your Phone (ex.01012345678)">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <input type="file" id="fileInput" name="fileInput" v-on:change="fileupload">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <textarea v-model="user.info" cols="5" rows="3" placeholder="introduce yourself"
+                                        class="form-control"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-md-12 text-center">
+                                    <button v-on:click="modifyUser" class="btn btn-theme">수정</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- /Contact Form -->
+            </div>
+        </div>
+    </main>
+    <!-- /Main -->
+
+
+    <!-- Footer -->
+    <% include ./common/footer %>
+    <!-- /Footer -->
+
+    <!-- Scroll To Top -->
+    <div id="scroll-to-top" class="scroll-to-top">
+        <i class="icon fa fa-angle-up"></i>
+    </div>
+    <!-- /Scroll To Top -->
+
+    <!-- Modal: Sign In -->
+    <% include ./common/sign_in %>
+    <!-- Modal: /Sign In -->
+
+    <!-- Modal: Sign Up -->
+    <% include ./common/sign_up %>
+    <!-- Modal: /Sign Up -->
+
+    <!-- Modal: Result Message -->
+    <% include ./common/result_message %>
+    <!-- /Modal: Result Message -->
+
+
+    <!-- SCRIPTS -->
+    <script src="/js/jquery-2.2.0.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/owl.carousel.min.js"></script>
+    <script src="/js/jquery.magnific-popup.min.js"></script>
+    <script src="/js/jquery.validate.min.js"></script>
+    <script src="/js/jquery.stellar.min.js"></script>
+    <script src="/js/wow.min.js"></script>
+    <script src="/js/jquery.animateNumber.min.js"></script>
+    <script src="/js/jquery.appear.js"></script>
+    <script src="/js/general.js"></script>
+    <!-- /SCRIPTS -->
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <script>
+        $.urlParam = function (name) {
+            var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+            if (results == null) {
+                return null;
+            }
+            else {
+                return results[1] || 0;
+            }
+        }
+        var id = $.urlParam('userid');
+
+        var app = new Vue({
+            el: '#app',
+            data: {
+                user: {}
+
+            },
+            created: function () {
+
+                axios.get('/mypage/modifyuser/' + id)
+                    .then(function (res) {
+                        this.user = res.data;
+                    }.bind(this))
+                    .catch(function (err) {
+                        console.log(err);
+                    });
+            },
+            methods: {
+                modifyUser: function () {
+
+                    // if (this.$refs.userpw.value == "") {
+                    //     alert("비밀번호를 입력해주세요.");
+                    //     this.$refs.userpw.focus();
+                    //     return false;
+                    // }
+
+                    // if (this.$refs.userpw.value.length < 7) {
+                    //     alert("비밀번호는 7글자 이상입니다.");
+                    //     this.$refs.userpw.focus();
+                    //     return false;
+                    // }
+
+                    // if (this.$refs.userpw.value != this.$refs.userpwre.value) {
+                    //     alert("비밀번호가 일치하지 않습니다.");
+                    //     this.$refs.userpwre.focus();
+                    //     return false;
+                    // }
+
+                    if (this.$refs.username.value == "") {
+                        alert("이름을 입력해주세요.");
+                        this.$refs.username.focus();
+                        return false;
+                    }
+                    if (this.$refs.birth.value == "") {
+                        alert("생년월일을 입력해주세요.");
+                        this.$refs.birth.focus();
+                        return false;
+                    }
+                    if (this.$refs.birth.value.length != 6) {
+                        alert("생년월일을 올바르게 입력해주세요.");
+                        this.$refs.birth.focus();
+                        return false;
+                    }
+                    if (this.$refs.phone.value == "") {
+                        alert("전화번호를 입력해주세요.");
+                        this.$refs.phone.focus();
+                        return false;
+                    }
+                    if (this.$refs.phone.value.length != 11) {
+                        alert("전화번호를 올바르게 입력해주세요.");
+                        this.$refs.phone.focus();
+                        return false;
+                    }
+
+                    var con = confirm("수정하시겠습니까?")
+                    if (con) {
+                        axios.patch('/mypage/modifyuser/' + id, this.user)
+                            .then(function (res) {
+                                alert("수정되었습니다");
+                                // location.href="/mypage/modifyuser?id="+id;
+                            }.bind(this))
+                            .catch(function (err) {
+                                console.log(err)
+                            });
+                    } else {
+                        location.href = "/mypage";
+                    }
+
+                },
+                fileupload: function () {
+                    event.preventDefault();
+                    var form = $('#fileForm')[0];
+                    var formData = new FormData(form);
+
+                    axios.post('/file/upload', formData).then(function (response) {
+                        if (response.data.code == "200") {
+                            this.user.photofullroute = response.data.message;
+                            return false;
+                        } else {
+                            alert(response.data.message);
+                            return false;
+                        }
+                    }.bind(this))
+                        .catch(function (err) {
+                            console.log(err);
+                        });
+
+                    return false;
+                }
+            }
+        });
+
+    </script>
+</body>
+
+</html>

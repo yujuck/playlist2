@@ -125,7 +125,7 @@ router.post('/login', async (req, res, next) => {
     //동일 메일 아이디 사용자 정보 조회
     const exemail = await User.findOne(
       {
-        attributes:['id','useremail','userpw','username','birth','gender','phone'], 
+        attributes:['id','useremail','userpw','username','birth','gender','phone','photofullroute'], 
         where: { useremail:req.body.useremail } 
       });
 
@@ -142,7 +142,7 @@ router.post('/login', async (req, res, next) => {
           // useremail: exemail.useremail,
           // username:exemail.username,
         }, process.env.JWT_SECRET, {
-          expiresIn: '4m',  // 유효시간
+          expiresIn: '5m',  // 유효시간
           issuer: 'webzine',
         });
 
