@@ -1,0 +1,8 @@
+{
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/dde2a966-4363-4ab6-93d6-bc93e6e53966/resourceGroups/PlaylistRG/providers/Microsoft.Web/sites/PlaylistWeb",
+    "appService.deploySubpath": ""
+}
