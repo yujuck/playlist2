@@ -203,15 +203,6 @@
                         console.log(err);
                     });
 
-                },
-                search: function (value) {
-                    axios.get('/meetpost/search?categoryid=' + value)
-                        .then(function (res) {
-                            this.posts = res.data;
-                        }.bind(this))
-                        .catch(function (err) {
-                            console.log(err);
-                        });
                 }
             }
         });

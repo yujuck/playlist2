@@ -78,34 +78,31 @@
                 <div class="col-md-9">
 
 
-                    <div class="row section-content animated wow fadeIn" data-wow-duration="1.3s">
+                    <div class="projects-list">
 
-
-                        <!-- Project -->
-                        <div class="col-xs-12 col-sm-6 col-md-4" v-for="r in reviews">
-                            <div class="project">
-                                <a v-bind:href="r.introphoto" class="project-item image-popup">
+                        <div class="col-sm-4 col-xs-12" v-for="r in reviews">
+                            <div class="project-item">
+                                
                                     <div class="gallery-image">
+
                                         <img v-bind:src="r.introphoto">
                                     </div>
-                                    <div class="overlay">
-                                        <p class="description">
-                                            {{r.content}}
-                                        </p>
-                                        <div class="information">
-                                            <h3 class="title">{{r.title}}</h3>
-                                            <!-- <h3 class="title">{{category.categoryname}}</h3> -->
-                                            <span class="title">　by {{r.user.username}}</span>
-                                        </div>
+
+                                
+                                <div class="information">
+                                    <div class="h3 title">{{ r.title }}
                                     </div>
-                                </a>
+                                    <div class="description">
+                                        by {{r.user.useremail}}
+                                    </div>
+                                    <div class="read-more">
+                                        <a v-bind:href="'/review/detailpost?id='+r.id">Read more <i
+                                                class="fa fa-fw fa-arrow-right"></i> </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <!-- /Project -->
-                    
                     </div>
-
-
                     <div class="col-md-12 text-right">
                         <button v-on:click="removeWrite" class="btn btn-theme">글작성</button>
                     </div>
@@ -163,7 +160,8 @@
             el: '#app',
             data: {
                 reviews: [],
-                category: []
+                category: [],
+                userid: ''
             },
             created: function () {
                 axios.get('/category')
@@ -184,9 +182,28 @@
             },
             methods: {
                 removeWrite: function () {
-                    
-                    location.href = "review/review-writepage"
-                },
+                    axios.get('/user/checkLogin', { headers: { authorization: localStorage.getItem('token') } })
+                    .then(function (res) {
+                        if (res.data.code == 419) {
+                            alert("로그인이 필요합니다");
+                            location.href="/";
+                            return false;
+                            }
+                        if (res.data.code == 401) {
+                            alert("로그인이 필요합니다");
+                            location.href="/";
+                            return false;
+                        }
+                        if (res.data.code == 200) {
+                            ocation.href = "review/review-writepage"
+                            
+                        }
+                    }.bind(this))
+                    .catch(function (err) {
+                        console.log(err);
+                    });
+
+                }
             }
         });
     </script>
