@@ -54,7 +54,7 @@
                 <div class="col-sm-10">
                     <div class="contact-form" id="app">
                         <h3>POST WRITE</h3>
-                        <div id="fileForm">
+                        <form id="fileForm">
                             <input type="hidden" name="form" value="Contact Page">
                             <div class="row">
                                 <div class="form-group col-md-4">
@@ -107,7 +107,7 @@
                                     <button v-on:click="listPage" class="btn btn-theme">취소</button>
                                 </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
                 <!-- /Contact Form -->
@@ -179,7 +179,7 @@
                     participants: 0,
                     good: 0,
                     count: 0,
-                    photo: ''
+                    meetphoto: ''
                 }
 
             },
@@ -252,8 +252,6 @@
                             }else{
                                 location.href="/meetpost";
                             }
-
-                    // var token = localStorage.getItem('token');
                    
                 },
                 listPage: function () {
@@ -267,7 +265,7 @@
     
                         axios.post('/file/upload',formData).then(function(response){
                             if(response.data.code == "200") {
-                                this.post.photo=response.data.message;
+                                this.post.meetphoto=response.data.message;
                                 return false;
                             } else{
                                 alert(response.data.message);

@@ -24,7 +24,7 @@ router.post('/write', verifyToken, async (req, res) => {
       content: req.body.content,
       good: 0,
       count: 0,
-      meetphoto: req.body.photo,
+      meetphoto: req.body.meetphoto,
       userId: req.decoded.id,
       createdAt: new Date
     });
