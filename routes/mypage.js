@@ -1,12 +1,9 @@
 var express = require('express');
 var router = express.Router();
-var MeetPost = require('../models/index.js').MeetPost;
-var Category = require('../models/index.js').Category;
 var User = require('../models/index.js').User;
-const { verifyToken } = require('./middlewares');
 const bcrypt = require('bcrypt');
 
-const { verifyToken } = require('./middlewares');
+
 
 // 사용자 정보 페이지 렌더링
 router.get('/', function (req, res, next) {
