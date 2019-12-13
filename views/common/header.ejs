@@ -33,7 +33,7 @@
                                 <li><a href="#" data-toggle="modal" data-target="#sign-up"><i class="icon fa fa-fw fa-edit"></i> Sign up</a></li>
                             </ul>
                             <ul class="list-inline" v-else="userid" > 
-                                <li><a href="http://localhost:3000/mypage" data-toggle="modal"><i class="icon fa fa-fw fa-sign-in"></i>　{{user.useremail}}<b>　님</b></a></li>
+                                <li><a href="http://localhost:3000/mypage" data-toggle="modal"><i class="icon fa fa-fw fa-sign-in"></i>　{{user.username}}<b>　님</b></a></li>
                             </ul>
                         </div>
                         <!-- /User Cabinet Links -->
@@ -94,10 +94,10 @@
                                         <a href="/">Home</a>
                                     </li>
                                     <li>
-                                        <a href="/review">Review</a>
+                                        <a href="/meetpost">Category</a> 
                                     </li>
                                     <li>
-                                        <a href="/meetpost">Category</a>
+                                        <a href="/review">Review</a>
                                     </li>
                                     <li>
                                         <a href="/mypage">MyPage</a>

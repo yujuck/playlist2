@@ -39,4 +39,12 @@ router.get('/:id', function(req, res, next) {
       });
   });
 
+  // 댓글 삭제
+  router.delete('/delete/:id', async (req,res,next) =>{
+    try{
+      await Comment.destroy({where: {id:req.params.id}})
+    } catch(err) {
+      console.log(err);
+    }
+  });
   module.exports = router;

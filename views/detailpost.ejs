@@ -102,7 +102,7 @@
                                 <ul class="list-inline meta">
                                     <li><i class="icon fa fa-calendar"></i> {{posts.createdAt}}</li>
                                     <li><i class="icon fa fa-user"></i> by <a
-                                            v-bind:href="'/yourpage?user='+posts.user.id">{{posts.user.useremail}}</a>
+                                            v-bind:href="'/yourpage?user='+posts.user.id">{{posts.user.username}}</a>
                                     </li>
                                 </ul>
                                 <!-- /Post Metadata -->
@@ -156,8 +156,8 @@
 
                             <h4 class="title">Recent Comments</h4>
 
-                            <ul class="comments" v-for="comment in comments">
-                                <li>
+                            <ul class="comments list-group list-group-flush" v-for="comment in comments">
+                                <li class="list-group-item">
                                     <div class="media">
                                         <div class="media-left">
                                             <div class="image">
@@ -166,7 +166,7 @@
                                         </div>
 
                                         <div class="media-body">
-                                            <h4 class="author"><a v-bind:href="'/yourpage?user='+posts.user.id">{{comment.user.useremail}}</a></h4>
+                                            <h4 class="author"><a v-bind:href="'/yourpage?user='+posts.user.id">{{comment.user.username}}</a></h4>
                                             <span class="date">{{comment.createdAt}}</span>
                                             <p class="text">
                                                 {{comment.comment}}
@@ -176,8 +176,10 @@
                                                     <a v-bind:href="'/yourpage?user='+posts.user.id" class="project-item image-popup"><i
                                                             class="icon fa fa-fw fa-search"></i>
                                                         SHOW AUTHOR INFORMATION</a>
+                                                    <button class="btn btn-danger" v-on:click="deleteComment($event)" v-bind:value="comment.id" v-if="comment.userId == userid">삭제</button>
                                                 </div>
                                             </div>
+                                            
                                         </div>
                                     </div>
                                 </li>
@@ -380,6 +382,14 @@
                         .catch(function (err) {
                             console.log(err);
                         });
+                },
+                deleteComment: function(e) {
+                    const buttonValue = e.target.value;
+                    var del = confirm("댓글을 삭제하시겠습니까?")
+                    if (del) {
+                        axios.delete('/comment/delete/' + buttonValue);
+                        location.href = "/meetpost/detailpost?id="+this.posts.id;
+                    }
                 },
                 gotolist: function () {
                     location.href = "/meetpost";

@@ -188,22 +188,14 @@
                             return false;
                         }
                         if (res.data.code == 200) {
-                            this.userid = res.data.result;
-                        }
-                        
+                            this.userid = res.data.result.id;
+                        } 
                     }.bind(this))
                     .catch(function (err) {
                         console.log(err);
                     });
 
-                axios.get('/user/profile', { headers: { authorization: localStorage.getItem('token') } }).then(function (res) {
-                    this.user = res.data.result;
-                }.bind(this))
-                    .catch(function (err) {
-                        console.log(err);
-                });
-                
-                axios.get('/favorite/favoritelist', { headers: { authorization: localStorage.getItem('token') } })
+                axios.get('/favorite/favoritelist', {userId: userid})
                 .then(function(res) {
                     console.log(res);
                 }.bind(this))
