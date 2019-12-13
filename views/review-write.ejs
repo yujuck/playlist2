@@ -141,7 +141,7 @@
                     categoryId: '',
                     title: '',
                     content: '',
-                    photo: ''
+                    introphoto: ''
                 }
 
             },
@@ -204,7 +204,7 @@
     
                         axios.post('/file/upload',formData).then(function(response){
                             if(response.data.code == "200") {
-                                this.review.photo=response.data.message;
+                                this.review.introphoto=response.data.message;
                                 return false;
                             } else{
                                 alert(response.data.message);
