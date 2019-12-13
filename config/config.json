@@ -8,20 +8,20 @@
     "operatorsAliases": 1
   },
   "test": {
-    "username": "root",
-    "password": null,
-    "database": "database_test",
-    "host": "127.0.0.1",
+    "username": "playlist@playlistdbsvr",
+    "password": "ppk1217!",
+    "database": "playlist",
+    "host": "playlistdbsvr.mysql.database.azure.com",
     "dialect": "mysql",
-    "operatorsAliases": false
+    "operatorsAliases": 1
   },
   "production": {
-    "username": "root",
-    "password": null,
-    "database": "database_production",
-    "host": "127.0.0.1",
+    "username": "roplaylist@playlistdbsvrot",
+    "password": "ppk1217!",
+    "database": "playlist",
+    "host": "playlistdbsvr.mysql.database.azure.com",
     "dialect": "mysql",
-    "operatorsAliases": false
+    "operatorsAliases": 1
   }
 }
 
