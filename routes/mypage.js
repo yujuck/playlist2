@@ -3,6 +3,8 @@ var router = express.Router();
 var MeetPost = require('../models/index.js').MeetPost;
 var Category = require('../models/index.js').Category;
 var User = require('../models/index.js').User;
+const { verifyToken } = require('./middlewares');
+const bcrypt = require('bcrypt');
 
 const { verifyToken } = require('./middlewares');
 
@@ -33,21 +35,28 @@ router.get('/modifyuser', function (req, res, next) {
 
 router.get('/modifyuser/:id', function(req, res, next) {
   User.findOne({
-    where: { id: req.params.id } 
+    where: { id: req.params.id },
+
   })
-  .then((posts) => {
-    res.json(posts); 
+  .then((mypage) => {
+    res.json(mypage); 
   }).catch((err) => {
     console.error(err);
     next(err);
   });
 });
 
-// 글 수정 라우터
-router.patch('/modifyuser/:id', verifyToken, function(req, res, next) {
+// 회원정보 수정 라우터
+router.patch('/modifyuser/:id', async(req, res, next)=>{
+  const password = req.body.userpw;
+ 
+  console.log("비밀번호: ", password);
+
+  const hash = await bcrypt.hash(password, 12);
+
   User.update(
     { 
-      userpw : req.body.hash,
+      userpw : hash,
       username : req.body.username,
       birth : req.body.birth,
       gender : req.body.gender,

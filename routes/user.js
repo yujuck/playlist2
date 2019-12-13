@@ -125,7 +125,7 @@ router.post('/login', async (req, res, next) => {
     //동일 메일 아이디 사용자 정보 조회
     const exemail = await User.findOne(
       {
-        attributes:['id','useremail','userpw','username','birth','gender','phone'], 
+        attributes:['id','useremail','userpw','username','birth','gender','phone','photofullroute'], 
         where: { useremail:req.body.useremail } 
       });
 
