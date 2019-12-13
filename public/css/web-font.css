@@ -1,5 +1,7 @@
-@import url('https://fonts.googleapis.com/css?family=Noto+Serif+KR&display=swap');
+/* @import url('https://fonts.googleapis.com/css?family=Noto+Serif+KR&display=swap'); */
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap');
 
 body {
-    font-family: 'Noto Serif KR', serif;
+    /* font-family: 'Noto Serif KR', serif; */
+    font-family: 'Noto Sans KR', sans-serif;
 }
