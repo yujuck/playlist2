@@ -3,7 +3,6 @@ var router = express.Router();
 var MeetPost = require('../models/index.js').MeetPost;
 var Category = require('../models/index.js').Category;
 var User = require('../models/index.js').User;
-
 const { verifyToken } = require('./middlewares');
 
 // 사용자 정보 페이지 렌더링
@@ -33,10 +32,11 @@ router.get('/modifyuser', function (req, res, next) {
 
 router.get('/modifyuser/:id', function(req, res, next) {
   User.findOne({
-    where: { id: req.params.id } 
+    where: { id: req.params.id },
+
   })
-  .then((posts) => {
-    res.json(posts); 
+  .then((mypage) => {
+    res.json(mypage); 
   }).catch((err) => {
     console.error(err);
     next(err);
