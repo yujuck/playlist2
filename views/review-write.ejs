@@ -140,8 +140,8 @@
                 review: {
                     categoryId: '',
                     title: '',
-                    introphoto: '',
                     content: '',
+                    photo: ''
                 }
 
             },
@@ -194,6 +194,7 @@
             
                 },
                 relistPage: function () {
+                    alert("작성이 취소되었습니다");
                     location.href = "/review";
                 },
                 fileupload: function() {
@@ -203,7 +204,7 @@
     
                         axios.post('/file/upload',formData).then(function(response){
                             if(response.data.code == "200") {
-                                this.review.introphoto=response.data.message;
+                                this.review.photo=response.data.message;
                                 return false;
                             } else{
                                 alert(response.data.message);

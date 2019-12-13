@@ -4,7 +4,7 @@
 <head>
 
     <!-- Page title -->
-    <title>Playlist</title>
+    <title>리뷰글 수정</title>
 
     <!-- Meta -->
     <meta charset="utf-8">
@@ -18,6 +18,9 @@
     <link rel="stylesheet" href="/css/theme-mariner.css">
     <link rel="alternate stylesheet" href="/css/theme-mariner.css" title="theme-mariner">
     <link rel="stylesheet" href="/css/web-font.css">
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 </head>
 
@@ -37,81 +40,60 @@
     <div class="inner-page-header">
         <div class="container">
             <div class="row">
-
                 <!-- Page Title -->
                 <div class="col-md-8">
-                    <h1 class="title">Reviews List</h1>
+                    <h1 class="title">Review Posts Modify</h1>
                     <!-- <div class="subtitle">There are many variations of passages </div> -->
                 </div>
                 <!-- /Page Title -->
-
             </div>
         </div>
     </div>
     <!-- /Page Header -->
 
     <!-- Main -->
-    <main class="main-container" id="app">
+    <main class="main-container">
 
         <div class="container">
             <div class="row">
 
-                <!-- Blog Sidebar -->
-                <div class="col-md-3">
+                <div class="col-sm-8">
 
-                    <!-- Widget: Categories -->
-                    <div class="widget">
+                    <div class="contact-form" id="app">
 
-                        <div class="title"><a href="/review">Categories</a></div>
-                        <ul class="sidebar-menu">
-                            <li v-for="c in category"><a
-                                    v-bind:href="'/category/recategorylist?id='+c.id">{{c.categoryname}}</a></li>
-                        </ul>
-                        
-                    </div>
-                    <!-- /Widget: Categories -->
+                        <h3>REVIEW WRITE</h3>
 
-                </div>
-                <!-- /Blog Sidebar -->
-
-                <!-- Blog Content -->
-                <div class="col-md-9">
-
-
-                    <div class="projects-list">
-
-                        <div class="col-sm-4 col-xs-12" v-for="r in reviews">
-                            <div class="project-item">
-                                
-                                    <div class="gallery-image">
-
-                                        <img v-bind:src="'/'+r.introphoto">
-                                    </div>
-
-                                
-                                <div class="information">
-                                    <div class="h3 title">{{ r.title }}
-                                    </div>
-                                    <div class="description">
-                                        by {{r.user.useremail}}
-                                    </div>
-                                    <div class="read-more">
-                                        <a v-bind:href="'/review/detailpost?id='+r.id">Read more <i
-                                                class="fa fa-fw fa-arrow-right"></i> </a>
-                                    </div>
+                        <form class="form-ajax">
+                            <input type="hidden" name="form" value="Contact Page">
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <select class="form-control" v-model="review.categoryId" ref="categoryid">
+                                        <option value="0" selected>카테고리 선택</option>
+                                        <option v-for="c in category" v-bind:value="c.id">{{c.categoryname}}</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <input type="text" class="form-control" v-model="review.title" ref="title"
+                                        placeholder="제목을 입력해주세요.">
+                                </div>
+                    
+                                <div class="form-group col-md-12">
+                                    <textarea class="form-control" v-model="review.content" ref="content"
+                                        placeholder="내용(필수)"></textarea>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12 text-right">
-                        <button v-on:click="removeWrite" class="btn btn-theme">글작성</button>
+
+                            <div class="row">
+                                <div class="form-group col-md-12 text-center">
+                                    <button v-on:click="patchPost" class="btn btn-theme">수정</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
-                <!-- /Blog Content -->
-
+                <!-- /Contact Form -->
             </div>
         </div>
-
     </main>
     <!-- /Main -->
 
@@ -165,13 +147,14 @@
                 return results[1] || 0;
             }
         }
-        var id = $.urlParam('id');
+        var id = $.urlParam('reviewid');
 
         var app = new Vue({
             el: '#app',
             data: {
-                reviews: [],
-                category: []
+                category: [],
+                review: [],
+
             },
             created: function () {
                 axios.get('/category')
@@ -182,20 +165,49 @@
                         console.log(err);
                     });
 
-                axios.get('/category/recategorylist/' + id)
+                axios.get('/review/modify/' + id)
                     .then(function (res) {
-                        this.reviews = res.data;
+                        this.review = res.data;
                     }.bind(this))
                     .catch(function (err) {
                         console.log(err);
-                    })
+                    });
             },
             methods: {
-                removeWrite: function () {
-                    location.href = "review/review-writepage"
-                },
+                patchPost: function () {
+
+                    if (this.review.categoryId == '') {
+                        alert("카테고리를 선택해주세요");
+                        this.$refs.categoryid.focus();
+                        return false;
+                    }
+
+                    if (this.review.title == '') {
+                        alert("제목을 입력해주세요");
+                        this.$refs.title.focus();
+                        return false;
+                    }
+
+                    if (this.review.content == '') {
+                        alert("내용을 입력해주세요");
+                        this.$refs.content.focus();
+                        return false;
+                    }
+
+                    axios.patch('/review/modify/'+id, this.review, { headers: { authorization: localStorage.getItem('token') } })
+                    .then(function (res) {
+                        console.log('수정 완료!');
+                        alert("수정되었습니다");
+                        location.href="/review/detailpost?id="+id;
+                    }.bind(this))
+                    .catch(function(err){
+                        console.log('에러!');
+                        console.log(err)
+                    });
+                }
             }
         });
+
     </script>
 </body>
 

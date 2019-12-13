@@ -51,4 +51,77 @@ router.get('/review-list', function (req, res, next) {
     });
 });
 
+// 상세글 페이지 렌더링
+router.get('/detailpost', function(req, res, next) {
+  res.render('review-detailpost'); 
+});
+
+// 상세글 가져오는 라우터
+router.get('/detail/:id', function (req, res, next) {
+ Intropost.findOne({
+   include: [{ model: Category, }, { model: User}],
+   where: { id: req.params.id } 
+ })
+ .then((reviews) => {
+   res.json(reviews); 
+ }).catch((err) => {
+   console.error(err);
+   next(err);
+ });
+});
+
+// 글 수정
+router.get('/modify', function(req,res,next) {
+  res.render('review-modify');
+});
+
+
+// 해당 글 정보 불러오기
+router.get('/modify/:id', function(req, res, next) {
+  Intropost.findOne({
+    include: [{ model: Category, }, { model: User}],
+    where: { id: req.params.id } 
+  })
+  .then((reviews) => {
+    res.json(reviews); 
+  }).catch((err) => {
+    console.error(err);
+    next(err);
+  });
+});
+
+// 글 수정 라우터
+router.patch('/modify/:id', verifyToken, function(req, res, next) {
+  Intropost.update(
+    { 
+      categoryId: req.body.categoryId,
+      title: req.body.title,
+      content: req.body.content,
+      introphoto: req.body.photo,
+      userId: req.decoded.id,
+    }, 
+    { 
+      where: { id: req.params.id } 
+    })
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((err) => {
+      console.error(err);
+      next(err);
+    });
+});
+
+// 글 삭제
+router.delete('/delete/:id', function(req, res, next) {
+  Intropost.destroy({ where: { id: req.params.id } })
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((err) => {
+      console.error(err);
+      next(err);
+    });
+});
+
 module.exports = router;

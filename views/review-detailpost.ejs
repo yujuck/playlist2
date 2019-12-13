@@ -40,7 +40,7 @@
 
                 <!-- Page Title -->
                 <div class="col-md-8">
-                    <h1 class="title">Reviews List</h1>
+                    <h1 class="title">Review Detail Post</h1>
                     <!-- <div class="subtitle">There are many variations of passages </div> -->
                 </div>
                 <!-- /Page Title -->
@@ -62,12 +62,11 @@
                     <!-- Widget: Categories -->
                     <div class="widget">
 
-                        <div class="title"><a href="/review">Categories</a></div>
+                        <div class="title">Categories</div>
                         <ul class="sidebar-menu">
-                            <li v-for="c in category"><a
-                                    v-bind:href="'/category/recategorylist?id='+c.id">{{c.categoryname}}</a></li>
+                            <li v-for="c in category"><a>{{c.categoryname}}</a></li>
                         </ul>
-                        
+
                     </div>
                     <!-- /Widget: Categories -->
 
@@ -77,44 +76,72 @@
                 <!-- Blog Content -->
                 <div class="col-md-9">
 
+                    <!-- Posts List -->
+                    <div class="posts-list">
 
-                    <div class="projects-list">
+                        <!-- Single Post With Image -->
+                        <article class="blog-post">
+                            <!-- Post Title -->
+                            <h2 class="title">{{reviews.title}}</h2>
+                            <!-- /Post Title -->
 
-                        <div class="col-sm-4 col-xs-12" v-for="r in reviews">
-                            <div class="project-item">
-                                
-                                    <div class="gallery-image">
-
-                                        <img v-bind:src="'/'+r.introphoto">
-                                    </div>
-
-                                
-                                <div class="information">
-                                    <div class="h3 title">{{ r.title }}
-                                    </div>
-                                    <div class="description">
-                                        by {{r.user.useremail}}
-                                    </div>
-                                    <div class="read-more">
-                                        <a v-bind:href="'/review/detailpost?id='+r.id">Read more <i
-                                                class="fa fa-fw fa-arrow-right"></i> </a>
-                                    </div>
+                            <!-- Post Image -->
+                            <div>
+                                <!--class="image"-->
+                                <div>
+                                    <!--class="gallery-image"-->
+                                    <img v-bind:src="'/' + reviews.introphoto" width="300px" height="300px">
                                 </div>
                             </div>
+                            <!-- /Post Image -->
+
+                            <!-- Content -->
+                            <div class="data">
+
+                                <!-- Post Metadata -->
+                                <ul class="list-inline meta">
+                                    <li><i class="icon fa fa-calendar"></i> {{reviews.createdAt}}</li>
+                                    <li><i class="icon fa fa-user"></i> by <a
+                                            v-bind:href="'/yourpage?user='+reviews.user.id">{{reviews.user.useremail}}</a>
+                                    </li>
+                                </ul>
+                                <!-- /Post Metadata -->
+
+
+                                <!-- Post Content -->
+                                <div class="content">
+                                    <blockquote>
+                                        {{reviews.content}}
+                                    </blockquote>
+                                </div>
+                                <!-- /Post Content -->
+
+                            </div>
+                            <!-- /Content -->
+
+                        </article>
+                        <!-- /Single Post With Image -->
+
+                        <div class="col-md-12 text-right">
+                            <ul class="list-inline social-inline">
+                                <button class="btn btn-theme" v-on:click="gotolist">목록</button>
+                                <button class="btn btn-theme" v-on:click="removePost($event)" v-bind:value="reviews.id"
+                                    v-if="userid == reviews.user.id">삭제</button>
+                                <a v-bind:href="'/review/modify?reviewid='+reviews.id"><button class="btn btn-theme"
+                                        v-if="userid == reviews.user.id">수정</button></a>
+                            </ul>
                         </div>
+
                     </div>
-                    <div class="col-md-12 text-right">
-                        <button v-on:click="removeWrite" class="btn btn-theme">글작성</button>
-                    </div>
+                    <!-- /Posts List -->
+
                 </div>
                 <!-- /Blog Content -->
-
             </div>
         </div>
 
     </main>
     <!-- /Main -->
-
 
     <!-- Footer -->
     <% include ./common/footer %>
@@ -137,7 +164,6 @@
     <!-- Modal: Result Message -->
     <% include ./common/result_message %>
     <!-- /Modal: Result Message -->
-
 
     <!-- SCRIPTS -->
     <script src="/js/jquery-2.2.0.min.js"></script>
@@ -170,8 +196,9 @@
         var app = new Vue({
             el: '#app',
             data: {
-                reviews: [],
-                category: []
+                reviews: {},
+                category: [],
+                userid: '',
             },
             created: function () {
                 axios.get('/category')
@@ -182,18 +209,37 @@
                         console.log(err);
                     });
 
-                axios.get('/category/recategorylist/' + id)
+                axios.get('/review/detail/' + id)
                     .then(function (res) {
+
                         this.reviews = res.data;
                     }.bind(this))
                     .catch(function (err) {
                         console.log(err);
-                    })
+                    });
+
+
+                axios.get('/user/checkLogin', { headers: { authorization: localStorage.getItem('token') } })
+                    .then(function (res) {
+                        this.userid = res.data.result.id;
+                    }.bind(this))
+                    .catch(function (err) {
+                        console.log(err);
+                    });
             },
             methods: {
-                removeWrite: function () {
-                    location.href = "review/review-writepage"
+                removePost: function (e) {
+                    const buttonValue = e.target.value;
+                    var del = confirm("삭제하시겠습니까?")
+                    if (del) {
+                        axios.delete('/review/delete/' + buttonValue);
+                        location.href = "/review";
+                    }
                 },
+                
+                gotolist: function () {
+                    location.href = "/review";
+                }
             }
         });
     </script>

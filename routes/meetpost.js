@@ -1,11 +1,12 @@
 var express = require('express');
 var router = express.Router();
+
 var MeetPost = require('../models/index.js').MeetPost;
 var Category = require('../models/index.js').Category;
 var User = require('../models/index.js').User;
-var Participants = require('../models/index.js').Participants;
+
 const { verifyToken } = require('./middlewares');
-var nodemailer = require('nodemailer');
+
 
 // 글 작성 페이지 렌더링
 router.get('/writepage', function (req, res, next) {
@@ -131,5 +132,4 @@ router.delete('/delete/:id', function (req, res, next) {
       next(err);
     });
 });
-
 module.exports = router;
