@@ -62,65 +62,63 @@
 
                         <h3>USER MODIFY</h3>
 
-                                <form class="form-ajax">
-                                    <input type="hidden" name="form" value="Contact Page">
-                                    <div class="row">
-                                        <div class="form-group col-md-12">
-                                            <input type="password" class="form-control" v-model="user.userpw" ref="userpw"
-                                                placeholder="Password">
-                                        </div>
-                                    </div>
-                                    <!-- <div class="row">  
+                        <div>
+                            <input type="hidden" name="form" value="Contact Page">
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <input type="password" class="form-control" v-model="user.userpw" ref="userpw"
+                                        placeholder="Password">
+                                </div>
+                            </div>
+                            <!-- <div class="row">  
                                 <div class="form-group col-md-12">
                                     <input type="password"  class="form-control"  v-model="user.userpwre" ref="userpwre"
                                     placeholder="Password confirm">
                                 </div>
                             </div> -->
-                                    <div class="row">
-                                        <div class="form-group col-md-12">
-                                            <input type="text" class="form-control" v-model="user.username"
-                                                ref="username" placeholder="Your Name">
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="form-group col-md-12">
-                                            <input v-model="user.birth" ref="birth" type="text" class="form-control"
-                                                placeholder="Your Birth (ex.960101)">
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="form-group col-md-6">　Your Gender　
-                                            <label><input v-model="user.gender" ref="gender" type="radio"
-                                                    value="M">남</label>
-                                            <label><input v-model="user.gender" ref="gender" type="radio"
-                                                    value="W">여</label>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="form-group col-md-12">
-                                            <input v-model="user.phone" ref="phone" type="text" class="form-control"
-                                                placeholder="Your Phone (ex.01012345678)">
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="form-group col-md-12">
-                                            <input type="file" id="fileInput" name="fileInput" v-on:change="fileupload">
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="form-group col-md-12">
-                                            <textarea v-model="user.info" cols="5" rows="3"
-                                                placeholder="introduce yourself" class="form-control"></textarea>
-                                        </div>
-                                    </div>
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <input type="text" class="form-control" v-model="user.username" ref="username"
+                                        placeholder="Your Name">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <input v-model="user.birth" ref="birth" type="text" class="form-control"
+                                        placeholder="Your Birth (ex.960101)">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-6">　Your Gender　
+                                    <label><input v-model="user.gender" ref="gender" type="radio" value="M">남</label>
+                                    <label><input v-model="user.gender" ref="gender" type="radio" value="W">여</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <input v-model="user.phone" ref="phone" type="text" class="form-control"
+                                        placeholder="Your Phone (ex.01012345678)">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <input type="file" id="fileInput" name="fileInput" v-on:change="fileupload">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <textarea v-model="user.info" cols="5" rows="3" placeholder="introduce yourself"
+                                        class="form-control"></textarea>
+                                </div>
+                            </div>
 
-                                    <div class="row">
-                                        <div class="form-group col-md-12 text-center">
-                                            <button v-on:click="modifyUser" class="btn btn-theme">수정</button>
-                                        </div>
-                                    </div>
+                            <div class="row">
+                                <div class="form-group col-md-12 text-center">
+                                    <button v-on:click="modifyUser" class="btn btn-theme">수정</button>
+                                </div>
+                            </div>
 
-                                </form>
+                        </div>
                     </div>
                 </div>
                 <!-- /Contact Form -->
@@ -184,11 +182,11 @@
         var app = new Vue({
             el: '#app',
             data: {
-                user:{}
+                user: {}
 
             },
             created: function () {
-            
+
                 axios.get('/mypage/modifyuser/' + id)
                     .then(function (res) {
                         this.user = res.data;
