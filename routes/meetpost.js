@@ -134,93 +134,93 @@ router.delete('/delete/:id', function(req, res, next) {
 });
 
 // 참여하기
-router.post('/participate/:meetpostId', async (req, res, next) =>{
+// router.post('/participate/:meetpostId', async (req, res, next) =>{
 
-  var meetpostId = req.params.meetpostId;
-  var userId = req.body.userId;
+//   var meetpostId = req.params.meetpostId;
+//   var userId = req.body.userId;
 
-  Participants.create({
-    meetpostId: meetpostId,
-    userId: userId,
-    state: 1,
-    where: { id: req.params.id }
-  })
-    .then((result) => {
-      res.json(result);
-    })
-    .catch((err) => {
-      console.error(err);
-      next(err);
-    });
+//   Participants.create({
+//     meetpostId: meetpostId,
+//     userId: userId,
+//     state: 1,
+//     where: { id: req.params.id }
+//   })
+//     .then((result) => {
+//       res.json(result);
+//     })
+//     .catch((err) => {
+//       console.error(err);
+//       next(err);
+//     });
 
-    try {
-        //참여자 이메일 찾기
-        const partiemail = await User.findOne({
-                            attributes: ['useremail'],
-                            where: {
-                              id: userId
-                            }
-                        });
-        console.log('참여자 이메일: ' + partiemail.useremail);
+//     try {
+//         //참여자 이메일 찾기
+//         const partiemail = await User.findOne({
+//                             attributes: ['useremail'],
+//                             where: {
+//                               id: userId
+//                             }
+//                         });
+//         console.log('참여자 이메일: ' + partiemail.useremail);
         
-        //게시글 이름 찾기
-        const postname = await MeetPost.findOne({
-          attributes: ['title'],
-          where: {
-            id: meetpostId
-          }
-         });
-        console.log('게시글 이름: ' + postname.title);
+//         //게시글 이름 찾기
+//         const postname = await MeetPost.findOne({
+//           attributes: ['title'],
+//           where: {
+//             id: meetpostId
+//           }
+//          });
+//         console.log('게시글 이름: ' + postname.title);
 
-        //작성자 이름 찾기
-        const userresult = await MeetPost.findOne({
-          attributes: ['userId'],
-          where: {
-              id: meetpostId
-          }
-        });
+//         //작성자 이름 찾기
+//         const userresult = await MeetPost.findOne({
+//           attributes: ['userId'],
+//           where: {
+//               id: meetpostId
+//           }
+//         });
 
-        if(userresult.userId) {
+//         if(userresult.userId) {
     
-            const writeemail = await User.findOne({
-                                attributes: ['useremail'],
-                                where: {
-                                    id: userresult.userId
-                                }
-                            });
-            console.log('작성자 이메일: ' + writeemail.useremail); 
+//             const writeemail = await User.findOne({
+//                                 attributes: ['useremail'],
+//                                 where: {
+//                                     id: userresult.userId
+//                                 }
+//                             });
+//             console.log('작성자 이메일: ' + writeemail.useremail); 
             
-            //메일보내기
-            var transporter = nodemailer.createTransport({
-              service:'gmail',
-              auth: {
-                  user : 'miniddo96@gmail.com',
-                  pass : 'kds97523!'
-              }
-            });
+//             //메일보내기
+//             var transporter = nodemailer.createTransport({
+//               service:'gmail',
+//               auth: {
+//                   user : 'miniddo96@gmail.com',
+//                   pass : 'kds97523!'
+//               }
+//             });
           
-            var mailOption = {
-                from : 'miniddo96@gmail.com',
-                to : writeemail.useremail,
-                subject : '[Playlist] 참여 안내',
-                text : '[Playlist]\n\n [' + partiemail.useremail + '] 님이 [' + postname.title + ']에 참여하였습니다.'
-            };
+//             var mailOption = {
+//                 from : 'miniddo96@gmail.com',
+//                 to : writeemail.useremail,
+//                 subject : '[Playlist] 참여 안내',
+//                 text : '[Playlist]\n\n [' + partiemail.useremail + '] 님이 [' + postname.title + ']에 참여하였습니다.'
+//             };
             
-            transporter.sendMail(mailOption, function(err, info) {
-                if ( err ) {
-                    console.error('Send Mail error : ', err);
-                }
-                else {
-                    console.log('Message sent : ', info);
-                }
-            });
+//             transporter.sendMail(mailOption, function(err, info) {
+//                 if ( err ) {
+//                     console.error('Send Mail error : ', err);
+//                 }
+//                 else {
+//                     console.log('Message sent : ', info);
+//                 }
+//             });
             
-        }
+//         }
 
-  } catch(error) {
-    console.error(error);
-    return next(error);
-  }
-});
+//   } catch(error) {
+//     console.error(error);
+//     return next(error);
+//   }
+// });
 
 module.exports = router;

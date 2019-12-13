@@ -17,6 +17,7 @@ var yourpageRouter = require('./routes/yourpage');
 var fileRouter = require('./routes/file');
 var reviewRouter = require('./routes/review');
 var favoriteRouter = require('./routes/favorite');
+var participantRouter = require('./routes/participant');
 var commentRouter = require('./routes/comment');
 
 var sequelize = require('./models').sequelize;
@@ -45,6 +46,7 @@ app.use('/yourpage', yourpageRouter);
 app.use('/file', fileRouter);
 app.use('/review', reviewRouter);
 app.use('/favorite', favoriteRouter);
+app.use('/participant', participantRouter);
 app.use('/comment', commentRouter);
 
 // catch 404 and forward to error handler

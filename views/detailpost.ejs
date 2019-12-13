@@ -139,8 +139,10 @@
                                             v-bind:value="posts.id">즐겨찾기 해제</button>
                                         <button v-else="favorite_state == false" class="btn btn-red btn-o-light-bg" v-on:click="favorite($event)"
                                         v-bind:value="posts.id">즐겨찾기 추가</button>
-                                        <button class="btn btn-orange" v-on:click="participate($event)"
-                                            v-bind:value="posts.id">참여하기</button>
+                                        <button v-if="participant_state == true" class="btn btn-orange" v-on:click="participant($event)"
+                                            v-bind:value="posts.id">참여하기 해제</button>
+                                        <button v-else="participant_state == false" class="btn btn-orange btn-o-light-bg" v-on:click="participant($event)"
+                                        v-bind:value="posts.id">참여하기 추가</button>
                                     </ul>
                                 </div>
                             </div>
@@ -284,7 +286,8 @@
                 reply: { comment: '' },
                 comments: [],
                 userid: '',
-                favorite_state: ''
+                favorite_state: '',
+                participant_state: '',
             },
             created: function () {
                 axios.get('/category')
@@ -327,6 +330,14 @@
                     .catch(function (err) {
                         console.log(err);
                     });
+
+                axios.get('/participant/' + id, { headers: { authorization: localStorage.getItem('token') } })
+                    .then(function (res) {
+                        this.participant_state = res.data.state;
+                    }.bind(this))
+                    .catch(function (err) {
+                        console.log(err);
+                    });    
 
             },
             methods: {
@@ -401,9 +412,8 @@
                             console.log(err);
                         });
                 },
-                participate: function (e) {
+                participant: function (e) {
                     const pbuttonValue = e.target.value;
-
                     axios.get('/user/checkLogin', { headers: { authorization: localStorage.getItem('token') } })
                         .then(function (res) {
                             if (res.data.code == 419) {
@@ -417,9 +427,11 @@
                                 return false;
                             }
                             if (res.data.code == 200) {
-                                var fav = confirm('참여하시겠습니까?')
-                                if (fav) {
-                                    axios.post('/meetpost/participate/' + pbuttonValue, { userId: res.data.result.id })
+                                if(this.participant_state) { // participant_state가 true이면
+                                    axios.post('/participant/' + pbuttonValue, { userId: res.data.result.id})
+                                    location.href = "/meetpost/detailpost?id=" + pbuttonValue;
+                                } else {  //participant_state가 false이면
+                                    axios.post('/participant/' + pbuttonValue, { userId: res.data.result.id, state: true })
                                     location.href = "/meetpost/detailpost?id=" + pbuttonValue;
                                 }
                             }
