@@ -64,18 +64,19 @@ router.post('/:meetpostId', async (req, res, next) => {
 
 });
 
-router.get('/favoritelist', verifyToken, function (req, res, next){
-  Favorite.findOne({
-    attributes:['meetpostId'],
-    where: {userId: req.decoded.id}
-  })
-  .then((posts) => {
-    res.json(posts);
-  }).catch((err) => {
-    console.error(err);
-    next(err);
-  });
-});
+// 즐겨찾기를 누른 글의 목록을 가져오는 데이터
+// router.get('/favoritelist',  function (req, res, next){
+//   Favorite.findAll({
+//     attributes:['meetpostId'],
+//     where: {userId: req.body.userId}
+//   })
+//   .then((posts) => {
+//     res.json(posts);
+//   }).catch((err) => {
+//     console.error(err);
+//     next(err);
+//   });
+// });
 
 
 module.exports = router;  
