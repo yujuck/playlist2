@@ -33,6 +33,7 @@ router.post('/review-write', verifyToken, function (req, res, next) {
 });
 
 
+
 // 전체글 리스트 페이지 렌더링
 router.get('/', function(req, res, next) {
   res.render('review-list');
@@ -91,23 +92,28 @@ router.get('/modify/:id', function(req, res, next) {
 });
 
 // 글 수정 라우터
-router.patch('/modify/:id', verifyToken, function(req, res, next) {
-  Intropost.update(
-    { 
-      categoryId: req.body.categoryId,
-      title: req.body.title,
-      content: req.body.content,
-      introphoto: req.body.photo,
-      userId: req.decoded.id,
-    }, 
-    { 
-      where: { id: req.params.id } 
+router.patch('/moim/modify/:id', verifyToken, function(req, res, next) {
+  console.log('시작 아아아아아아아아아ㅈㅈㅈㅈㅈ아앙아ㅏ');
+  console.log(req.body);
+
+
+    Intropost.update(
+      { 
+        categoryId: req.body.categoryId,
+        title: req.body.title,
+        content: req.body.content,
+        introphoto: req.body.introphoto,
+        userId: req.decoded.id,
+      }, 
+      { 
+        where: { id: req.params.id } 
     })
     .then((result) => {
+      console.log('결과값', result);
       res.json(result);
     })
     .catch((err) => {
-      console.error(err);
+      console.error('에러러러러러러러러러');
       next(err);
     });
 });

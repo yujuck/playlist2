@@ -63,7 +63,7 @@
 
                         <h3>REVIEW WRITE</h3>
 
-                        <form class="form-ajax">
+                        <div>
                             <input type="hidden" name="form" value="Contact Page">
                             <div class="row">
                                 <div class="form-group col-md-4">
@@ -88,7 +88,7 @@
                                     <button v-on:click="patchPost" class="btn btn-theme">수정</button>
                                 </div>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
                 <!-- /Contact Form -->
@@ -138,6 +138,7 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
     <script>
+        
         $.urlParam = function (name) {
             var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
             if (results == null) {
@@ -194,16 +195,17 @@
                         return false;
                     }
 
-                    axios.patch('/review/modify/'+id, this.review, { headers: { authorization: localStorage.getItem('token') } })
-                    .then(function (res) {
-                        console.log('수정 완료!');
+                    axios.patch('/review/moim/modify/'+id, this.review, { headers: { authorization: localStorage.getItem('token') } })
+                    .then(function(response){
+                        console.log(response);
                         alert("수정되었습니다");
                         location.href="/review/detailpost?id="+id;
-                    }.bind(this))
-                    .catch(function(err){
-                        console.log('에러!');
-                        console.log(err)
-                    });
+
+                        }.bind(this))
+                        .catch(function(err){
+                            console.log(err);
+                        });
+                    
                 }
             }
         });
