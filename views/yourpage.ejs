@@ -169,7 +169,7 @@
                             return false;
                         }
                         if (res.data.code == 200) {
-                            this.userid = res.data.result;
+                            this.userid = res.data.result.id;
                         }
                         
                     }.bind(this))
