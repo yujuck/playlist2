@@ -1,27 +1,27 @@
 {
   "development": {
-    "username": "playlist@playlistdbsvr",
-    "password": "ppk1217!",
+    "username": "root",
+    "password": "Kds97523!",
     "database": "playlist",
-    "host": "playlistdbsvr.mysql.database.azure.com",
+    "host": "127.0.0.1",
     "dialect": "mysql",
     "operatorsAliases": 1
   },
   "test": {
-    "username": "playlist@playlistdbsvr",
-    "password": "ppk1217!",
-    "database": "playlist",
-    "host": "playlistdbsvr.mysql.database.azure.com",
+    "username": "root",
+    "password": null,
+    "database": "database_test",
+    "host": "127.0.0.1",
     "dialect": "mysql",
-    "operatorsAliases": 1
+    "operatorsAliases": false
   },
   "production": {
-    "username": "roplaylist@playlistdbsvrot",
-    "password": "ppk1217!",
-    "database": "playlist",
-    "host": "playlistdbsvr.mysql.database.azure.com",
+    "username": "root",
+    "password": null,
+    "database": "database_production",
+    "host": "127.0.0.1",
     "dialect": "mysql",
-    "operatorsAliases": 1
+    "operatorsAliases": false
   }
 }
 

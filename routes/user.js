@@ -66,16 +66,16 @@ router.post('/join', async (req, res, next) => {
         var transporter = nodemailer.createTransport({
           service:'gmail',
           auth: {
-              user : 'miniddo96@gmail.com',
-              pass : 'kds97523!'
+              user : 'playlist1217@gmail.com',
+              pass : 'ppk1217!'
           }
         });
       
         var mailOption = {
-            from : 'miniddo96@gmail.com',
+            from : 'playlist1217@gmail.com',
             to : useremail,
             subject : '[Playlist] ' + useremail + ' 님 회원가입을 축하합니다!',
-            text : '[Playlist]\n ' + useremail + ' 님 회원가입을 축하합니다!'
+            text : '[Playlist]\n\n' + useremail + ' 님 회원가입을 축하합니다!\n Playlist에서 당신의 취미를 공유해보세요:)'
         };
       
         transporter.sendMail(mailOption, function(err, info) {
