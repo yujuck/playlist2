@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "root",
-    "password": "Dbwls327!",
+    "username": "playlist@playlistdbsvr",
+    "password": "ppk1217!",
     "database": "playlist",
-    "host": "127.0.0.1",
+    "host": "playlistdbsvr.mysql.database.azure.com",
     "dialect": "mysql",
     "timezone": "+09:00",
     "operatorsAliases": 1
