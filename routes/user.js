@@ -10,6 +10,11 @@ const { isLoggedIn } = require('./middlewares');
 var nodemailer = require('nodemailer');
 
 var User = require('../models/index.js').User;
+var MeetPost = require('../models/index.js').MeetPost;
+var Intropost = require('../models/index.js').Intropost;
+var Comment = require('../models/index.js').Comment;
+var Favorite = require('../models/index.js').Favorite;
+var Participants = require('../models/index.js').Participants;
 
 var router = express.Router();
 
@@ -58,8 +63,8 @@ router.post('/join', async (req, res, next) => {
           })
         })
         .catch((err) => {
-          console.log("여기서 에러?", err);
-            next(err);
+          console.log(err);
+          next(err);
         });
 
         //회원가입시 메일보내기(보내는 사람만 gmail이면 됨)
@@ -228,5 +233,19 @@ router.get('/checkLogin',verifyToken,async (req, res) => {
 
 });
 
+// 회원탈퇴
+router.delete('/deleteUser/:id', async (req, res) => {
+  try {
+    var deletemeetpost = await MeetPost.destroy({ where: { userId: req.params.id }});
+    var deleteintropost = await Intropost.destroy({ where: { userId: req.params.id }});
+    var deletecomment = await Comment.destroy({ where: { userId: req.params.id }});
+    var deletefavorite = await Favorite.destroy({ where: { userId: req.params.id }});
+    var deleteparticipant = await Participants.destroy({ where: { userId: req.params.id }});
+    var deleteuser = await User.destroy({ where: { id: req.params.id }});
+    return res.json(deleteuser);
+  } catch(err) {
+    console.log(err);
+  }
+});
 
  module.exports = router;

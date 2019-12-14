@@ -4,7 +4,7 @@
 <head>
 
     <!-- Page title -->
-    <title>Playlist</title>
+    <title>PLAYLIST</title>
 
     <!-- Meta -->
     <meta charset="utf-8">
@@ -211,7 +211,6 @@
 
                 axios.get('/review/detail/' + id)
                     .then(function (res) {
-
                         this.reviews = res.data;
                     }.bind(this))
                     .catch(function (err) {
@@ -232,8 +231,13 @@
                     const buttonValue = e.target.value;
                     var del = confirm("삭제하시겠습니까?")
                     if (del) {
-                        axios.delete('/review/delete/' + buttonValue);
-                        location.href = "/review";
+                        axios.delete('/review/delete/' + buttonValue)
+                        .then(function(res) {
+                            location.href = "/review";
+                        }.bind(this))
+                        .catch(function(err) {
+                            console.log(err);
+                        });                        
                     }
                 },
                 

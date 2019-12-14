@@ -4,7 +4,7 @@
 <head>
 
     <!-- Page title -->
-    <title>리뷰글 수정</title>
+    <title>PLAYLIST</title>
 
     <!-- Meta -->
     <meta charset="utf-8">
@@ -196,15 +196,12 @@
 
                     axios.patch('/review/moim/modify/'+id, this.review, { headers: { authorization: localStorage.getItem('token') } })
                     .then(function(response){
-                        console.log(response);
                         alert("수정되었습니다");
                         location.href="/review/detailpost?id="+id;
-
-                        }.bind(this))
-                        .catch(function(err){
-                            console.log(err);
-                        });
-                    
+                    }.bind(this))
+                    .catch(function(err){
+                        console.log(err);
+                    });                    
                 }
             }
         });

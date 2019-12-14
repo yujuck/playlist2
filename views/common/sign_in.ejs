@@ -46,10 +46,7 @@
                                         <div class="col-md-12">
                                         <button v-on:click="login" class="btn btn-theme">　　　　　　　Sign in　　　　　　　</button>
                                     </div>
-                                    <!-- <div class="col-xs-12 ">
-                                        <button type="button" v-on:click="authTest"
-                                            class="btn btn-theme">개인정보조회</button>
-                                    </div> -->
+
                                     <br><br>
                                     <div class="col-sm-12">
                                         <!-- 페이스북 로그인 구현 -->
@@ -115,16 +112,11 @@
 
                 axios.post('/user/login', this.user)
                     .then((response) => {
-                        
-                        //토큰값 확인
-                        console.log(response.data);
 
                         //토큰값 로컬스토리지 저장
                         if (response.data.code == "200") {
                             localStorage.setItem('token', response.data.result);
 
-                            console.log("로컬스토리지 토큰값:", localStorage.getItem('token'));
-                            //location.href = "/";
                         }
                         if (response.data.code == "500") {
                             alert(response.data.message);
@@ -133,18 +125,6 @@
                         location.href="/";
 
                     })
-                    .catch(function (err) {
-                        console.log(err);
-                    });
-            },
-
-            authTest: function () {
-                var token = localStorage.getItem('token');
-                
-                axios.get('/user/profile', { headers: { authorization: token } }).then(function (response) {
-                    console.log(response.data);
-                    // alert(response.data);
-                }.bind(this))
                     .catch(function (err) {
                         console.log(err);
                     });

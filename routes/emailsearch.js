@@ -23,7 +23,6 @@ router.post('/', async (req, res, next) => {
                                 phone: exphone.phone
                             }
                         });
-        //console.log(youremail.useremail);
 
         res.json({
           success: true,

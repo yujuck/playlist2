@@ -307,7 +307,6 @@
 
                 axios.get('/meetpost/detail/' + id)
                     .then(function (res) {
-
                         this.posts = res.data;
                     }.bind(this))
                     .catch(function (err) {
@@ -354,17 +353,19 @@
                     .catch(function (err) {
                         console.log(err);
                     });
-
-
-
             },
             methods: {
                 removePost: function (e) {
                     const buttonValue = e.target.value;
                     var del = confirm("삭제하시겠습니까?")
                     if (del) {
-                        axios.delete('/meetpost/delete/' + buttonValue);
-                        location.href = "/meetpost";
+                        axios.delete('/meetpost/delete/' + buttonValue)
+                        .then(function(res) {
+                            location.href = "/meetpost";
+                        }.bind(this))
+                        .catch(function(err) {
+                            console.log(err);
+                        });
                     }
                 },
                 saveComment: function (e) {
@@ -392,7 +393,6 @@
                                     .catch(function (err) {
                                         console.log(err)
                                     });
-
                             }
                         }.bind(this))
                         .catch(function (err) {
@@ -403,8 +403,13 @@
                     const buttonValue = e.target.value;
                     var del = confirm("댓글을 삭제하시겠습니까?")
                     if (del) {
-                        axios.delete('/comment/delete/' + buttonValue);
-                        location.href = "/meetpost/detailpost?id=" + this.posts.id;
+                        axios.delete('/comment/delete/' + buttonValue)
+                        .then(function(res) {
+                            location.href = "/meetpost/detailpost?id=" + this.posts.id;
+                        }.bind(this))
+                        .catch(function(err) {
+                            console.log(err);
+                        });                        
                     }
                 },
                 gotolist: function () {

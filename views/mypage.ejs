@@ -81,7 +81,7 @@
 
                         <h3><b>Your Information</b></h3>
                         <p>
-                            
+
                         </p>
                         <div class="row" v-if="userid">
                             <div class="col-sm-5">
@@ -89,19 +89,26 @@
                             </div>
                             <div class="col-sm-7">
                                 <ul class="list-lined">
-                                    <br><li><i class="icon fa fa-fw fa-envelope"></i><span>E-mail</span> {{user.useremail}}</li>
+                                    <br>
+                                    <li><i class="icon fa fa-fw fa-envelope"></i><span>E-mail</span> {{user.useremail}}
+                                    </li>
                                     <li><i class="icon fa fa-fw fa-sign-in"></i><span>이름</span> {{user.username}}</li>
                                     <li><i class="icon fa fa-fw fa-pinterest"></i><span>생년월일</span> {{user.birth}}</li>
-                                    <li><i class="icon fa fa-fw fa-phone"></i><span>전화번호</span> {{user.phone}}</li><br><br>
-                                    <li><i class="icon fa fa-fw fa-phone"></i><span>소개글</span> {{user.info}}</li><br><br>
-                                    <li><a v-bind:href="'/mypage/modifyuser?userid='+userid"><button class="btn btn-green">사용자 정보 수정</button></a></li>
+                                    <li><i class="icon fa fa-fw fa-phone"></i><span>전화번호</span> {{user.phone}}</li>
+                                    <br><br>
+                                    <li><i class="icon fa fa-fw fa-sign-in"></i><span>소개글</span> {{user.info}}</li>
+                                    <br><br>
+                                    <li><a v-bind:href="'/mypage/modifyuser?userid='+userid"><button
+                                                class="btn btn-green">사용자 정보 수정</button></a></li>
+                                    <li><button class="btn btn-red" v-on:click="deleteUser($event)"
+                                            v-bind:value="userid">탈퇴</button></li>
                                 </ul>
                             </div>
                         </div>
 
                         <div class="row" v-if="!userid">
                             <div class="col-sm-12">
-                                    <br><i class="icon fa fa-fw fa-sign-in"></i><span>　로그인이 필요한 서비스입니다.</span><br>   
+                                <br><i class="icon fa fa-fw fa-sign-in"></i><span>　로그인이 필요한 서비스입니다.</span><br>
                             </div>
                         </div>
 
@@ -162,11 +169,11 @@
             created: function () {
                 axios.get('/user/checkLogin', { headers: { authorization: localStorage.getItem('token') } })
                     .then(function (res) {
-                        
+
                         if (res.data.code == 419) {
                             console.log(res.data.message);
                             return false;
-                            }
+                        }
                         if (res.data.code == 401) {
                             console.log(res.data.message);
                             return false;
@@ -174,7 +181,6 @@
                         if (res.data.code == 200) {
                             this.userid = res.data.result.id;
                         }
-                        
                     }.bind(this))
                     .catch(function (err) {
                         console.log(err);
@@ -185,8 +191,23 @@
                 }.bind(this))
                     .catch(function (err) {
                         console.log(err);
-                });
+                    });
             },
+            methods: {
+                deleteUser: function (e) {
+                    const buttonValue = e.target.value;
+                    var del = confirm("탈퇴하시겠습니까?")
+                    if (del) {
+                        axios.delete('/user/deleteUser/' + buttonValue).then(function (res) {
+                            localStorage.removeItem('token');
+                            location.href = "/";
+                        }.bind(this))
+                        .catch(function (err) {
+                                console.log(err);
+                        });
+                    }
+                }
+            }
         });
     </script>
 </body>

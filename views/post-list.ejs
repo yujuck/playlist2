@@ -81,9 +81,12 @@
 
                         <div class="col-sm-4 col-xs-12" v-for="p in posts">
                             <div class="project-item">
+                                <a v-bind:href="'/meetpost/detailpost?id='+p.id">
                                     <div class="gallery-image">
                                         <img v-bind:src="p.meetphoto">
                                     </div>
+                                </a>
+                                    
                                                       
                                 <div class="information">
                                     <div class="h3 title"><b>{{ p.title }}</b>
@@ -193,7 +196,6 @@
                         }
                         if (res.data.code == 200) {
                             location.href="/meetpost/writepage";
-                            
                         }
                     }.bind(this))
                     .catch(function (err) {

@@ -4,7 +4,7 @@
 <head>
 
     <!-- Page title -->
-    <title>Playlist</title>
+    <title>PLAYLIST</title>
 
     <!-- Meta -->
     <meta charset="utf-8">
@@ -82,13 +82,12 @@
 
                         <div class="col-sm-4 col-xs-12" v-for="r in reviews">
                             <div class="project-item">
-                                
+                                <a v-bind:href="'/review/detailpost?id='+r.id">
                                     <div class="gallery-image">
-
                                         <img v-bind:src="r.introphoto">
                                     </div>
-
-                                
+                                </a>                             
+ 
                                 <div class="information">
                                     <div class="h3 title"><b>{{ r.title }}</b>
                                     </div>

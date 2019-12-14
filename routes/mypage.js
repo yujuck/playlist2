@@ -3,8 +3,6 @@ var router = express.Router();
 var User = require('../models/index.js').User;
 const bcrypt = require('bcrypt');
 
-
-
 // 사용자 정보 페이지 렌더링
 router.get('/', function (req, res, next) {
   res.render('mypage');
@@ -30,25 +28,23 @@ router.get('/modifyuser', function (req, res, next) {
   res.render('mypage-modify');
 });
 
-router.get('/modifyuser/:id', function(req, res, next) {
-  User.findOne({
-    where: { id: req.params.id },
+// 수정할 때 기존 회원정보 가져오는 라우터
+router.get('/modifyuser/:id', async (req, res) => {
 
-  })
-  .then((mypage) => {
-    res.json(mypage); 
-  }).catch((err) => {
-    console.error(err);
-    next(err);
-  });
+  try {
+    var modiuser = await User.findOne({
+      where: { id: req.params.id },
+    });
+    return res.json(modiuser);
+  } catch(err) {
+    console.log(err);
+  }
 });
 
 // 회원정보 수정 라우터
 router.patch('/modifyuser/:id', async(req, res, next)=>{
   const password = req.body.userpw;
  
-  console.log("비밀번호: ", password);
-
   const hash = await bcrypt.hash(password, 12);
 
   User.update(

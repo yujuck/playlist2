@@ -4,7 +4,7 @@
 <head>
 
     <!-- Page title -->
-    <title>모임글 수정</title>
+    <title>PLAYLIST</title>
 
     <!-- Meta -->
     <meta charset="utf-8">
@@ -96,17 +96,10 @@
 
                             <div class="row">
                                 <div class="form-group col-md-12">
-                                    <textarea class="form-control" v-model="post.record" ref="record"
-                                        placeholder="이력(필수)"></textarea>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-md-12">
                                     <textarea class="form-control" v-model="post.content" ref="content"
                                         placeholder="내용(필수)"></textarea>
                                 </div>
                             </div>
-
 
                             <div class="row">
                                 <div class="form-group col-md-12 text-center">
@@ -230,12 +223,6 @@
                     if (this.post.age == '') {
                         alert("나이대를 선택해주세요");
                         this.$refs.age.focus();
-                        return false;
-                    }
-
-                    if (this.post.record == '') {
-                        alert("이력을 입력해주세요");
-                        this.$refs.record.focus();
                         return false;
                     }
 

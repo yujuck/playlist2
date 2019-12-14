@@ -2,11 +2,9 @@ var express = require('express');
 var router = express.Router();
 var Favorite = require('../models/index.js').Favorite;
 var MeetPost = require('../models/index.js').MeetPost;
-var User = require('../models/index.js').User;
 const { verifyToken } = require('./middlewares');
 
 router.get('/favoritelist', verifyToken, async (req, res) => {
-  console.log("현재 사용자 고유 아이디: ", req.decoded.id);
 
   try {
     const favoritelist = await Favorite.findAll({

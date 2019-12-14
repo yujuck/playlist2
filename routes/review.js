@@ -13,26 +13,22 @@ router.get('/review-writepage', function (req, res, next) {
 });
 
 // 작성한 글 데이터를 DB에 저장
-router.post('/review-write', verifyToken, function (req, res, next) {
-  console.log("사용자아이디", req.decoded.id);
-    Intropost.create({
+router.post('/review-write', verifyToken, async (req, res) => {
+
+  try{
+    var createreview = await Intropost.create({
       categoryId: req.body.categoryId,
       userId: req.decoded.id,
       title: req.body.title,
       introphoto: req.body.introphoto,
       content: req.body.content,
       createdAt:new Date
-    })
-      .then((result) => {
-        res.status(201).json(result);
-      })
-      .catch((err) => {
-        console.error(err);
-        next(err);
-      });
+    });
+    return res.json(createreview);
+  } catch(err) {
+    console.log(err);
+  }
 });
-
-
 
 // 전체글 리스트 페이지 렌더링
 router.get('/', function(req, res, next) {
@@ -40,16 +36,16 @@ router.get('/', function(req, res, next) {
 });
 
 // 전체글 가져오는 라우터
-router.get('/review-list', function (req, res, next) {
-    Intropost.findAll({
+router.get('/review-list', async (req, res) => {
+
+  try {
+    var reviewlist = await Intropost.findAll({
       include: [{ model: Category, }, { model: User}]
-    })
-    .then((reviews) => {
-      res.json(reviews);    //여기 원래 ejs에서 posts 사용했었는데, reviews로 바꿈!!
-    }).catch((err) => {
-      console.error(err);
-      next(err);
     });
+    return res.json(reviewlist);
+  } catch(err) {
+    console.log(err);
+  }
 });
 
 // 상세글 페이지 렌더링
@@ -58,17 +54,16 @@ router.get('/detailpost', function(req, res, next) {
 });
 
 // 상세글 가져오는 라우터
-router.get('/detail/:id', function (req, res, next) {
- Intropost.findOne({
-   include: [{ model: Category, }, { model: User}],
-   where: { id: req.params.id } 
- })
- .then((reviews) => {
-   res.json(reviews); 
- }).catch((err) => {
-   console.error(err);
-   next(err);
- });
+router.get('/detail/:id', async (req, res) => {
+  try {
+    var reviewdetail = await Intropost.findOne({
+      include: [{ model: Category, }, { model: User}],
+      where: { id: req.params.id } 
+    });
+    return res.json(reviewdetail);
+  } catch(err) {
+    console.log(err);
+  }
 });
 
 // 글 수정
@@ -78,26 +73,24 @@ router.get('/modify', function(req,res,next) {
 
 
 // 해당 글 정보 불러오기
-router.get('/modify/:id', function(req, res, next) {
-  Intropost.findOne({
-    include: [{ model: Category, }, { model: User}],
-    where: { id: req.params.id } 
-  })
-  .then((reviews) => {
-    res.json(reviews); 
-  }).catch((err) => {
-    console.error(err);
-    next(err);
-  });
+router.get('/modify/:id', async (req, res) => {
+
+  try {
+    var intropost = await Intropost.findOne({
+      include: [{ model: Category, }, { model: User}],
+      where: { id: req.params.id } 
+    });
+    return res.json(intropost);
+  } catch(err) {
+    console.log(err);
+  }
 });
 
 // 글 수정 라우터
-router.patch('/moim/modify/:id', verifyToken, function(req, res, next) {
-  console.log('시작 아아아아아아아아아ㅈㅈㅈㅈㅈ아앙아ㅏ');
-  console.log(req.body);
-
-
-    Intropost.update(
+router.patch('/moim/modify/:id', verifyToken, async (req, res) => {
+  
+  try {
+    var modifyintro = await Intropost.update(
       { 
         categoryId: req.body.categoryId,
         title: req.body.title,
@@ -107,27 +100,23 @@ router.patch('/moim/modify/:id', verifyToken, function(req, res, next) {
       }, 
       { 
         where: { id: req.params.id } 
-    })
-    .then((result) => {
-      console.log('결과값', result);
-      res.json(result);
-    })
-    .catch((err) => {
-      console.error('에러러러러러러러러러');
-      next(err);
     });
+    return res.json(modifyintro);
+  } catch(err) {
+    console.log(err);
+  }
 });
 
 // 글 삭제
-router.delete('/delete/:id', function(req, res, next) {
-  Intropost.destroy({ where: { id: req.params.id } })
-    .then((result) => {
-      res.json(result);
-    })
-    .catch((err) => {
-      console.error(err);
-      next(err);
-    });
+router.delete('/delete/:id', async (req, res) => {
+  
+  try {
+    var deleteintro = await Intropost.destroy({ where: { id: req.params.id } });
+    return res.json(deleteintro);
+  } catch(err) {
+    console.log(err);
+  }
+
 });
 
 module.exports = router;

@@ -131,7 +131,6 @@
 
                 axios.get('/user/profile', { headers: { authorization: localStorage.getItem('token') } }).then(function (res) {
                     this.img = res.data.result.photofullroute;
-                    console.log(res.data.result.photofullroute)
                     this.user = res.data.result;
                     }.bind(this))
                     .catch(function (err) {

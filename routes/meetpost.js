@@ -3,6 +3,9 @@ var router = express.Router();
 var MeetPost = require('../models/index.js').MeetPost;
 var Category = require('../models/index.js').Category;
 var User = require('../models/index.js').User;
+var Comment = require('../models/index').Comment;
+var Favorite = require('../models/index').Favorite;
+var Participants = require('../models/index').Participants;
 const { verifyToken } = require('./middlewares');
 
 // 글 작성 페이지 렌더링
@@ -95,7 +98,6 @@ router.get('/detail/:id', async (req, res) => {
       include: [{ model: Category, }, { model: User }],
       where: { id: req.params.id }
     });
-    console.log(detailpost);
     return res.json(detailpost);
   } catch (err) {
     console.log(err);
@@ -147,15 +149,16 @@ router.patch('/modify/:id', verifyToken, async (req, res) => {
 });
 
 // 글 삭제
-router.delete('/delete/:id', function (req, res, next) {
-  MeetPost.destroy({ where: { id: req.params.id } })
-    .then((result) => {
-      res.json(result);
-    })
-    .catch((err) => {
-      console.error(err);
-      next(err);
-    });
+router.delete('/delete/:id', async (req, res) =>  {
+  try{
+    var deletecomment = await Comment.destroy({ where: { meetpostId: req.params.id }});
+    var deletefavorite = await Favorite.destroy({ where: { meetpostId: req.params.id }});
+    var deleteparticipant = await Participants.destroy({ where: { meetpostId: req.params.id }});
+    var deletepost = await MeetPost.destroy({ where: { id: req.params.id } });
+    return res.json(deletepost);
+  } catch(err) {
+    console.log(err);
+  }
 });
 
 module.exports = router;

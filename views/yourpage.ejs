@@ -186,7 +186,6 @@
 
                 axios.get('/yourpage/' + id)
                     .then(function (res) {
-                        console.log(res.data);
                         this.user = res.data;
                     }.bind(this))
                     .catch(function (err) {

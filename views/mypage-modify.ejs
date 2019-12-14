@@ -66,36 +66,35 @@
                             <input type="hidden" name="form" value="Contact Page">
                             <div class="row">
                                 <div class="form-group col-md-12">
+                                    새 비밀번호
                                     <input type="password" class="form-control" v-model="user.userpw" ref="userpw"
                                         placeholder="Password">
                                 </div>
                             </div>
-                            <!-- <div class="row">  
-                                <div class="form-group col-md-12">
-                                    <input type="password"  class="form-control"  v-model="user.userpwre" ref="userpwre"
-                                    placeholder="Password confirm">
-                                </div>
-                            </div> -->
                             <div class="row">
                                 <div class="form-group col-md-12">
+                                    이름
                                     <input type="text" class="form-control" v-model="user.username" ref="username"
                                         placeholder="Your Name">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="form-group col-md-12">
+                                    생년월일
                                     <input v-model="user.birth" ref="birth" type="text" class="form-control"
                                         placeholder="Your Birth (ex.960101)">
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="form-group col-md-6">　Your Gender　
+                                <div class="form-group col-md-6">
+                                    성별
                                     <label><input v-model="user.gender" ref="gender" type="radio" value="M">남</label>
                                     <label><input v-model="user.gender" ref="gender" type="radio" value="W">여</label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="form-group col-md-12">
+                                    전화번호 
                                     <input v-model="user.phone" ref="phone" type="text" class="form-control"
                                         placeholder="Your Phone (ex.01012345678)">
                                 </div>
@@ -107,6 +106,7 @@
                             </div>
                             <div class="row">
                                 <div class="form-group col-md-12">
+                                    소개
                                     <textarea v-model="user.info" cols="5" rows="3" placeholder="introduce yourself"
                                         class="form-control"></textarea>
                                 </div>
@@ -198,23 +198,17 @@
             methods: {
                 modifyUser: function () {
 
-                    // if (this.$refs.userpw.value == "") {
-                    //     alert("비밀번호를 입력해주세요.");
-                    //     this.$refs.userpw.focus();
-                    //     return false;
-                    // }
+                    if (this.$refs.userpw.value == "") {
+                        alert("비밀번호를 입력해주세요.");
+                        this.$refs.userpw.focus();
+                        return false;
+                    }
 
-                    // if (this.$refs.userpw.value.length < 7) {
-                    //     alert("비밀번호는 7글자 이상입니다.");
-                    //     this.$refs.userpw.focus();
-                    //     return false;
-                    // }
-
-                    // if (this.$refs.userpw.value != this.$refs.userpwre.value) {
-                    //     alert("비밀번호가 일치하지 않습니다.");
-                    //     this.$refs.userpwre.focus();
-                    //     return false;
-                    // }
+                    if (this.$refs.userpw.value.length < 7) {
+                        alert("비밀번호는 7글자 이상입니다.");
+                        this.$refs.userpw.focus();
+                        return false;
+                    }
 
                     if (this.$refs.username.value == "") {
                         alert("이름을 입력해주세요.");
@@ -247,7 +241,7 @@
                         axios.patch('/mypage/modifyuser/' + id, this.user)
                             .then(function (res) {
                                 alert("수정되었습니다");
-                                // location.href="/mypage/modifyuser?id="+id;
+                                location.href="/mypage"
                             }.bind(this))
                             .catch(function (err) {
                                 console.log(err)
@@ -274,7 +268,6 @@
                         .catch(function (err) {
                             console.log(err);
                         });
-
                     return false;
                 }
             }

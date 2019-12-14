@@ -23,24 +23,21 @@ router.get('/participantlist', verifyToken, async (req, res) => {
 });
 
 // 상세페이지 렌더링할 때 현재 로그인 되어있는 사용자의 참여하기 상태를 전달해주는 라우터
-router.get('/:meetpostId', verifyToken, function (req, res, next) {
+router.get('/:meetpostId', verifyToken, async (req, res) => {
   
-  var userid = req.decoded.id;
-
-  Participants.findOne({
-    attributes: ['state'],
-    where: {
-      userId: userid,
-      meetpostId: req.params.meetpostId
-    }
-  })
-    .then((fav) => {
-      res.json(fav);
-    }).catch((err) => {
-      console.error(err);
-      next(err);
+  try {
+    var userid = req.decoded.id;
+    var participantstate = await Participants.findOne({
+      attributes: ['state'],
+      where: {
+        userId: userid,
+        meetpostId: req.params.meetpostId
+      }
     });
-  
+    return res.json(participantstate);
+  } catch(err) {
+    console.log(err);
+  }
 });
 
 // 참여하기 버튼을 누르면 실행되는 라우터.
