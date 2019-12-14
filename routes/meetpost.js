@@ -54,6 +54,37 @@ router.get('/list', async (req, res) => {
 
 });
 
+// 조회수 라우터
+router.get('/counts/:id', async (req, res) => {
+
+  var counts = await MeetPost.findOne({
+    attributes: ['count'],
+    where: { id: req.params.id }
+  });
+
+  console.log("기존 조회수: ", counts.count);
+
+  var countup = counts.count + 1;
+  try {
+    await MeetPost.update(
+      {
+        count: countup
+      },
+      {
+        where: { id: req.params.id }
+      }
+    );
+
+    var updatecount = await MeetPost.findOne({
+      attributes: ['count'],
+      where: { id: req.params.id }
+    });
+    return res.json(updatecount.count);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 // 상세글 페이지 렌더링
 router.get('/detailpost', function (req, res, next) {
   res.render('detailpost');
@@ -120,27 +151,6 @@ router.patch('/modify/:id', verifyToken, async (req, res) => {
 // 글 삭제
 router.delete('/delete/:id', function (req, res, next) {
   MeetPost.destroy({ where: { id: req.params.id } })
-    .then((result) => {
-      res.json(result);
-    })
-    .catch((err) => {
-      console.error(err);
-      next(err);
-    });
-});
-
-// 참여하기
-router.post('/participate/:meetpostId', function (req, res, next) {
-
-  var meetpostId = req.params.meetpostId;
-
-  Participants.create({
-    meetpostId: meetpostId,
-    userId: req.body.userId,
-    state: 1,
-    where: { id: req.params.id }
-  })
-
     .then((result) => {
       res.json(result);
     })

@@ -17,7 +17,6 @@
     <!-- Style -->
     <link rel="stylesheet" href="/css/theme-mariner.css">
     <link rel="alternate stylesheet" href="/css/theme-mariner.css" title="theme-mariner">
-    <link rel="stylesheet" href="/css/web-font.css">
 
 
 </head>
@@ -85,19 +84,28 @@
                             
                         </p>
                         <div class="row" v-if="userid">
-                            <!-- 좋아요 목록 -->
-                            <!-- <div class="col-sm-5">
-                                <img v-bind:src="user.photofullroute" width="300px" height="300px">
+                            <div class="projects-list">
+
+                                <div class="col-sm-4 col-xs-12" v-for="p in posts">
+                                    <div class="project-item">
+                                        
+                                            <div class="gallery-image">
+        
+                                                <img v-bind:src="'/'+p.meetpost.meetphoto">
+                                            </div>
+        
+                                        
+                                        <div class="information">
+                                            <div class="h3 title">{{ p.meetpost.title }}
+                                            </div>
+                                            <div class="read-more">
+                                                <a v-bind:href="'/meetpost/detailpost?id='+p.meetpost.id">Read more <i
+                                                        class="fa fa-fw fa-arrow-right"></i> </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-sm-7">
-                                <ul class="list-lined">
-                                    <br><li><i class="icon fa fa-fw fa-envelope"></i><span>E-mail</span> {{user.useremail}}</li><br>
-                                    <li><i class="icon fa fa-fw fa-sign-in"></i><span>이름</span> {{user.username}}</li><br>
-                                    <li><i class="icon fa fa-fw fa-pinterest"></i><span>생년월일</span> {{user.birth}}</li><br>
-                                    <li><i class="icon fa fa-fw fa-phone"></i><span>전화번호</span> {{user.phone}}</li><br><br>
-                                    <li><button class="btn btn-green" v-on:click="modifyUser">사용자 정보 수정</button></li>
-                                </ul>
-                            </div> -->
                         </div>
 
                         <div class="row" v-if="!userid">
@@ -158,7 +166,8 @@
             el: '#app',
             data: {
                 userid: '',
-                user: {}
+                user: {},
+                posts:[]
             },
             created: function () {
                 axios.get('/user/checkLogin', { headers: { authorization: localStorage.getItem('token') } })
@@ -173,20 +182,20 @@
                             return false;
                         }
                         if (res.data.code == 200) {
-                            this.userid = res.data.result;
-                        }
-                        
+                            this.userid = res.data.result.id;
+                        } 
                     }.bind(this))
                     .catch(function (err) {
                         console.log(err);
                     });
 
-                axios.get('/user/profile', { headers: { authorization: localStorage.getItem('token') } }).then(function (res) {
-                    this.user = res.data.result;
+                axios.get('/participant/participantlist', { headers: { authorization: localStorage.getItem('token') } })
+                .then(function(res) {
+                    this.posts = res.data;
                 }.bind(this))
-                    .catch(function (err) {
-                        console.log(err);
-                });
+                .catch(function(err) {
+                    console.log(err);
+                })
             }
         });
     </script>

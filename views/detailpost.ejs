@@ -104,6 +104,7 @@
                                     <li><i class="icon fa fa-user"></i> by <a
                                             v-bind:href="'/yourpage?user='+posts.user.id">{{posts.user.username}}</a>
                                     </li>
+                                    <li>조회수 {{counts}}</li>
                                 </ul>
                                 <!-- /Post Metadata -->
 
@@ -115,14 +116,8 @@
                                         <b>권장나이: </b>{{posts.age}}
                                     </blockquote>
 
-                                    <blockquote>
-                                        <b>이력</b><br>
-                                        {{posts.record}}
-                                    </blockquote>
-
                                     <p>
                                         {{posts.content}}
-                                        <!-- <img src="posts.user.photofullroute" alt=""> -->
                                     </p>
                                 </div>
                                 <!-- /Post Content -->
@@ -135,14 +130,15 @@
 
                                 <div class="form-group col-md-12">
                                     <ul class="list-inline social-inline">
-                                        <button v-if="favorite_state == true" class="btn btn-red" v-on:click="favorite($event)"
-                                            v-bind:value="posts.id">즐겨찾기 해제</button>
-                                        <button v-else="favorite_state == false" class="btn btn-red btn-o-light-bg" v-on:click="favorite($event)"
-                                        v-bind:value="posts.id">즐겨찾기 추가</button>
-                                        <button v-if="participant_state == true" class="btn btn-orange" v-on:click="participant($event)"
-                                            v-bind:value="posts.id">참여하기 해제</button>
-                                        <button v-else="participant_state == false" class="btn btn-orange btn-o-light-bg" v-on:click="participant($event)"
-                                        v-bind:value="posts.id">참여하기 추가</button>
+                                        <button v-if="favorite_state == true" class="btn btn-red"
+                                            v-on:click="favorite($event)" v-bind:value="posts.id">즐겨찾기 해제</button>
+                                        <button v-else="favorite_state == false" class="btn btn-red btn-o-light-bg"
+                                            v-on:click="favorite($event)" v-bind:value="posts.id">즐겨찾기 추가</button>
+                                        <button v-if="participant_state == true" class="btn btn-orange"
+                                            v-on:click="participant($event)" v-bind:value="posts.id">참여하기 해제</button>
+                                        <button v-else="participant_state == false"
+                                            class="btn btn-orange btn-o-light-bg" v-on:click="participant($event)"
+                                            v-bind:value="posts.id">참여하기 추가</button>
                                     </ul>
                                 </div>
                             </div>
@@ -166,20 +162,25 @@
                                         </div>
 
                                         <div class="media-body">
-                                            <h4 class="author"><a v-bind:href="'/yourpage?user='+posts.user.id">{{comment.user.username}}</a></h4>
+                                            <h4 class="author"><a
+                                                    v-bind:href="'/yourpage?user='+posts.user.id">{{comment.user.username}}</a>
+                                            </h4>
                                             <span class="date">{{comment.createdAt}}</span>
                                             <p class="text">
                                                 {{comment.comment}}
                                             </p>
                                             <div class="project">
                                                 <div class="comments-bottom text-right">
-                                                    <a v-bind:href="'/yourpage?user='+posts.user.id" class="project-item image-popup"><i
+                                                    <a v-bind:href="'/yourpage?user='+posts.user.id"
+                                                        class="project-item image-popup"><i
                                                             class="icon fa fa-fw fa-search"></i>
                                                         SHOW AUTHOR INFORMATION</a>
-                                                    <button class="btn btn-danger" v-on:click="deleteComment($event)" v-bind:value="comment.id" v-if="comment.userId == userid">삭제</button>
+                                                    <button class="btn btn-danger" v-on:click="deleteComment($event)"
+                                                        v-bind:value="comment.id"
+                                                        v-if="comment.userId == userid">삭제</button>
                                                 </div>
                                             </div>
-                                            
+
                                         </div>
                                     </div>
                                 </li>
@@ -290,8 +291,10 @@
                 userid: '',
                 favorite_state: '',
                 participant_state: '',
+                counts: ''
             },
             created: function () {
+
                 axios.get('/category')
                     .then(function (res) {
                         this.category = res.data;
@@ -312,6 +315,15 @@
                 axios.get('/comment/' + id)
                     .then(function (res) {
                         this.comments = res.data;
+                    }.bind(this))
+                    .catch(function (err) {
+                        console.log(err);
+                    });
+
+                // 조회수
+                axios.get('/meetpost/counts/' + id)
+                    .then(function (res) {
+                        this.counts = res.data;
                     }.bind(this))
                     .catch(function (err) {
                         console.log(err);
@@ -339,7 +351,9 @@
                     }.bind(this))
                     .catch(function (err) {
                         console.log(err);
-                    });    
+                    });
+
+
 
             },
             methods: {
@@ -383,12 +397,12 @@
                             console.log(err);
                         });
                 },
-                deleteComment: function(e) {
+                deleteComment: function (e) {
                     const buttonValue = e.target.value;
                     var del = confirm("댓글을 삭제하시겠습니까?")
                     if (del) {
                         axios.delete('/comment/delete/' + buttonValue);
-                        location.href = "/meetpost/detailpost?id="+this.posts.id;
+                        location.href = "/meetpost/detailpost?id=" + this.posts.id;
                     }
                 },
                 gotolist: function () {
@@ -409,8 +423,8 @@
                                 return false;
                             }
                             if (res.data.code == 200) {
-                                if(this.favorite_state) { // favorite_state가 true이면
-                                    axios.post('/favorite/' + fbuttonValue, { userId: res.data.result.id})
+                                if (this.favorite_state) { // favorite_state가 true이면
+                                    axios.post('/favorite/' + fbuttonValue, { userId: res.data.result.id })
                                     location.href = "/meetpost/detailpost?id=" + fbuttonValue;
                                 } else {  //favorite_state가 false이면
                                     axios.post('/favorite/' + fbuttonValue, { userId: res.data.result.id, state: true })
@@ -437,8 +451,8 @@
                                 return false;
                             }
                             if (res.data.code == 200) {
-                                if(this.participant_state) { // participant_state가 true이면
-                                    axios.post('/participant/' + pbuttonValue, { userId: res.data.result.id})
+                                if (this.participant_state) { // participant_state가 true이면
+                                    axios.post('/participant/' + pbuttonValue, { userId: res.data.result.id })
                                     location.href = "/meetpost/detailpost?id=" + pbuttonValue;
                                 } else {  //participant_state가 false이면
                                     axios.post('/participant/' + pbuttonValue, { userId: res.data.result.id, state: true })

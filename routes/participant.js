@@ -6,6 +6,22 @@ var User = require('../models/index.js').User;
 const { verifyToken } = require('./middlewares');
 var nodemailer = require('nodemailer');
 
+// 참여하기 누른 목록 라우터
+router.get('/participantlist', verifyToken, async (req, res) => {
+  
+  try {
+    const participantlist = await Participants.findAll({
+      attributes: ['meetpostId'],
+      where: { userId: req.decoded.id },
+      include:[{model: MeetPost}]
+    });
+
+    return res.json(participantlist);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 // 상세페이지 렌더링할 때 현재 로그인 되어있는 사용자의 참여하기 상태를 전달해주는 라우터
 router.get('/:meetpostId', verifyToken, function (req, res, next) {
   
@@ -211,19 +227,5 @@ router.post('/:meetpostId', async (req, res, next) => {
   }
 
 });
-
-router.get('/participantlist', verifyToken, function (req, res, next){
-  Participants.findOne({
-    attributes:['meetpostId'],
-    where: {userId: req.decoded.id}
-  })
-  .then((posts) => {
-    res.json(posts);
-  }).catch((err) => {
-    console.error(err);
-    next(err);
-  });
-});
-
 
 module.exports = router;  

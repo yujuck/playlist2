@@ -18,10 +18,6 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(100),
             allowNull:false
         },
-        record: {
-            type: DataTypes.TEXT,
-            allowNull: false
-        },
         content: {
             type: DataTypes.TEXT,
             allowNull: false
