@@ -94,16 +94,16 @@ router.post('/:meetpostId', async (req, res, next) => {
             var transporter = nodemailer.createTransport({
               service:'gmail',
               auth: {
-                  user : 'miniddo96@gmail.com',
-                  pass : 'kds97523!'
+                  user : 'playlist1217@gmail.com',
+                  pass : 'ppk1217!'
               }
             });
           
             var mailOption = {
-                from : 'miniddo96@gmail.com',
+                from : 'playlist1217@gmail.com',
                 to : writeemail.useremail,
                 subject : '[Playlist] 참여 취소 안내',
-                text : '[Playlist]\n\n [' + partiemail.useremail + '] 님이 [' + postname.title + '] 참여를 취소하였습니다.'
+                text : '[Playlist]\n\n 안녕하세요. 취미 공유 플랫폼 Playlist 입니다.\n [' + partiemail.useremail + '] 님이 [' + postname.title + '] 참여를 취소하였습니다.'
             };
             
             transporter.sendMail(mailOption, function(err, info) {
@@ -178,16 +178,16 @@ router.post('/:meetpostId', async (req, res, next) => {
             var transporter = nodemailer.createTransport({
               service:'gmail',
               auth: {
-                  user : 'miniddo96@gmail.com',
-                  pass : 'kds97523!'
+                  user : 'playlist1217@gmail.com',
+                  pass : 'ppk1217!'
               }
             });
           
             var mailOption = {
-                from : 'miniddo96@gmail.com',
+                from : 'playlist1217@gmail.com',
                 to : writeemail.useremail,
                 subject : '[Playlist] 참여 안내',
-                text : '[Playlist]\n\n [' + partiemail.useremail + '] 님이 [' + postname.title + ']에 참여하였습니다.'
+                text : '[Playlist]\n\n 안녕하세요. 취미 공유 플랫폼 Playlist 입니다.\n [' + partiemail.useremail + '] 님이 [' + postname.title + ']에 참여하였습니다.'
             };
             
             transporter.sendMail(mailOption, function(err, info) {

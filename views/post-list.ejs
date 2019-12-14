@@ -41,7 +41,6 @@
                 <!-- Page Title -->
                 <div class="col-md-8">
                     <h1 class="title">Meet Posts List</h1>
-                    <div class="subtitle">There are many variations of passages </div>
                 </div>
                 <!-- /Page Title -->
 
@@ -82,14 +81,12 @@
 
                         <div class="col-sm-4 col-xs-12" v-for="p in posts">
                             <div class="project-item">
-                                
                                     <div class="gallery-image">
                                         <img v-bind:src="p.meetphoto">
                                     </div>
-
-                                
+                                                      
                                 <div class="information">
-                                    <div class="h3 title">{{ p.title }}
+                                    <div class="h3 title"><b>{{ p.title }}</b>
                                     </div>
                                     <div class="description">
                                         by {{p.user.username}}
@@ -102,6 +99,8 @@
                             </div>
                         </div>
                     </div>
+
+
                     <div class="col-md-12 text-right">
                         <button v-on:click="moveWrite" class="btn btn-theme">글작성</button>
                     </div>

@@ -62,11 +62,11 @@
                     <!-- Widget: Categories -->
                     <div class="widget">
 
-                        <div class="title">Categories</div>
+                        <div class="title"><a href="/review">Categories</a></div>
                         <ul class="sidebar-menu">
-                            <li v-for="c in category"><a>{{c.categoryname}}</a></li>
-                        </ul>
-
+                            <li v-for="c in category"><a
+                                    v-bind:href="'/category/recategorylist?id='+c.id">{{c.categoryname}}</a></li>
+                        </ul>   
                     </div>
                     <!-- /Widget: Categories -->
 
@@ -90,7 +90,7 @@
                                 <!--class="image"-->
                                 <div>
                                     <!--class="gallery-image"-->
-                                    <img v-bind:src="'/' + reviews.introphoto" width="300px" height="300px">
+                                    <img v-bind:src="'/' + reviews.introphoto" width="845px" height="530px">
                                 </div>
                             </div>
                             <!-- /Post Image -->
