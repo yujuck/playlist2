@@ -1,10 +1,11 @@
 {
   "development": {
-    "username": "playlist@playlistdbsvr",
-    "password": "ppk1217!",
+    "username": "root",
+    "password": "Dbwls327!",
     "database": "playlist",
-    "host": "playlistdbsvr.mysql.database.azure.com",
+    "host": "127.0.0.1",
     "dialect": "mysql",
+    "timezone": "+09:00",
     "operatorsAliases": 1
   },
   "test": {
@@ -13,6 +14,7 @@
     "database": "playlist",
     "host": "playlistdbsvr.mysql.database.azure.com",
     "dialect": "mysql",
+    "timezone": "+09:00",
     "operatorsAliases": 1
   },
   "production": {
@@ -21,6 +23,7 @@
     "database": "playlist",
     "host": "playlistdbsvr.mysql.database.azure.com",
     "dialect": "mysql",
+    "timezone": "+09:00",
     "operatorsAliases": 1
   }
 }

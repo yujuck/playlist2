@@ -3,7 +3,6 @@ var router = express.Router();
 var MeetPost = require('../models/index.js').MeetPost;
 var Category = require('../models/index.js').Category;
 var User = require('../models/index.js').User;
-var Participants = require('../models/index.js').Participants;
 const { verifyToken } = require('./middlewares');
 
 // 글 작성 페이지 렌더링
@@ -62,8 +61,6 @@ router.get('/counts/:id', async (req, res) => {
     where: { id: req.params.id }
   });
 
-  console.log("기존 조회수: ", counts.count);
-
   var countup = counts.count + 1;
   try {
     await MeetPost.update(
@@ -98,6 +95,7 @@ router.get('/detail/:id', async (req, res) => {
       include: [{ model: Category, }, { model: User }],
       where: { id: req.params.id }
     });
+    console.log(detailpost);
     return res.json(detailpost);
   } catch (err) {
     console.log(err);

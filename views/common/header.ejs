@@ -9,7 +9,7 @@
                     <div class="row">
 
                         <!-- Company Information -->
-                        <div class="col-md-7 contact-information">
+                        <div class="col-md-9 contact-information">
                             <ul class="list-inline">
                                 <!-- <li><i class="icon fa fa-fw fa-phone"></i> +1 (201) 987-1185</li> -->
                                 <li><i class="icon fa fa-fw fa-envelope-o"></i> playlist1217@gmail.com</li>
@@ -17,23 +17,15 @@
                         </div>
                         <!-- /Company Information -->
 
-                        <!-- Search Form -->
-                        <div class="col-md-3">
-                            <div class="search-form">
-                                <input type="hidden" class="form-control" placeholder="Search..." required>
-                                <button class="btn btn-search"><i class="fa fa-fw fa-search"></i></button>
-                            </div>
-                        </div>
-                        <!-- /Search Form -->
-
                         <!-- User Cabinet Links -->
-                        <div class="col-md-2 user-cabinet-links">
-                            <ul class="list-inline" v-if="!userid" >  <!--v-if="!userid"-->
+                        <div class="col-md-3 user-cabinet-links">
+                            <ul class="list-inline" v-if="!userid">
                                 <li><a href="#" data-toggle="modal" data-target="#sign-in"><i class="icon fa fa-fw fa-sign-in"></i> Sign in</a></li>
                                 <li><a href="#" data-toggle="modal" data-target="#sign-up"><i class="icon fa fa-fw fa-edit"></i> Sign up</a></li>
                             </ul>
-                            <ul class="list-inline" v-else="userid" > 
+                            <ul class="list-inline" v-else> 
                                 <li><a href="/mypage" data-toggle="modal"><i class="icon fa fa-fw fa-sign-in"></i>　{{user.username}}<b>　님</b></a></li>
+                                <li><button class="btn btn-mariner btn-sm" v-on:click="logout">logout</button></li>
                             </ul>
                         </div>
                         <!-- /User Cabinet Links -->
@@ -145,6 +137,12 @@
                     .catch(function (err) {
                         console.log(err);
                 });
+        },
+        methods: {
+            logout: function() {
+                localStorage.removeItem('token');
+                location.href = '/';
+            }
         }
     });
 </script>

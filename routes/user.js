@@ -142,7 +142,7 @@ router.post('/login', async (req, res, next) => {
           // useremail: exemail.useremail,
           // username:exemail.username,
         }, process.env.JWT_SECRET, {
-          expiresIn: '5m',  // 유효시간
+          expiresIn: '120m',  // 유효시간
           issuer: 'webzine',
         });
 
@@ -227,5 +227,6 @@ router.get('/checkLogin',verifyToken,async (req, res) => {
   }
 
 });
+
 
  module.exports = router;
