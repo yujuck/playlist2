@@ -15,7 +15,8 @@
     "dialect": "mysql",
     "operatorsAliases": 1
   },
-  "username": "playlist@playlistdbsvr",
+  "production": {
+    "username": "playlist@playlistdbsvr",
     "password": "ppk1217!",
     "database": "playlist",
     "host": "playlistdbsvr.mysql.database.azure.com",
