@@ -126,7 +126,7 @@ router.get('/modify/:id', async (req, res) => {
 });
 
 // 글 수정 라우터
-router.patch('/modify/:id', verifyToken, async (req, res) => {
+router.post('/modify/:id', verifyToken, async (req, res) => {
   try {
     var modifypost = await MeetPost.update(
       {

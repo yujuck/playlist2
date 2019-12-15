@@ -124,7 +124,6 @@
                 <div class="row section-content animated wow fadeIn" data-wow-duration="1.3s">
 
                     <!-- Project -->
-                    <!-- 반복되는 곳-->
                     <div class="col-xs-12 col-sm-6 col-md-4" v-for="mp in meetpost">
                         <div class="project">
                             <a v-bind:href="'/meetpost/detailpost?id='+mp.id" class="project-item image-popup">
@@ -132,9 +131,6 @@
                                     <img v-bind:src="mp.meetphoto">
                                 </div>
                                 <div class="overlay">
-                                    <p class="description">
-                                        {{mp.content}}
-                                    </p>
                                     <div class="information">
                                         <h3 class="title">{{mp.title}}</h3>
                                         <span class="icon icon_link_alt"></span>
@@ -172,7 +168,6 @@
                 <div class="row section-content animated wow fadeIn" data-wow-duration="1.3s">
 
                     <!-- Project -->
-                    <!-- 반복되는 곳 -->
                     <div class="col-xs-12 col-sm-6 col-md-4" v-for="rp in review">
                         <div class="project">
                             <a v-bind:href="'/review/detailpost?id='+rp.id" class="project-item image-popup">
@@ -180,9 +175,6 @@
                                     <img v-bind:src="rp.introphoto">
                                 </div>
                                 <div class="overlay">
-                                    <p class="description">
-                                        {{rp.content}}
-                                    </p>
                                     <div class="information">
                                         <h3 class="title">{{rp.title}}</h3>
                                         <span class="icon icon_link_alt"></span>

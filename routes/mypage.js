@@ -42,12 +42,13 @@ router.get('/modifyuser/:id', async (req, res) => {
 });
 
 // 회원정보 수정 라우터
-router.patch('/modifyuser/:id', async(req, res, next)=>{
+router.post('/modifyuser/:id', async(req, res, next)=>{
   const password = req.body.userpw;
  
   const hash = await bcrypt.hash(password, 12);
 
-  User.update(
+  try {
+    var modiuser = await User.update(
     { 
       userpw : hash,
       username : req.body.username,
@@ -59,14 +60,13 @@ router.patch('/modifyuser/:id', async(req, res, next)=>{
     }, 
     { 
       where: { id: req.params.id } 
-    })
-    .then((result) => {
-      res.json(result);
-    })
-    .catch((err) => {
-      console.error(err);
-      next(err);
     });
+
+    return res.json(modiuser);
+  } catch(err) {
+    console.log(err);
+  }
+  
 });
 
 module.exports = router;
