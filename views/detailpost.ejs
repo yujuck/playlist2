@@ -102,7 +102,7 @@
 
                                 <!-- Post Metadata -->
                                 <ul class="list-inline meta">
-                                    <li><i class="icon fa fa-calendar"></i> {{posts.createdAt}}</li>
+                                    <li><i class="icon fa fa-calendar"></i> {{getTime}}</li>
                                     <li><i class="icon fa fa-user"></i> by <a
                                             v-bind:href="'/yourpage?user='+posts.user.id">{{posts.user.username}}</a>
                                     </li>
@@ -168,6 +168,7 @@
                                                     v-bind:href="'/yourpage?user='+posts.user.id">{{comment.user.username}}</a>
                                             </h4>
                                             <span class="date">{{comment.createdAt}}</span>
+                                            {{getTime}}
                                             <p class="text">
                                                 {{comment.comment}}
                                             </p>
@@ -470,6 +471,14 @@
                         .catch(function (err) {
                             console.log(err);
                         });
+                }
+            },
+            computed: {
+                getTime: function() {
+                    
+                    var createdDate = new Date(this.posts.createdAt);
+                    return createdDate.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
+                    // return createdDate.toISOString().slice(0, 19).replace('T', ' ');
                 }
             }
         });

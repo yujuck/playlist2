@@ -27,7 +27,7 @@ router.post('/:meetpostId', async (req, res) => {
       meetpostId: meetpostId,
       userId: req.body.userId,
       comment: req.body.comment,
-      createdAt: new Date,
+      createdAt: new Date(),
       where: { id: req.params.id }
     });
     return res.json(createcomment);

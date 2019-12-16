@@ -8,12 +8,12 @@ var nodemailer = require('nodemailer');
 
 // 참여하기 누른 목록 라우터
 router.get('/participantlist', verifyToken, async (req, res) => {
-  
+
   try {
     const participantlist = await Participants.findAll({
       attributes: ['meetpostId'],
       where: { userId: req.decoded.id },
-      include:[{model: MeetPost}]
+      include: [{ model: MeetPost }]
     });
 
     return res.json(participantlist);
@@ -24,7 +24,7 @@ router.get('/participantlist', verifyToken, async (req, res) => {
 
 // 상세페이지 렌더링할 때 현재 로그인 되어있는 사용자의 참여하기 상태를 전달해주는 라우터
 router.get('/:meetpostId', verifyToken, async (req, res) => {
-  
+
   try {
     var userid = req.decoded.id;
     var participantstate = await Participants.findOne({
@@ -35,7 +35,7 @@ router.get('/:meetpostId', verifyToken, async (req, res) => {
       }
     });
     return res.json(participantstate);
-  } catch(err) {
+  } catch (err) {
     console.log(err);
   }
 });
@@ -65,74 +65,74 @@ router.post('/:meetpostId', async (req, res, next) => {
         next(err);
       });
 
-      //메일보내기
-      try {
-        //참여자 이메일 찾기
-        const partiemail = await User.findOne({
-                            attributes: ['useremail'],
-                            where: {
-                              id: userId
-                            }
-                        });
-        console.log('참여자 이메일: ' + partiemail.useremail);
-        
-        //게시글 이름 찾기
-        const postname = await MeetPost.findOne({
-          attributes: ['title'],
-          where: {
-            id: meetpostId
-          }
-         });
-        console.log('게시글 이름: ' + postname.title);
+    //메일보내기
+    try {
+      //참여자 이메일 찾기
+      const partiemail = await User.findOne({
+        attributes: ['useremail'],
+        where: {
+          id: userId
+        }
+      });
+      console.log('참여자 이메일: ' + partiemail.useremail);
 
-        //작성자 이름 찾기
-        const userresult = await MeetPost.findOne({
-          attributes: ['userId'],
+      //게시글 이름 찾기
+      const postname = await MeetPost.findOne({
+        attributes: ['title'],
+        where: {
+          id: meetpostId
+        }
+      });
+      console.log('게시글 이름: ' + postname.title);
+
+      //작성자 이름 찾기
+      const userresult = await MeetPost.findOne({
+        attributes: ['userId'],
+        where: {
+          id: meetpostId
+        }
+      });
+
+      if (userresult.userId) {
+
+        const writeemail = await User.findOne({
+          attributes: ['useremail'],
           where: {
-              id: meetpostId
+            id: userresult.userId
+          }
+        });
+        console.log('작성자 이메일: ' + writeemail.useremail);
+
+        //메일보내기
+        var transporter = nodemailer.createTransport({
+          service: 'gmail',
+          auth: {
+            user: 'playlist1217@gmail.com',
+            pass: 'ppk1217!'
           }
         });
 
-        if(userresult.userId) {
-    
-            const writeemail = await User.findOne({
-                                attributes: ['useremail'],
-                                where: {
-                                    id: userresult.userId
-                                }
-                            });
-            console.log('작성자 이메일: ' + writeemail.useremail); 
-            
-            //메일보내기
-            var transporter = nodemailer.createTransport({
-              service:'gmail',
-              auth: {
-                  user : 'playlist1217@gmail.com',
-                  pass : 'ppk1217!'
-              }
-            });
-          
-            var mailOption = {
-                from : 'playlist1217@gmail.com',
-                to : writeemail.useremail,
-                subject : '[Playlist] 참여 취소 안내',
-                text : '[Playlist]\n\n 안녕하세요. 취미 공유 플랫폼 Playlist 입니다.\n [' + partiemail.useremail + '] 님이 [' + postname.title + '] 참여를 취소하였습니다.'
-            };
-            
-            transporter.sendMail(mailOption, function(err, info) {
-                if ( err ) {
-                    console.error('Send Mail error : ', err);
-                }
-                else {
-                    console.log('Message sent : ', info);
-                }
-            });
-            
-        }
+        var mailOption = {
+          from: 'playlist1217@gmail.com',
+          to: writeemail.useremail,
+          subject: '[Playlist] 참여 취소 안내',
+          html: '<h3>[취미 공유 플랫폼 Playlist]<h3><p><img src="http://localhost:3000/images/participant_no.jpg" ></p><br> [' + partiemail.useremail + '] 님이 [' + postname.title + '] 모임 참여를 취소하였습니다.'
+        };
 
-    } catch(error) {
-        console.error(error);
-        return next(error);
+        transporter.sendMail(mailOption, function (err, info) {
+          if (err) {
+            console.error('Send Mail error : ', err);
+          }
+          else {
+            console.log('Message sent : ', info);
+          }
+        });
+
+      }
+
+    } catch (error) {
+      console.error(error);
+      return next(error);
     }
 
 
@@ -149,74 +149,74 @@ router.post('/:meetpostId', async (req, res, next) => {
         next(err);
       });
 
-      //메일보내기
-      try {
-        //참여자 이메일 찾기
-        const partiemail = await User.findOne({
-                            attributes: ['useremail'],
-                            where: {
-                              id: userId
-                            }
-                        });
-        console.log('참여자 이메일: ' + partiemail.useremail);
-        
-        //게시글 이름 찾기
-        const postname = await MeetPost.findOne({
-          attributes: ['title'],
-          where: {
-            id: meetpostId
-          }
-         });
-        console.log('게시글 이름: ' + postname.title);
+    //메일보내기
+    try {
+      //참여자 이메일 찾기
+      const partiemail = await User.findOne({
+        attributes: ['useremail'],
+        where: {
+          id: userId
+        }
+      });
+      console.log('참여자 이메일: ' + partiemail.useremail);
 
-        //작성자 이름 찾기
-        const userresult = await MeetPost.findOne({
-          attributes: ['userId'],
+      //게시글 이름 찾기
+      const postname = await MeetPost.findOne({
+        attributes: ['title'],
+        where: {
+          id: meetpostId
+        }
+      });
+      console.log('게시글 이름: ' + postname.title);
+
+      //작성자 이름 찾기
+      const userresult = await MeetPost.findOne({
+        attributes: ['userId'],
+        where: {
+          id: meetpostId
+        }
+      });
+
+      if (userresult.userId) {
+
+        const writeemail = await User.findOne({
+          attributes: ['useremail'],
           where: {
-              id: meetpostId
+            id: userresult.userId
+          }
+        });
+        console.log('작성자 이메일: ' + writeemail.useremail);
+
+        //메일보내기
+        var transporter = nodemailer.createTransport({
+          service: 'gmail',
+          auth: {
+            user: 'playlist1217@gmail.com',
+            pass: 'ppk1217!'
           }
         });
 
-        if(userresult.userId) {
-    
-            const writeemail = await User.findOne({
-                                attributes: ['useremail'],
-                                where: {
-                                    id: userresult.userId
-                                }
-                            });
-            console.log('작성자 이메일: ' + writeemail.useremail); 
-            
-            //메일보내기
-            var transporter = nodemailer.createTransport({
-              service:'gmail',
-              auth: {
-                  user : 'playlist1217@gmail.com',
-                  pass : 'ppk1217!'
-              }
-            });
-          
-            var mailOption = {
-                from : 'playlist1217@gmail.com',
-                to : writeemail.useremail,
-                subject : '[Playlist] 참여 안내',
-                text : '[Playlist]\n\n 안녕하세요. 취미 공유 플랫폼 Playlist 입니다.\n [' + partiemail.useremail + '] 님이 [' + postname.title + ']에 참여하였습니다.'
-            };
-            
-            transporter.sendMail(mailOption, function(err, info) {
-                if ( err ) {
-                    console.error('Send Mail error : ', err);
-                }
-                else {
-                    console.log('Message sent : ', info);
-                }
-            });
-            
-        }
+        var mailOption = {
+          from : 'playlist1217@gmail.com',
+          to : writeemail.useremail,
+          subject : '[Playlist] 참여 신청 안내',
+          html : '<h3>[취미 공유 플랫폼 Playlist]<h3><p><img src="http://localhost:3000/images/participant_ok.jpg" ></p><br> [' + partiemail.useremail + '] 님이 [' + postname.title + '] 모임에 참여하셨습니다.'
+      };
 
-    } catch(error) {
-        console.error(error);
-        return next(error);
+        transporter.sendMail(mailOption, function (err, info) {
+          if (err) {
+            console.error('Send Mail error : ', err);
+          }
+          else {
+            console.log('Message sent : ', info);
+          }
+        });
+
+      }
+
+    } catch (error) {
+      console.error(error);
+      return next(error);
     }
 
 

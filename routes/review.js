@@ -22,7 +22,7 @@ router.post('/review-write', verifyToken, async (req, res) => {
       title: req.body.title,
       introphoto: req.body.introphoto,
       content: req.body.content,
-      createdAt:new Date
+      createdAt:new Date()
     });
     return res.json(createreview);
   } catch(err) {
