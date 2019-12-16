@@ -79,11 +79,14 @@
 
                         <div class="col-sm-4 col-xs-12" v-for="p in posts">
                             <div class="project-item">
+                                <a v-bind:href="'/meetpost/detailpost?id='+p.id">
                                     <div class="gallery-image">
                                         <img v-bind:src="'/'+p.meetphoto">
                                     </div>
+                                </a>
+
                                 <div class="information">
-                                    <div class="h3 title"><a v-bind:href="'/meetpost/modify?postid='+p.id">{{ p.title }}</a>
+                                    <div class="h3 title">{{ p.title }}
                                     </div>
                                     <div class="description">
                                         by {{p.user.username}}
@@ -183,7 +186,25 @@
             },
             methods: {
                 moveWrite: function () {
-                    location.href = "meetpost/writepage"
+                    axios.get('/user/checkLogin', { headers: { authorization: localStorage.getItem('token') } })
+                    .then(function (res) {
+                        if (res.data.code == 419) {
+                            alert("로그인이 필요합니다");
+                            location.href="/";
+                            return false;
+                            }
+                        if (res.data.code == 401) {
+                            alert("로그인이 필요합니다");
+                            location.href="/";
+                            return false;
+                        }
+                        if (res.data.code == 200) {
+                            location.href="/meetpost/writepage";
+                        }
+                    }.bind(this))
+                    .catch(function (err) {
+                        console.log(err);
+                    });
                 },   
             }
         });
