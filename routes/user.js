@@ -80,7 +80,7 @@ router.post('/join', async (req, res, next) => {
         from: 'playlist1217@gmail.com',
         to: useremail,
         subject: '[Playlist] ' + useremail + ' 님 회원가입을 축하합니다!',
-        html: '<h3>[취미 공유 플랫폼 Playlist]<h3><p><img src="http://localhost:3000/images/sign_up_image.jpg" ></p><br>' + useremail + '님 회원가입을 축하합니다!<br> Playlist에서 당신의 취미를 공유해보세요:)'
+        html: '<h3>[취미 공유 플랫폼 Playlist]<h3><p><img src="https://playlistweb.azurewebsites.net//images/sign_up_image.jpg" ></p><br>' + useremail + '님 회원가입을 축하합니다!<br> Playlist에서 당신의 취미를 공유해보세요:)'
       };
 
       transporter.sendMail(mailOption, function (err, info) {

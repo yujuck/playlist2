@@ -116,7 +116,7 @@ router.post('/:meetpostId', async (req, res, next) => {
           from: 'playlist1217@gmail.com',
           to: writeemail.useremail,
           subject: '[Playlist] 참여 취소 안내',
-          html: '<h3>[취미 공유 플랫폼 Playlist]<h3><p><img src="http://localhost:3000/images/participant_no.jpg" ></p><br> [' + partiemail.useremail + '] 님이 [' + postname.title + '] 모임 참여를 취소하였습니다.'
+          html: '<h3>[취미 공유 플랫폼 Playlist]<h3><p><img src="https://playlistweb.azurewebsites.net//images/participant_no.jpg" ></p><br> [' + partiemail.useremail + '] 님이 [' + postname.title + '] 모임 참여를 취소하였습니다.'
         };
 
         transporter.sendMail(mailOption, function (err, info) {
@@ -200,7 +200,7 @@ router.post('/:meetpostId', async (req, res, next) => {
           from : 'playlist1217@gmail.com',
           to : writeemail.useremail,
           subject : '[Playlist] 참여 신청 안내',
-          html : '<h3>[취미 공유 플랫폼 Playlist]<h3><p><img src="http://localhost:3000/images/participant_ok.jpg" ></p><br> [' + partiemail.useremail + '] 님이 [' + postname.title + '] 모임에 참여하셨습니다.'
+          html : '<h3>[취미 공유 플랫폼 Playlist]<h3><p><img src="https://playlistweb.azurewebsites.net//images/participant_ok.jpg" ></p><br> [' + partiemail.useremail + '] 님이 [' + postname.title + '] 모임에 참여하셨습니다.'
       };
 
         transporter.sendMail(mailOption, function (err, info) {
