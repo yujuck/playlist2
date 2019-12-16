@@ -41,7 +41,7 @@
                 <!-- Page Title -->
                 <div class="col-md-8">
                     <h1 class="title">My page</h1>
-                    <div class="subtitle">참여 목록</div>
+                    <div class="subtitle">작성 목록</div>
                 </div>
                 <!-- /Page Title -->
 
@@ -79,7 +79,7 @@
                     <!-- Contact Information -->
                     <div class="col-sm-8">
 
-                        <h3><b>참여 목록</b></h3>
+                        <h3><b>작성 목록</b></h3>
                         <p>
                             
                         </p>
@@ -91,15 +91,38 @@
                                         
                                             <div class="gallery-image">
         
-                                                <img v-bind:src="'/'+p.meetpost.meetphoto">
+                                                <img v-bind:src="'/'+p.meetphoto">
                                             </div>
         
                                         
                                         <div class="information">
-                                            <div class="h3 title">{{ p.meetpost.title }}
+                                            <div class="h3 title">{{ p.title }}
                                             </div>
                                             <div class="read-more">
-                                                <a v-bind:href="'/meetpost/detailpost?id='+p.meetpost.id">Read more <i
+                                                <a v-bind:href="'/meetpost/detailpost?id='+p.id">Read more <i
+                                                        class="fa fa-fw fa-arrow-right"></i> </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="projects-list">
+
+                                <div class="col-sm-4 col-xs-12" v-for="r in reviews">
+                                    <div class="project-item">
+                                        
+                                            <div class="gallery-image">
+        
+                                                <img v-bind:src="'/'+r.introphoto">
+                                            </div>
+        
+                                        
+                                        <div class="information">
+                                            <div class="h3 title">{{ r.title }}
+                                            </div>
+                                            <div class="read-more">
+                                                <a v-bind:href="'/review/detailpost?id='+r.id">Read more <i
                                                         class="fa fa-fw fa-arrow-right"></i> </a>
                                             </div>
                                         </div>
@@ -167,7 +190,8 @@
             data: {
                 userid: '',
                 user: {},
-                posts:[]
+                posts: [],
+                reviews: []
             },
             created: function () {
                 axios.get('/user/checkLogin', { headers: { authorization: localStorage.getItem('token') } })
@@ -189,9 +213,17 @@
                         console.log(err);
                     });
 
-                axios.get('/participant/participantlist', { headers: { authorization: localStorage.getItem('token') } })
+                axios.get('/mypage/mymeetpost', { headers: { authorization: localStorage.getItem('token') } })
                 .then(function(res) {
                     this.posts = res.data;
+                }.bind(this))
+                .catch(function(err) {
+                    console.log(err);
+                });
+
+                axios.get('/mypage/myreview', { headers: { authorization: localStorage.getItem('token') } })
+                .then(function(res) {
+                    this.reviews = res.data;
                 }.bind(this))
                 .catch(function(err) {
                     console.log(err);

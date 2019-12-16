@@ -1,7 +1,10 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../models/index.js').User;
+var MeetPost = require('../models/index.js').MeetPost;
+var Intropost = require('../models/index.js').Intropost;
 const bcrypt = require('bcrypt');
+const { verifyToken } = require('./middlewares');
 
 // 사용자 정보 페이지 렌더링
 router.get('/', function (req, res, next) {
@@ -21,6 +24,35 @@ router.get('/mypage-favorite', function (req, res, next) {
 // 참여 목록 페이지 렌더링
 router.get('/mypage-participant', function (req, res, next) {
   res.render('mypage-participant');
+});
+
+// 작성 목록 페이지 렌더링
+router.get('/mypage-write', function(req,res) {
+  res.render('mypage-write');
+});
+
+// 내가 쓴 meetpost 데이터
+router.get('/mymeetpost', verifyToken, async (req,res) => {
+  try{ 
+    var mymeetpost = await MeetPost.findAll({
+      where: { userId: req.decoded.id },
+    });
+    return res.json(mymeetpost);
+  } catch(err) {
+    console.log(err);
+  }
+});
+
+// 내가 쓴 review 데이터
+router.get('/myreview', verifyToken, async (req,res) => {
+  try{ 
+    var myreview = await Intropost.findAll({
+      where: { userId: req.decoded.id },
+    });
+    return res.json(myreview);
+  } catch(err) {
+    console.log(err);
+  }
 });
 
 // 사용자 정보 수정 페이지 렌더링
