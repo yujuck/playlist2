@@ -167,8 +167,7 @@
                                             <h4 class="author"><a
                                                     v-bind:href="'/yourpage?user='+posts.user.id">{{comment.user.username}}</a>
                                             </h4>
-                                            <span class="date">{{comment.createdAt}}</span>
-                                            {{getTime}}
+                                            <span class="date">{{getcommentTime}}</span>
                                             <p class="text">
                                                 {{comment.comment}}
                                             </p>
@@ -475,10 +474,12 @@
             },
             computed: {
                 getTime: function() {
-                    
                     var createdDate = new Date(this.posts.createdAt);
                     return createdDate.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
-                    // return createdDate.toISOString().slice(0, 19).replace('T', ' ');
+                },
+                getcommentTime: function() {
+                    var createdAt = new Date(this.comments.createdAt);
+                    return createdAt.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
                 }
             }
         });

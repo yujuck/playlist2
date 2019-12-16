@@ -100,7 +100,7 @@
 
                                 <!-- Post Metadata -->
                                 <ul class="list-inline meta">
-                                    <li><i class="icon fa fa-calendar"></i> {{reviews.createdAt}}</li>
+                                    <li><i class="icon fa fa-calendar"></i> {{getTime}}</li>
                                     <li><i class="icon fa fa-user"></i> by <a
                                             v-bind:href="'/yourpage?user='+reviews.user.id">{{reviews.user.username}}</a>
                                     </li>
@@ -243,6 +243,12 @@
                 
                 gotolist: function () {
                     location.href = "/review";
+                }
+            },
+            computed: {
+                getTime: function() {
+                    var createdDate = new Date(this.reviews.createdAt);
+                    return createdDate.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
                 }
             }
         });
